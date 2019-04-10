@@ -23,11 +23,17 @@ public class LexicalAnalyzer {
             int loop = 0;
             while (true) {
                 input = file.read();
+
+
                 if (input == '\n') {
                     lineNumber++;
                 }
-
-                State newState = map.get(new Transition(currentState,InputType.getTypeByChar((char) input)));
+                State newState;
+                if(input != -1 ) {
+                     newState = map.get(new Transition(currentState, InputType.getTypeByChar((char) input)));
+                }else{
+                     newState = map.get(new Transition(currentState, InputType.EOF));
+                }
                 if(newState == null){
                     //TODO
                     return null;

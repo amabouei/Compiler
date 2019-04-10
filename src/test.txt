@@ -1,11 +1,4 @@
-mohammad
-ali
-
-{{
-
-
-}
-}}
+mohammad = 12;
 
 
 

@@ -22,7 +22,7 @@ public class main {
             accessFile = new RandomAccessFile(Paths.get(System.getProperty("user.dir"), "src", "test.txt").toString(), "r");
             int lastLine = 0;
             int loop = 0;
-            while (loop <= 10) {
+            while (true) {
                 loop++;
 //                accessFile.seek(accessFile.getFilePointer() - 1); /// chert......
                 Token next = lexical.getNextToken(accessFile, lineNumber);
@@ -39,7 +39,9 @@ public class main {
                 if (next.getTokenType() == TokenType.WHITESPACE && next.getToken().equals("\n")) {
                     lineNumber++;
                 }
-
+                if(next.getTokenType() == TokenType.EOF){
+                    break;
+                }
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -68,9 +70,9 @@ public class main {
         HashSet<String> symbolTable = createSymbolTables();
         Map<Transition, State> map = new HashMap<>();
         State start = new State(0, false, false,null);
-        State[] states = new State[18];
+        State[] states = new State[19];
         states[0] = start;
-        for (int i = 1; i <= 17; i++) {
+        for (int i = 1; i <= 18; i++) {
             boolean isfinal = false;
             boolean needToBack = false;
             TokenType tokenType = null;
@@ -115,6 +117,10 @@ public class main {
                     isfinal = true;
                     tokenType = TokenType.WHITESPACE;
                     break;
+                case 18:
+                    isfinal = true;
+                    tokenType = TokenType.EOF;
+                    break;
             }
             states[i] = new State(i,isfinal,needToBack,tokenType);
         }
@@ -127,7 +133,7 @@ public class main {
         map.put(new Transition(start,InputType.SLASH),states[9]);
         map.put(new Transition(start,InputType.WHITESPACE),states[15]);
         map.put(new Transition(start,InputType.ENDLINE),states[17]);
-
+        map.put(new Transition(start,InputType.EOF),states[18]);
 
         //state1
         map.put(new Transition(states[1],InputType.LETTER),states[1]);

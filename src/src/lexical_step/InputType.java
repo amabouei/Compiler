@@ -12,7 +12,7 @@ public enum InputType {
     SYMBOL("[<*-+}\\[\\]{)(,:;]"),EQUAL("[=]"),
     SLASH("[/]") , BACKSLASH("[\\\\]"),
     ENDLINE("[\n]"),WHITESPACE("[ \t\r\f]"),
-    EOF("[\\w]") , OTHER("");
+    EOF("[asdf]") , OTHER("");
 
     private final String regex;
 
