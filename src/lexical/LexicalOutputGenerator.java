@@ -24,10 +24,11 @@ public class LexicalOutputGenerator {
     private static void printTokens(LinkedList<Token> tokens) {
         try {
             fileWriter = new FileWriter(Paths.get(System.getProperty("user.dir"), "lexical_outputs", "scanner.txt").toString());
-            int lineNumber = 0;
+            int prevLine = 0;
             for (Token token : tokens) {
                 try {
-                    fileWriter.write(getLineToPrint(++lineNumber, token));
+                    fileWriter.write(getLineToPrint(token, prevLine));
+                    prevLine = token.getLine();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -42,10 +43,11 @@ public class LexicalOutputGenerator {
     private static void printErrors(LinkedList<LexicalException> errors) {
         try {
             fileWriter = new FileWriter(Paths.get(System.getProperty("user.dir"), "lexical_outputs", "lexical_errors.txt").toString());
-            int lineNumber = 0;
+            int prevLine = 0;
             for (LexicalException error : errors) {
                 try {
-                    fileWriter.write(getLineToPrint(++lineNumber, error));
+                    fileWriter.write(getLineToPrint(error, prevLine));
+                    prevLine = error.getLine();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -58,11 +60,21 @@ public class LexicalOutputGenerator {
     }
 
 
-    private static String getLineToPrint(int lineNumber, Token token) {
-        return lineNumber + "- " + token.toString() + "\n";
+    private static String getLineToPrint(Token token, int prevLine) {
+        if (prevLine == token.getLine())
+            return " " + token.toString();
+        else if (prevLine != 0)
+            return "\n" + token.getLine() + "- " + token.toString();
+        else
+            return token.getLine() + "- " + token.toString();
     }
 
-    private static String getLineToPrint(int lineNumber, LexicalException error) {
-        return lineNumber + "- " + error.toString() + "\n";
+    private static String getLineToPrint(LexicalException error, int prevLine) {
+        if (prevLine == error.getLine())
+            return " " + error.toString();
+        else if (prevLine != 0)
+            return "\n" + error.getLine() + "- " + error.toString();
+        else
+            return error.getLine() + "- " + error.toString();
     }
 }
