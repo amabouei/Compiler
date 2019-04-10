@@ -47,6 +47,9 @@ public class LexicalAnalyzer {
                              throw new InvalidInputException(currentState.getStr() + String.valueOf((char)input),lineNumber);
                         throw new InvalidInputException(String.valueOf((char)input),lineNumber);
                     }else{
+                        if(input != -1) {
+                            file.seek(file.getFilePointer() - 1);
+                        }
                         if(currentState.getId() == 9){
                             throw new IncompleteException("/",startline);
                         }else{
