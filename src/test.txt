@@ -1,4 +1,9 @@
-mohammad = 12;
+void main(void){
+	
+	int a = 12;
+	a = 2 + +2;
+	
+}
 
 
 
