@@ -17,20 +17,22 @@ public class main {
 
         LexicalAnalyzer lexical = initializeLexical();
         LinkedList<LexicalException> errors = new LinkedList<>();
+        LinkedList<Token> tokens = new LinkedList<>();
         int lineNumber = -1;
-        RandomAccessFile accessFile = null;
+        RandomAccessFile codeInput;
         try {
-            accessFile = new RandomAccessFile(Paths.get(System.getProperty("user.dir"), "src", "test.txt").toString(), "r");
+            codeInput = new RandomAccessFile(Paths.get(System.getProperty("user.dir"), "src", "test.txt").toString(), "r");
             while (true) {
                 Token next = null;
                 try {
-                    next = lexical.getNextToken(accessFile);
+                    next = lexical.getNextToken(codeInput);
                     if (next.getTokenType() != TokenType.EOF && next.getTokenType() != TokenType.WHITESPACE && next.getTokenType() != TokenType.COMMENT) {
                         if (lineNumber != next.getLine()) {
                             lineNumber = next.getLine();
-                            System.out.print("\n" + lineNumber + "-" + " ");
+//                            System.out.print("\n" + lineNumber + "-" + " ");
                         }
-                        System.out.print(next.toString() + " ");
+                        tokens.add(next);
+//                        System.out.print(next.toString() + " ");
                     }
                     if (next.getTokenType() == TokenType.EOF) {
                         break;
@@ -44,15 +46,16 @@ public class main {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        System.out.println("\nErrors");
+        LexicalOutputGenerator.writeFiles(tokens, errors);
+//        System.out.println("\nErrors");
         lineNumber = 0;
-        for (LexicalException error : errors) {
-            if (lineNumber != error.getLine()) {
-                lineNumber = error.getLine();
-                System.out.print("\n" + lineNumber + "-" + " ");
-            }
-            System.out.print(error.toString() + " ");
-        }
+//        for (LexicalException error : errors) {
+//            if (lineNumber != error.getLine()) {
+//                lineNumber = error.getLine();
+//                System.out.print("\n" + lineNumber + "-" + " ");
+//            }
+//            System.out.print(error.toString() + " ");
+//        }
     }
 
 
