@@ -11,6 +11,15 @@ public class Token {
         this.tokenType = tokenType;
     }
 
+    public Token(String token, TokenType tokenType, int line) {
+        this.token = token;
+        this.tokenType = tokenType;
+        this.line = line;
+    }
+
+    public int getLine() {
+        return line;
+    }
 
     @Override
     public String toString() {
