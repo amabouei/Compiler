@@ -7,11 +7,11 @@ public enum InputType {
 
     //TODO EOF and whitespace...
 
-    DIGIT("[0-9]"), LETTER("[A-Za-z]"), STAR("[\\*]"),
-    SYMBOL("[<\\-+\\[\\]{}(),:;]"), EQUALS("[=]"),
+    DIGIT("[0-9]"), LETTER("[A-Za-z]"), STAR("[*]"),
+    SYMBOL("[<\\*\\-+\\[\\]{}(),:;]"), EQUALS("[=]"),
     SLASH("[/]"),
     END_LINE("[\n]"), WHITESPACE("[\\s\\v\t\r\f]"),
-    EOF("[asdf]"), OTHER("");
+    EOF("EOF"), OTHER("");
 
     private final String regex;
 
@@ -20,7 +20,6 @@ public enum InputType {
         this.regex = input;
     }
 
-    //TODO
     public static InputType getTypeByChar(char inputChar) {
 
         for (InputType type : InputType.values()) {
