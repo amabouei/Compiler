@@ -6,13 +6,13 @@ import java.util.regex.Pattern;
 public enum InputType {
 
 
-    //EOF and whitespace...
+    //TODO EOF and whitespace...
 
     DIGIT("[0-9]"),LETTER("[A-Za-z]"),STAR("[*]"),
     SYMBOL("[<*-+}\\[\\]{)(,:;]"),EQUAL("[=]"),
     SLASH("[/]") , BACKSLASH("[\\\\]"),
-    ENDLINE("\n"),WHITESPACE("[\t\r\f]"),
-    EOF("asdfs") , OTHER("");
+    ENDLINE("[\n]"),WHITESPACE("[ \t\r\f]"),
+    EOF("[\\w]") , OTHER("");
 
     private final String regex;
 
@@ -21,7 +21,7 @@ public enum InputType {
         this.regex = input;
     }
     //TODO
-    public static  InputType getTypeBychar(char inputChar){
+    public static  InputType getTypeByChar(char inputChar){
 
         for (InputType type : InputType.values()) {
             if(Pattern.matches(type.regex, String.valueOf(inputChar))){

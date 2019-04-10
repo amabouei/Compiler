@@ -13,4 +13,14 @@ public class Transition {
     public int hashCode() {
         return start.getId() * 10001 + input.hashCode();
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj instanceof Transition){
+            if(obj.hashCode() == this.hashCode()){
+                return true;
+            }
+        }
+        return false;
+    }
 }

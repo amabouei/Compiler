@@ -16,15 +16,18 @@ public class LexicalAnalyzer {
         this.start = start;
     }
 
-    public Token getNextToken(RandomAccessFile file , int lineNumber){
+    public Token getNextToken(RandomAccessFile file , Integer lineNumber){
         int input;
         State currentState  = start;
         try {
-            while ((input = file.read()) != -1) {
+            int loop = 0;
+            while (true) {
+                input = file.read();
                 if (input == '\n') {
                     lineNumber++;
                 }
-                State newState = map.get(new Transition(start,InputType.getTypeBychar((char) input)));
+
+                State newState = map.get(new Transition(currentState,InputType.getTypeByChar((char) input)));
                 if(newState == null){
                     //TODO
                     return null;
@@ -36,7 +39,11 @@ public class LexicalAnalyzer {
                         out = new Token(currentState.getStr(), newState.getTokenType());
                     }
                     else {
-                        out = new Token(new StringBuilder().append(currentState.getStr()).append((char) input).toString(), newState.getTokenType());
+                        if(currentState.getStr() != null) {
+                            out = new Token(new StringBuilder(currentState.getStr()).append((char) input).toString(), newState.getTokenType());
+                        }else{
+                            out = new Token(String.valueOf((char)input),newState.getTokenType());
+                        }
                     }
                     if(out.getTokenType().equals(TokenType.IDENTIFIYER)){
                         if(symbolTable.contains(out.getToken())){
@@ -45,13 +52,19 @@ public class LexicalAnalyzer {
                     }
                     return out;
                 }
-                else{
-                   newState.setStr(new StringBuilder().append(currentState.getStr()).append((char) input).toString());
+                else {
+                    if(currentState.getStr() != null) {
+                        newState.setStr(new StringBuilder(currentState.getStr()).append((char) input).toString());
+                    }else{
+                        newState.setStr(String.valueOf((char)input));
+                    }
+                    currentState = newState;
                 }
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         return null;
     }
 }
