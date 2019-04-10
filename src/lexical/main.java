@@ -138,6 +138,7 @@ public class main {
         map.put(new Transition(start,InputType.LETTER),states[1]);
         map.put(new Transition(start,InputType.DIGIT),states[3]);
         map.put(new Transition(start,InputType.SYMBOL),states[8]);
+        map.put(new Transition(start,InputType.STAR),states[8]);
         map.put(new Transition(start,InputType.EQUALS),states[5]);
         map.put(new Transition(start,InputType.SLASH),states[9]);
         map.put(new Transition(start,InputType.WHITESPACE),states[15]);
