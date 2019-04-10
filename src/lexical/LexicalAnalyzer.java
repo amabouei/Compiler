@@ -64,7 +64,7 @@ public class LexicalAnalyzer {
                             out = new Token(String.valueOf((char) input), newState.getTokenType(),lineNumber);
                         }
                     }
-                    if (out.getTokenType().equals(TokenType.IDENTIFIER)) {
+                    if (out.getTokenType().equals(TokenType.ID)) {
                         if (symbolTable.contains(out.getToken())) {
                             out.setTokenType(TokenType.KEYWORD);
                         }
