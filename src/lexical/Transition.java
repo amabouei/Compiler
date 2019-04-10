@@ -1,4 +1,4 @@
-package lexical_step;
+package lexical;
 
 public class Transition {
     private State start ;

@@ -1,4 +1,4 @@
-package lexical_step;
+package lexical;
 
 public class State {
 

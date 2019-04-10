@@ -1,6 +1,5 @@
-package lexical_step;
+package lexical;
 
-import java.util.StringJoiner;
 import java.util.regex.Pattern;
 
 public enum InputType {

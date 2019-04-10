@@ -1,4 +1,4 @@
-package lexical_step;
+package lexical;
 
 import java.io.IOException;
 import java.io.RandomAccessFile;
