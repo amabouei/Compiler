@@ -12,10 +12,9 @@ public class Token {
     }
 
 
-
     @Override
     public String toString() {
-        return new StringBuilder("(").append(tokenType.toString()).append(", ").append(token).append(")").toString();
+        return "(" + tokenType.toString() + ", " + token + ")";
     }
 
     public TokenType getTokenType() {

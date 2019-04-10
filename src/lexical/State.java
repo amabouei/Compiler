@@ -52,8 +52,7 @@ public class State {
     @Override
     public boolean equals(Object obj) {
         if(obj instanceof State){
-            if(obj.hashCode() == this.hashCode())
-                return true;
+            return obj.hashCode() == this.hashCode();
         }
         return false;
     }

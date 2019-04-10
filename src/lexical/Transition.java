@@ -16,10 +16,8 @@ public class Transition {
 
     @Override
     public boolean equals(Object obj) {
-        if(obj instanceof Transition){
-            if(obj.hashCode() == this.hashCode()){
-                return true;
-            }
+        if (obj instanceof Transition){
+            return obj.hashCode() == this.hashCode();
         }
         return false;
     }
