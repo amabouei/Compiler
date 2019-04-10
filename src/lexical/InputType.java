@@ -10,7 +10,7 @@ public enum InputType {
     DIGIT("[0-9]"), LETTER("[A-Za-z]"), STAR("[*]"),
     SYMBOL("[<*\\-+\\[\\]{}(),:;]"), EQUALS("[=]"),
     SLASH("[/]"),
-    END_LINE("[\n]"), WHITESPACE("[\\s\t\r\f]"),
+    END_LINE("[\n]"), WHITESPACE("[\\s\\v\t\r\f]"),
     EOF("[asdf]"), OTHER("");
 
     private final String regex;

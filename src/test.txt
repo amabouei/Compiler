@@ -1,8 +1,5 @@
-//asdasd
-moham
-
-/*
-
+//jo
+/*moh
 
 */
 void main(void){

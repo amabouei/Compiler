@@ -13,6 +13,6 @@ public class InvalidInputException extends LexicalException {
 
     @Override
     public String toString() {
-        return super.toString()  + "invalid input )";
+        return super.toString()  + "invalid input)";
     }
 }

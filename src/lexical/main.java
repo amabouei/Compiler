@@ -8,12 +8,12 @@ import java.io.*;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.logging.ErrorManager;
+import java.util.regex.Pattern;
 
 public class main {
 
 
     public static void main(String[] args) {
-//       String x = [^abc];
 
         Map<String, Integer> map = new HashMap<>();
 

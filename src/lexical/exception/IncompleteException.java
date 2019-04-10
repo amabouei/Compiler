@@ -19,6 +19,6 @@ public class IncompleteException  extends LexicalException {
 
     @Override
     public String toString() {
-        return super.toString() + "incomplete )";
+        return super.toString() + "incomplete)";
     }
 }
