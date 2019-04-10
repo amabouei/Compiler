@@ -7,8 +7,8 @@ public enum InputType {
 
     //TODO EOF and whitespace...
 
-    DIGIT("[0-9]"), LETTER("[A-Za-z]"), STAR("[*]"),
-    SYMBOL("[<\\*\\-+\\[\\]{}(),:;]"), EQUALS("[=]"),
+    DIGIT("[0-9]"), LETTER("[A-Za-z]"), STAR("[\\*]"),
+    SYMBOL("[<\\-+\\[\\]{}(),:;]"), EQUALS("[=]"),
     SLASH("[/]"),
     END_LINE("[\n]"), WHITESPACE("[\\s\\v\t\r\f]"),
     EOF("EOF"), OTHER("");
