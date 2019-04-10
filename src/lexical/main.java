@@ -36,7 +36,7 @@ public class main {
                         break;
                     }
                 } catch (IncompleteException e) {
-                    errors.add(new IncompleteException("/*",lineNumber));
+                    errors.add(e);
                 } catch (InvalidInputException e) {
                     errors.add(e);
                 }
