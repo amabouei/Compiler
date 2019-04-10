@@ -1,7 +1,5 @@
 //jo
-/*moh
-
-*/
+/*
 void main(void){
 		int a = 2;
 		//comment2

@@ -23,9 +23,7 @@ public class main {
         RandomAccessFile accessFile = null;
         try {
             accessFile = new RandomAccessFile(Paths.get(System.getProperty("user.dir"), "src", "test.txt").toString(), "r");
-            int loop = 0;
             while (true) {
-                loop++;
                 Token next = null;
                 try {
                     next = lexical.getNextToken(accessFile);
