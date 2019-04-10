@@ -8,6 +8,10 @@ public class LexicalException extends Exception {
         return str;
     }
 
+    public void setStr(String str) {
+        this.str = str;
+    }
+
     public int getLine() {
         return line;
     }

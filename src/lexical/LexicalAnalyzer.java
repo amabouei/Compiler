@@ -23,7 +23,7 @@ public class LexicalAnalyzer {
     public Token getNextToken(RandomAccessFile file) throws IncompleteException, InvalidInputException {
         int input;
         State currentState = start;
-
+        int startline = lineNumber;
         try {
             int loop = 0;
             while (true) {
@@ -35,19 +35,23 @@ public class LexicalAnalyzer {
                         lineNumber++;
                     }
                 }
-                if (input != -1) {
-                    newState = map.get(new Transition(currentState, InputType.getTypeByChar((char) input)));
-                } else {
-                    newState = map.get(new Transition(currentState, InputType.EOF));
+                InputType type =  InputType.getTypeByChar((char) input);
+                if (input == -1) {
+                   type = InputType.EOF;
                 }
+                newState = map.get(new Transition(currentState,type));
+
                 if (newState == null) {
-                    if(input == -1){
-                        throw new IncompleteException();
-                    }else{
+                    if(type == InputType.OTHER){
                         if(currentState.getStr() != null)
-                            throw new InvalidInputException(currentState.getStr()+ String.valueOf((char)input),lineNumber);
-                        else
-                            throw new InvalidInputException(String.valueOf((char)input),lineNumber);
+                             throw new InvalidInputException(currentState.getStr() + String.valueOf((char)input),lineNumber);
+                        throw new InvalidInputException(String.valueOf((char)input),lineNumber);
+                    }else{
+                        if(currentState.getId() == 9){
+                            throw new IncompleteException("/",startline);
+                        }else{
+                            throw new IncompleteException("/*",startline);
+                        }
                     }
                 }
                 if (newState.isFinal()) {
@@ -58,6 +62,7 @@ public class LexicalAnalyzer {
                         }
                         out = new Token(currentState.getStr(), newState.getTokenType(),lineNumber);
                     } else {
+
                         if (currentState.getStr() != null) {
                             out = new Token(currentState.getStr() + (char) input, newState.getTokenType(),lineNumber);
                         } else {
@@ -71,7 +76,6 @@ public class LexicalAnalyzer {
                     }
                     return out;
                 } else {
-
                     if (currentState.getStr() != null) {
                         newState.setStr(currentState.getStr() + (char) input);
                     } else {
