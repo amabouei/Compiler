@@ -1,13 +1,10 @@
 package lexical.exception;
 
-import java.security.spec.ECFieldF2m;
-
 public class IncompleteException  extends LexicalException {
 
     public IncompleteException(String str) {
         this.str = str;
     }
-
 
     public IncompleteException(String str, int line) {
         this.str = str;

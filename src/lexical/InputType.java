@@ -3,10 +3,6 @@ package lexical;
 import java.util.regex.Pattern;
 
 public enum InputType {
-
-
-    //TODO EOF and whitespace...
-
     DIGIT("[0-9]"), LETTER("[A-Za-z]"), STAR("[\\*]"),
     SYMBOL("[<\\-+\\[\\]{}(),:;]"), EQUALS("[=]"),
     SLASH("[/]"),
@@ -14,7 +10,6 @@ public enum InputType {
     EOF("EOF"), OTHER("");
 
     private final String regex;
-
 
     InputType(String input) {
         this.regex = input;
