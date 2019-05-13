@@ -2,6 +2,7 @@ package parser;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.*;
 
@@ -21,7 +22,6 @@ public class FirstAndFollowSet {
     }
 
     public FirstAndFollowSet() {
-        initSet(true);
     }
 
     public void initSet(boolean followSetFile) {
@@ -30,18 +30,18 @@ public class FirstAndFollowSet {
             address = followSetsFileAddress;
         else
             address = firstSetsFileAddress;
-        FileReader setsFIle = null;
+        FileReader setsFile = null;
         try {
-            setsFIle = new FileReader(address);
+            setsFile = new FileReader(address);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        if (setsFIle == null) {
+        if (setsFile == null) {
             System.out.println("File not found");
             return;
         }
 
-        Scanner scanner = new Scanner(setsFIle);
+        Scanner scanner = new Scanner(setsFile);
         String curLine;
         while (scanner.hasNext()) {
             curLine = scanner.nextLine();
@@ -62,6 +62,11 @@ public class FirstAndFollowSet {
                 Set<String> curFirstSet = new HashSet<>(modified);
                 firstSets.put(curNonTerminal, curFirstSet);
             }
+        }
+        try {
+            setsFile.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }
