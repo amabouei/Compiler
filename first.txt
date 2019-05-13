@@ -1,0 +1,49 @@
+Program	EPSILON, int, void
+Declaration_list	EPSILON, int, void
+Declaration	int, void
+Var_declaration	int, void
+Var_dec_index	;, [, (
+Type_specifier	int, void
+Fun_declaration	(
+Params	void, id
+Param_name	id, EPSILON
+Param_list	int, void
+Param_loop	,, EPSILON
+Param	int, void
+Param_index	EPSILON, [
+Compound_stmt	{
+Statement_list	EPSILON, {, continue, break, ;, if, while, return, switch, id, +, -, (, num
+Statement	{, continue, break, ;, if, while, return, switch, id, +, -, (, num
+Expression_stmt	continue, break, ;, id, +, -, (, num
+Selection_stmt	if
+Iteration_stmt	while
+Return_stmt	return
+Return_expression	;, id, +, -, (, num
+Switch_stmt	switch
+Case_stmts	EPSILON, case
+Case_stmt	case
+Default_stmt	default, EPSILON
+Expression	id, +, -, (, num
+Expression_args	(, EPSILON, [
+Expression_relations	=, *, EPSILON
+Var	id
+Expression_index	EPSILON, [
+Expression_loop	EPSILON, <, ==
+Relop	<, ==
+Additive_expression	+, -, (, id, num
+Expression_addops	EPSILON, +, -
+Addop	+, -
+Term	+, -, (, id, num
+Expression_times	*, EPSILON
+Signed_Factor	+, -, (, id, num
+Factor	(, id, num
+Factor_args	(, EPSILON, [
+Call	id
+Args	EPSILON, id, +, -, (, num
+Arg_list	id, +, -, (, num
+Args_loop	,, EPSILON
+Simple_Expression	+, -, (, num
+Additive_expression_num	+, -, (, num
+Term_num	+, -, (, num
+Signed_Factor_num	+, -, (, num
+Factor_num	(, num

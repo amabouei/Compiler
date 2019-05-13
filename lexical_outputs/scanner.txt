@@ -1,4 +1,0 @@
-1- (KEYWORD, void) (SYMBOL, () (ID, main) (SYMBOL, )) (SYMBOL, {)
-3- (KEYWORD, int) (ID, main) (ID, asd)
-11- (ID, asfd)
-14- (SYMBOL, })
