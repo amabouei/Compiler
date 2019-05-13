@@ -10,8 +10,8 @@ public class FirstAndFollowSet {
     private Set<String> nonTerminals = new HashSet<>();
     private HashMap<String, Set<String>> followSets = new HashMap<>();
     private HashMap<String, Set<String>> firstSets = new HashMap<>();
-    public static final String followSetsFileAddress = Paths.get(System.getProperty("user.dir"),  "follow.txt").toString();
-    public static final String firstSetsFileAddress = Paths.get(System.getProperty("user.dir"), "first.txt").toString();
+    private static final String followSetsFileAddress = Paths.get(System.getProperty("user.dir"),  "follow.txt").toString();
+    private static final String firstSetsFileAddress = Paths.get(System.getProperty("user.dir"), "first.txt").toString();
 
     public HashMap<String, Set<String>> getFollowSets() {
         return followSets;
