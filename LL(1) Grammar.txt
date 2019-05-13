@@ -21,7 +21,7 @@ Param_index -> ε
 Param_index -> [  ]
 Compound_stmt -> { Declaration_list Statement_list }
 Statement_list ->  Statement  Statement_list
-Statement_list ->ε
+Statement_list -> ε
 Statement -> Expression_stmt
 Statement -> Compound_stmt
 Statement -> Selection_stmt
