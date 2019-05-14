@@ -43,7 +43,7 @@ public class GrammarTest {
                 System.out.print(nonTerminal + " -> " + edge.getLabel());
                 State curState = edge.getNext();
                 while (!curState.isFinal()) {
-                    System.out.print(curState.getEdge().getLabel() + " ");
+                    System.out.print(" " + curState.getEdge().getLabel());
                     curState = curState.getEdge().getNext();
                 }
                 System.out.println("\n");
