@@ -1,17 +1,23 @@
 package parser;
 
+import jdk.jshell.Diag;
+
+import javax.sound.midi.Soundbank;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.*;
 
-public class FirstAndFollowSet {
-    private Set<String> nonTerminals = new HashSet<>();
+public class Grammar {
     private HashMap<String, Set<String>> followSets = new HashMap<>();
     private HashMap<String, Set<String>> firstSets = new HashMap<>();
+    private HashMap<String, Diagram> subDiagrams = new HashMap<>();
+
     private static final String followSetsFileAddress = Paths.get(System.getProperty("user.dir"),  "follow.txt").toString();
     private static final String firstSetsFileAddress = Paths.get(System.getProperty("user.dir"), "first.txt").toString();
+    private static final String grammarFileAddress = Paths.get(System.getProperty("user.dir"), "shalgham.txt").toString();
+
 
     public HashMap<String, Set<String>> getFollowSets() {
         return followSets;
@@ -21,7 +27,8 @@ public class FirstAndFollowSet {
         return firstSets;
     }
 
-    public FirstAndFollowSet() {
+    public HashMap<String, Diagram> getSubDiagrams() {
+        return subDiagrams;
     }
 
     public void initSet(boolean followSetFile) {
@@ -52,7 +59,6 @@ public class FirstAndFollowSet {
                 modified.add(word);
             }
             String curNonTerminal = modified.get(0);
-            nonTerminals.add(curNonTerminal);
             modified.remove(curNonTerminal);
             if (followSetFile) {
                 Set<String> curFollowSet = new HashSet<>(modified);
@@ -67,6 +73,32 @@ public class FirstAndFollowSet {
             setsFile.close();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    public void initDiagram() {
+        FileReader grammarFile = null;
+        try {
+            grammarFile = new FileReader(grammarFileAddress);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        if (grammarFile == null) {
+            System.out.println("Grammar File Not Found!");
+            return;
+        }
+        Scanner scanner = new Scanner(grammarFile);
+        String curLine;
+        while (scanner.hasNext()) {
+            curLine = scanner.nextLine().replace("->", " ");
+            String[] split = curLine.replaceAll("\\s+", " ").split("\\s");
+            String curNonTerminal = split[0];
+            ArrayList<String> rule = new ArrayList<>(Arrays.asList(split));
+            rule.remove(0);
+            if (!subDiagrams.containsKey(curNonTerminal)) {
+                subDiagrams.put(curNonTerminal, new Diagram(curNonTerminal));
+            }
+            subDiagrams.get(curNonTerminal).addRule(rule);
         }
     }
 }

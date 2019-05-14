@@ -3,11 +3,20 @@ package parser;
 public class Edge {
 
     private boolean token = false;
-    private String lable;
+    private String label;
+    private State next;
 
-    public Edge (boolean token, String lable) {
+    public Edge (boolean token, String label, State next) {
         this.token = token;
-        this.lable = lable;
+        this.label = label;
+        this.next = next;
     }
 
+    public State getNext() {
+        return next;
+    }
+
+    public String getLabel() {
+        return label;
+    }
 }

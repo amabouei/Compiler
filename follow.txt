@@ -1,17 +1,17 @@
-Program	-|
-Declaration_list	EOF, {, continue, break, ;, if, while, return, switch, id, +, -, (, num, }
-Declaration	int, void, EOF, {, continue, break, ;, if, while, return, switch, id, +, -, (, num, }
-Var_declaration	int, void, EOF, {, continue, break, ;, if, while, return, switch, id, +, -, (, num, }
-Var_dec_index	int, void, EOF, {, continue, break, ;, if, while, return, switch, id, +, -, (, num, }
+Program
+Declaration_list	eof, {, continue, break, ;, if, while, return, switch, id, +, -, (, num, }
+Declaration	int, void, eof, {, continue, break, ;, if, while, return, switch, id, +, -, (, num, }
+Var_declaration	int, void, eof, {, continue, break, ;, if, while, return, switch, id, +, -, (, num, }
+Var_dec_index	int, void, eof, {, continue, break, ;, if, while, return, switch, id, +, -, (, num, }
 Type_specifier	id
-Fun_declaration	int, void, EOF, {, continue, break, ;, if, while, return, switch, id, +, -, (, num, }
+Fun_declaration	int, void, eof, {, continue, break, ;, if, while, return, switch, id, +, -, (, num, }
 Params	)
 Param_name	)
 Param_list	)
 Param_loop	)
 Param	,, )
 Param_index	,, )
-Compound_stmt	int, void, EOF, {, continue, break, ;, if, while, return, switch, id, +, -, (, num, }, else, case, default
+Compound_stmt	int, void, eof, {, continue, break, ;, if, while, return, switch, id, +, -, (, num, }, else, case, default
 Statement_list	}, case, default
 Statement	{, continue, break, ;, if, while, return, switch, id, +, -, (, num, }, else, case, default
 Expression_stmt	{, continue, break, ;, if, while, return, switch, id, +, -, (, num, }, else, case, default

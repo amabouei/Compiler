@@ -1,6 +1,6 @@
-Program -> Declaration_list EOF
+Program -> Declaration_list eof
 Declaration_list -> Declaration Declaration_list
-Declaration_list -> ε
+Declaration_list -> epsilon
 Declaration -> Var_declaration
 Var_declaration -> Type_specifier id Var_dec_index
 Var_dec_index -> ;
@@ -12,16 +12,16 @@ Fun_declaration -> ( Params ) Compound_stmt
 Params -> void Param_name
 Params -> id id Param_index Param_loop
 Param_name -> id Param_index Param_loop
-Param_name -> ε
+Param_name -> epsilon
 Param_list ->  Param Param_loop
 Param_loop -> , Param_list
-Param_loop -> ε
+Param_loop -> epsilon
 Param -> Type_specifier id Param_index
-Param_index -> ε
+Param_index -> epsilon
 Param_index -> [  ]
 Compound_stmt -> { Declaration_list Statement_list }
 Statement_list ->  Statement  Statement_list
-Statement_list -> ε
+Statement_list -> epsilon
 Statement -> Expression_stmt
 Statement -> Compound_stmt
 Statement -> Selection_stmt
@@ -39,10 +39,10 @@ Return_expression -> ;
 Return_expression -> Expression ;
 Switch_stmt -> switch ( Expression ) { Case_stmts Default_stmt }
 Case_stmts -> Case_stmt Case_stmts
-Case_stmts -> ε
+Case_stmts -> epsilon
 Case_stmt -> case num : Statement_list
 Default_stmt -> default : Statement_list
-Default_stmt -> ε
+Default_stmt -> epsilon
 Expression -> id Expression_args
 Expression -> Simple_Expression
 Expression_args -> Expression_index Expression_relations
@@ -50,20 +50,20 @@ Expression_args -> ( Args ) Expression_times Expression_addops Expression_loop
 Expression_relations -> = Expression
 Expression_relations -> Expression_times Expression_addops Expression_loop
 Var -> id Expression_index
-Expression_index -> ε
+Expression_index -> epsilon
 Expression_index -> [ Expression ]
 Expression_loop -> Relop Additive_expression
-Expression_loop -> ε
+Expression_loop -> epsilon
 Relop -> <
 Relop -> ==
 Additive_expression -> Term Expression_addops
 Expression_addops -> Addop Term Expression_addops
-Expression_addops ->ε
+Expression_addops ->epsilon
 Addop -> +
 Addop -> -
 Term -> Signed_Factor Expression_times
 Expression_times -> * Signed_Factor Expression_times
-Expression_times -> ε
+Expression_times -> epsilon
 Signed_Factor -> Factor
 Signed_Factor -> + Factor
 Signed_Factor -> - Factor
@@ -74,10 +74,10 @@ Factor_args -> ( Args )
 Factor_args -> Expression_index
 Call -> id ( Args )
 Args -> Arg_list
-Args -> ε
+Args -> epsilon
 Arg_list -> Expression Args_loop
 Args_loop -> , Expression Args_loop
-Args_loop -> ε
+Args_loop -> epsilon
 Simple_Expression -> Additive_expression_num Expression_loop
 Additive_expression_num -> Term_num Expression_addops
 Term_num -> Signed_Factor_num Expression_times
