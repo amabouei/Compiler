@@ -15,7 +15,7 @@ public class FirstAndFollowSetTest {
             for (String s : followSets.get(nonTerminal)) {
                 System.out.print(s + " ");
             }
-            System.out.println(" }\n");
+            System.out.println("}\n");
         }
     }
 
@@ -29,7 +29,7 @@ public class FirstAndFollowSetTest {
             for (String s : firstSets.get(nonTerminal)) {
                 System.out.print(s + "");
             }
-            System.out.println(" }\n");
+            System.out.println("}\n");
         }
     }
 }
