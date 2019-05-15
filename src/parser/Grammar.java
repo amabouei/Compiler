@@ -59,7 +59,8 @@ public class Grammar {
             String[] split = curLine.split("\\s");
             ArrayList<String> modified = new ArrayList<>();
             for (String word : split) {
-                word = word.replaceFirst(",", "");
+                if (word.length() > 1)
+                    word = word.replaceFirst(",", "");
                 modified.add(word);
             }
             String curNonTerminal = modified.get(0);

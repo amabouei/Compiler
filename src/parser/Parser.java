@@ -21,23 +21,23 @@ public class Parser {
     public Parser(Grammar grammar, LexicalAnalyzer lexicalAnalyzer) {
         this.grammar = grammar;
         this.lexicalAnalyzer = lexicalAnalyzer;
-        this.root = new Node("Term",null,false,0);
+        this.root = new Node("Term", null, false, 0);
     }
 
-    public Node parseTree(){
-        parse(root,grammar.getSubDiagrams().get("Term"),null);
+    public Node parseTree() {
+        parse(root, grammar.getSubDiagrams().get("Term"), null);
         return root;
     }
 
-    public Token parse(Node current,Diagram curDiagram,Token curToken ){
+    public Token parse(Node current, Diagram curDiagram, Token curToken) {
         State curState = curDiagram.getStart();
-        while(true) {
+        while (true) {
             if (curState.isFinal()) {
                 return curToken;
             }
-            if(curToken == null) {
+            if (curToken == null) {
                 try {
-                    while(true) {
+                    while (true) {
                         curToken = lexicalAnalyzer.getNextToken();
                         if (!(curToken.getTokenType() == TokenType.COMMENT || curToken.getTokenType() == TokenType.WHITESPACE)) {
                             break;
@@ -49,25 +49,25 @@ public class Parser {
                     e.printStackTrace();
                 }
             }
-            Edge edge = nextStateChooser(curState.getEdges(), curToken,curDiagram.getName());
+            Edge edge = nextStateChooser(curState.getEdges(), curToken, curDiagram.getName());
             if (edge != null) {
-                Node child = new Node(edge.getLabel(), current,edge.isToken(),current.getHeight() + 1);
-                if(edge.getLabel().equals("id") || edge.getLabel().equals("num")){
+                Node child = new Node(edge.getLabel(), current, edge.isToken(), current.getHeight() + 1);
+                if (edge.getLabel().equals("id") || edge.getLabel().equals("num")) {
                     child.setLabel(curToken.getToken());
                 }
                 if (!edge.isToken()) {
-                    Token next = parse(child, grammar.getSubDiagrams().get(edge.getLabel()),curToken);
+                    Token next = parse(child, grammar.getSubDiagrams().get(edge.getLabel()), curToken);
                     curToken = next;
-                }else{
-                    if(!edge.getLabel().equals("epsilon")){
+                } else {
+                    if (!edge.getLabel().equals("epsilon")) {
                         curToken = null;
                     }
                 }
                 curState = edge.getNext();
                 current.getChildren().add(child);
-            }else{
+            } else {
                 System.out.println(curToken.getLine());
-                System.out.println("error " + curDiagram.getName() + "  " + curToken.getTokenType() +"   "+curToken.getToken());
+                System.out.println("error " + curDiagram.getName() + "  " + curToken.getTokenType() + "   " + curToken.getToken());
                 break;
             }
         }
@@ -75,26 +75,26 @@ public class Parser {
     }
 
 
-    public Edge nextStateChooser(ArrayList<Edge> edges, Token input,String curDiagName){
+    public Edge nextStateChooser(ArrayList<Edge> edges, Token input, String curDiagName) {
         String str = input.getToken();
-        if(input.getTokenType() == TokenType.NUM || input.getTokenType() == TokenType.ID || input.getTokenType() == TokenType.EOF){
+        if (input.getTokenType() == TokenType.NUM || input.getTokenType() == TokenType.ID || input.getTokenType() == TokenType.EOF) {
             str = input.getTokenType().toString().toLowerCase();
         }
         for (Edge edge : edges) {
-            if(edge.getLabel().equals("epsilon")){
+            if (edge.getLabel().equals("epsilon")) {
                 Set<String> followOfState = grammar.getFollowSets().get(curDiagName);
-                if(followOfState.contains(str)){
+                if (followOfState.contains(str)) {
                     return edge;
                 }
             }
-            if(edge.isToken()){
+            if (edge.isToken()) {
                 String label = edge.getLabel();
-                if(label.toUpperCase().equals(input.getTokenType().toString()) || label.equals(str)){ //// if token is (id or num) or another things
+                if (label.toUpperCase().equals(input.getTokenType().toString()) || label.equals(str)) { //// if token is (id or num) or another things
                     return edge;
                 }
-            }else {
+            } else {
                 Set<String> firstOfState = grammar.getFirstSets().get(edge.getLabel());
-                if(firstOfState.contains(str) || (firstOfState.contains("epsilon") && grammar.getFollowSets().get(edge.getLabel()).contains(str))){
+                if (firstOfState.contains(str) || (firstOfState.contains("epsilon") && grammar.getFollowSets().get(edge.getLabel()).contains(str))) {
                     return edge;
                 }
             }
