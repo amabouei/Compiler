@@ -21,11 +21,11 @@ public class Parser {
     public Parser(Grammar grammar, LexicalAnalyzer lexicalAnalyzer) {
         this.grammar = grammar;
         this.lexicalAnalyzer = lexicalAnalyzer;
-        this.root = new Node("Term", null, false, 0);
+        this.root = new Node("Program", null, false, 0);
     }
 
     public Node parseTree() {
-        parse(root, grammar.getSubDiagrams().get("Term"), null);
+        parse(root, grammar.getSubDiagrams().get("Program"), null);
         return root;
     }
 
