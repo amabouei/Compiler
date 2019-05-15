@@ -35,4 +35,8 @@ public class Node {
     public boolean isTerminal() {
         return terminal;
     }
+
+    public void setLabel(String label) {
+        this.label = label;
+    }
 }

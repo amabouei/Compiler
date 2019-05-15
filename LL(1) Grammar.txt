@@ -10,7 +10,7 @@ Type_specifier -> int
 Type_specifier -> void
 Fun_declaration -> ( Params ) Compound_stmt
 Params -> void Param_name
-Params -> id id Param_index Param_loop
+Params -> int id Param_index Param_loop
 Param_name -> id Param_index Param_loop
 Param_name -> epsilon
 Param_list ->  Param Param_loop

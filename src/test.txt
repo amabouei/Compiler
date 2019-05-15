@@ -1,10 +1,4 @@
 int main(void){
- y = 2;
- if(y ==2){
-    y = 1;
- }
- else{
-     y = 3;
- }
- //moo
+
+     b = 5 * a + foo(a,a);
 }

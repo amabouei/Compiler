@@ -5,7 +5,7 @@ Var_declaration	int, void
 Var_dec_index	;, [, (
 Type_specifier	int, void
 Fun_declaration	(
-Params	void, id
+Params	void, int
 Param_name	id, epsilon
 Param_list	int, void
 Param_loop	,, epsilon

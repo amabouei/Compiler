@@ -53,7 +53,9 @@ public class Parser {
             Edge edge = nextStateChooser(curState.getEdges(), curToken,curDiagram.getName());
             if (edge != null) {
                 Node child = new Node(edge.getLabel(), current,edge.isToken(),current.getHeight() + 1);
-
+                if(edge.getLabel().equals("id") || edge.getLabel().equals("num")){
+                    child.setLabel(curToken.getToken());
+                }
                 if (!edge.isToken()) {
                     Token next = parse(child, grammar.getSubDiagrams().get(edge.getLabel()),curToken);
                     curToken = next;
@@ -65,6 +67,7 @@ public class Parser {
                 curState = edge.getNext();
                 current.getChilds().add(child);
             }else{
+                System.out.println(curToken.getLine());
                 System.out.println("error " + curDiagram.getName() + "  " + curToken.getTokenType() +"   "+curToken.getToken());
                 break;
             }
