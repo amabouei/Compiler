@@ -9,7 +9,7 @@ import java.nio.file.Paths;
 import java.util.*;
 
 
-public class main {
+public class Creator {
 
 
     public static void main(String[] args) {
@@ -24,10 +24,11 @@ public class main {
 
         try {
             codeInput = new RandomAccessFile(Paths.get(System.getProperty("user.dir"), "src", "test.txt").toString(), "r");
+            lexical.setFile(codeInput);
             while (true) {
                 Token next = null;
                 try {
-                    next = lexical.getNextToken(codeInput);
+                    next = lexical.getNextToken();
                     if (next.getTokenType() != TokenType.EOF && next.getTokenType() != TokenType.WHITESPACE && next.getTokenType() != TokenType.COMMENT) {
                         if (lineNumber != next.getLine()) {
                             lineNumber = next.getLine();

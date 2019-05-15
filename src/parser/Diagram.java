@@ -28,12 +28,12 @@ public class Diagram {
                         boolean isFinal = false;
                         if (i == rule.size() - 1)
                                 isFinal = true;
-                        boolean isNonTerminal = step.toUpperCase().charAt(0) == step.charAt(0);
+                        boolean isNonTerminal = step.charAt(0) >= 65 && step.charAt(0) <= 90;
                         Edge newEdge;
                         if (!isFinal)
-                                newEdge = new Edge(isNonTerminal, step, new State());
+                                newEdge = new Edge(!isNonTerminal, step, new State());
                         else
-                                newEdge = new Edge(isNonTerminal, step, finalState);
+                                newEdge = new Edge(!isNonTerminal, step, finalState);
                         curState.addEdge(newEdge);
                         curState = newEdge.getNext();
                 }
