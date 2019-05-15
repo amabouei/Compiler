@@ -30,7 +30,7 @@ public class Main {
         }
         System.out.println(node.getLabel());
         if(!node.isTerminal()) {
-            for (Node child : node.getChilds()) {
+            for (Node child : node.getChildren()) {
                     printTree(child);
             }
         }

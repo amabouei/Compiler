@@ -7,7 +7,7 @@ public class Node {
     private Node parent;
     private boolean terminal;
     private int height;
-    private LinkedList<Node> childs = new LinkedList<>();
+    private LinkedList<Node> children = new LinkedList<>();
 
     public Node(String label, Node parent, boolean terminal, int height) {
         this.label = label;
@@ -24,8 +24,8 @@ public class Node {
         return parent;
     }
 
-    public LinkedList<Node> getChilds() {
-        return childs;
+    public LinkedList<Node> getChildren() {
+        return children;
     }
 
     public int getHeight() {

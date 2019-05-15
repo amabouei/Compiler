@@ -9,7 +9,6 @@ import lexical.exception.InvalidInputException;
 import parser.treeStructure.Node;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.Set;
 
 public class Parser {
@@ -22,11 +21,11 @@ public class Parser {
     public Parser(Grammar grammar, LexicalAnalyzer lexicalAnalyzer) {
         this.grammar = grammar;
         this.lexicalAnalyzer = lexicalAnalyzer;
-        this.root = new Node("Program",null,false,0);
+        this.root = new Node("Term",null,false,0);
     }
 
     public Node parseTree(){
-        parse(root,grammar.getSubDiagrams().get("Program"),null);
+        parse(root,grammar.getSubDiagrams().get("Term"),null);
         return root;
     }
 
@@ -65,7 +64,7 @@ public class Parser {
                     }
                 }
                 curState = edge.getNext();
-                current.getChilds().add(child);
+                current.getChildren().add(child);
             }else{
                 System.out.println(curToken.getLine());
                 System.out.println("error " + curDiagram.getName() + "  " + curToken.getTokenType() +"   "+curToken.getToken());
