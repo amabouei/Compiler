@@ -1,6 +1,5 @@
 package parser;
 
-import jdk.jshell.Diag;
 
 import javax.sound.midi.Soundbank;
 import java.io.FileNotFoundException;
@@ -18,6 +17,11 @@ public class Grammar {
     private static final String firstSetsFileAddress = Paths.get(System.getProperty("user.dir"), "first.txt").toString();
     private static final String grammarFileAddress = Paths.get(System.getProperty("user.dir"), "LL(1) Grammar.txt").toString();
 
+    public Grammar() {
+        initSet(true);
+        initSet(false);
+        initDiagram();
+    }
 
     public HashMap<String, Set<String>> getFollowSets() {
         return followSets;

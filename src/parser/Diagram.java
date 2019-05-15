@@ -31,9 +31,9 @@ public class Diagram {
                         boolean isNonTerminal = step.charAt(0) <= 90 && step.charAt(0) >= 65;
                         Edge newEdge;
                         if (!isFinal)
-                                newEdge = new Edge(isNonTerminal, step, new State());
+                                newEdge = new Edge(!isNonTerminal, step, new State());
                         else
-                                newEdge = new Edge(isNonTerminal, step, finalState);
+                                newEdge = new Edge(!isNonTerminal, step, finalState);
                         curState.addEdge(newEdge);
                         curState = newEdge.getNext();
                 }

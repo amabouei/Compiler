@@ -13,14 +13,18 @@ public class LexicalAnalyzer {
     private Map<Transition, State> map = new HashMap<>();
     private State start;
     private int lineNumber = 1;
-
+    private RandomAccessFile file;
     public LexicalAnalyzer(Set<String> symbolTable, Map<Transition, State> map, State start) {
         this.symbolTable = symbolTable;
         this.map = map;
         this.start = start;
     }
 
-    public Token getNextToken(RandomAccessFile file) throws IncompleteException, InvalidInputException {
+    public void setFile(RandomAccessFile file) {
+        this.file = file;
+    }
+
+    public Token getNextToken() throws IncompleteException, InvalidInputException {
         int input;
         State currentState = start;
         int startline = lineNumber;

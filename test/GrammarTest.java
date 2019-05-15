@@ -36,7 +36,7 @@ public class GrammarTest {
     @Test
     public void diagramTest() {
         Grammar grammar = new Grammar();
-        grammar.initDiagram();
+//        grammar.initDiagram();
         HashMap<String, Diagram> subDiagrams = grammar.getSubDiagrams();
         for (String nonTerminal : subDiagrams.keySet()) {
             for (Edge edge : subDiagrams.get(nonTerminal).getStart().getEdges()) {
