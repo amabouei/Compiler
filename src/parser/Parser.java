@@ -52,10 +52,10 @@ public class Parser {
             }
             Edge edge = nextStateChooser(curState.getEdges(), curToken,curDiagram.getName());
             if (edge != null) {
-
                 Node child = new Node(edge.getLabel(), current,edge.isToken(),current.getHeight() + 1);
                 if (!edge.isToken()) {
-                    curToken = parse(child, grammar.getSubDiagrams().get(edge.getLabel()),curToken);
+                    Token next = parse(child, grammar.getSubDiagrams().get(edge.getLabel()),curToken);
+                    curToken = next;
                 }else{
                     if(!edge.getLabel().equals("epsilon")){
                         curToken = null;
@@ -64,6 +64,7 @@ public class Parser {
                 curState = edge.getNext();
                 current.getChilds().add(child);
             }else{
+                System.out.println("error " + curDiagram.getName() + "  " + curToken.getTokenType() +"   "+curToken.getToken());
                 break;
             }
         }
@@ -72,22 +73,25 @@ public class Parser {
 
 
     public Edge nextStateChooser(ArrayList<Edge> edges, Token input,String curDiagName){
-
+        String str = input.getToken();
+        if(input.getTokenType() == TokenType.NUM || input.getTokenType() == TokenType.ID){
+            str = input.getTokenType().toString().toLowerCase();
+        }
         for (Edge edge : edges) {
             if(edge.getLabel().equals("epsilon")){
                 Set<String> followOfState = grammar.getFollowSets().get(curDiagName);
-                if(followOfState.contains(input.getToken())){
+                if(followOfState.contains(str)){
                     return edge;
                 }
             }
-            if(edge.isToken() ){
+            if(edge.isToken()){
                 String label = edge.getLabel();
-                if(label.toUpperCase().equals(input.getTokenType().toString()) || label.equals(input.getToken())){ //// if token is (id or num) or another things
+                if(label.toUpperCase().equals(input.getTokenType().toString()) || label.equals(str)){ //// if token is (id or num) or another things
                     return edge;
                 }
             }else {
                 Set<String> firstOfState = grammar.getFirstSets().get(edge.getLabel());
-                if(firstOfState.contains(input.getToken()) || (firstOfState.contains("epsilon") && grammar.getFollowSets().get(edge.getLabel()).contains(input.getToken()))){
+                if(firstOfState.contains(str) || (firstOfState.contains("epsilon") && grammar.getFollowSets().get(edge.getLabel()).contains(str))){
                     return edge;
                 }
             }

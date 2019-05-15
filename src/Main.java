@@ -26,7 +26,7 @@ public class Main {
 
     public static void printTree(Node node){
         for (int height = node.getHeight(); height > 0; height--) {
-            System.out.print("-");
+            System.out.print("|  ");
         }
         System.out.println(node.getLabel());
         if(!node.isTerminal()) {
