@@ -1,3 +1,10 @@
 int main(void){
-x = 12;
+ y = 2;
+ if(y ==2){
+    y = 1;
+ }
+ else{
+     y = 3;
+ }
+ //moo
 }

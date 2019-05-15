@@ -53,6 +53,7 @@ public class Parser {
             Edge edge = nextStateChooser(curState.getEdges(), curToken,curDiagram.getName());
             if (edge != null) {
                 Node child = new Node(edge.getLabel(), current,edge.isToken(),current.getHeight() + 1);
+
                 if (!edge.isToken()) {
                     Token next = parse(child, grammar.getSubDiagrams().get(edge.getLabel()),curToken);
                     curToken = next;
@@ -74,7 +75,7 @@ public class Parser {
 
     public Edge nextStateChooser(ArrayList<Edge> edges, Token input,String curDiagName){
         String str = input.getToken();
-        if(input.getTokenType() == TokenType.NUM || input.getTokenType() == TokenType.ID){
+        if(input.getTokenType() == TokenType.NUM || input.getTokenType() == TokenType.ID || input.getTokenType() == TokenType.EOF){
             str = input.getTokenType().toString().toLowerCase();
         }
         for (Edge edge : edges) {
