@@ -19,4 +19,8 @@ public class Edge {
     public String getLabel() {
         return label;
     }
+
+    public boolean isToken() {
+        return token;
+    }
 }

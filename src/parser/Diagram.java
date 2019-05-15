@@ -28,7 +28,7 @@ public class Diagram {
                         boolean isFinal = false;
                         if (i == rule.size() - 1)
                                 isFinal = true;
-                        boolean isNonTerminal = step.toUpperCase().charAt(0) == step.charAt(0);
+                        boolean isNonTerminal = step.charAt(0) <= 90 && step.charAt(0) >= 65;
                         Edge newEdge;
                         if (!isFinal)
                                 newEdge = new Edge(isNonTerminal, step, new State());

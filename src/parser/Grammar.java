@@ -16,7 +16,7 @@ public class Grammar {
 
     private static final String followSetsFileAddress = Paths.get(System.getProperty("user.dir"),  "follow.txt").toString();
     private static final String firstSetsFileAddress = Paths.get(System.getProperty("user.dir"), "first.txt").toString();
-    private static final String grammarFileAddress = Paths.get(System.getProperty("user.dir"), "shalgham.txt").toString();
+    private static final String grammarFileAddress = Paths.get(System.getProperty("user.dir"), "LL(1) Grammar.txt").toString();
 
 
     public HashMap<String, Set<String>> getFollowSets() {
