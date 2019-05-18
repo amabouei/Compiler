@@ -2,6 +2,7 @@ import lexical.Creator;
 import lexical.LexicalAnalyzer;
 import parser.Grammar;
 import parser.Parser;
+import parser.error.Error;
 import parser.treeStructure.Node;
 
 import java.io.FileNotFoundException;
@@ -22,6 +23,11 @@ public class Main {
         Parser parser = new Parser(new Grammar(),lexical);
         Node node = parser.parseTree();
         printTree(node);
+
+        for (Error error : parser.getErrors()) {
+            System.out.println(error.getLine()+"  "+error.getErrorType() +" "+error.getStr());
+        }
+
     }
 
     public static void printTree(Node node){

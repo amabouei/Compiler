@@ -6,9 +6,12 @@ import lexical.Token;
 import lexical.TokenType;
 import lexical.exception.IncompleteException;
 import lexical.exception.InvalidInputException;
+import parser.error.Error;
+import parser.error.ErrorType;
 import parser.treeStructure.Node;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Set;
 
 public class Parser {
@@ -16,7 +19,8 @@ public class Parser {
     private Grammar grammar;
     private Node root;
     private LexicalAnalyzer lexicalAnalyzer;
-
+    private LinkedList<Error> errors = new LinkedList<>();
+    private int curLine = 1;
 
     public Parser(Grammar grammar, LexicalAnalyzer lexicalAnalyzer) {
         this.grammar = grammar;
@@ -31,6 +35,9 @@ public class Parser {
 
     public Token parse(Node current, Diagram curDiagram, Token curToken) {
         State curState = curDiagram.getStart();
+        int nextLine = 1;
+        if (curToken != null)
+            nextLine = curToken.getLine();
         while (true) {
             if (curState.isFinal()) {
                 return curToken;
@@ -39,22 +46,21 @@ public class Parser {
                 try {
                     while (true) {
                         curToken = lexicalAnalyzer.getNextToken();
+                        nextLine = curToken.getLine();//TODO
                         if (!(curToken.getTokenType() == TokenType.COMMENT || curToken.getTokenType() == TokenType.WHITESPACE)) {
                             break;
                         }
                     }
-                } catch (IncompleteException e) {
-                    e.printStackTrace();
-                } catch (InvalidInputException e) {
-                    e.printStackTrace();
+                } catch (IncompleteException | InvalidInputException e) {
+                    errors.add(new Error(e.getLine(), e.toString(), ErrorType.Lexical));
                 }
             }
             Edge edge = nextStateChooser(curState.getEdges(), curToken, curDiagram.getName());
             if (edge != null) {
                 Node child = new Node(edge.getLabel(), current, edge.isToken(), current.getHeight() + 1);
-                if (edge.getLabel().equals("id") || edge.getLabel().equals("num")) {
-                    child.setLabel(curToken.getToken());
-                }
+//                if (edge.getLabel().equals("id") || edge.getLabel().equals("num")) {
+//                    child.setLabel(curToken.getToken());
+//                }
                 if (!edge.isToken()) {
                     Token next = parse(child, grammar.getSubDiagrams().get(edge.getLabel()), curToken);
                     curToken = next;
@@ -65,10 +71,33 @@ public class Parser {
                 }
                 curState = edge.getNext();
                 current.getChildren().add(child);
+
             } else {
-                System.out.println(curToken.getLine());
-                System.out.println("error " + curDiagram.getName() + "  " + curToken.getTokenType() + "   " + curToken.getToken());
-                break;
+                if (curToken.getTokenType() == TokenType.EOF) {
+                    break;
+                    //todo
+                } else {
+                    Edge expectedEdge = curState.getEdge();
+                    System.out.println(curState.getEdge().getLabel());
+                    if (expectedEdge.isToken()) {
+
+                        errors.add(new Error(curLine, expectedEdge.getLabel(), ErrorType.Missing));
+                        curState = expectedEdge.getNext();
+                    } else {
+
+                        Set<String> firstOfState = grammar.getFirstSets().get(expectedEdge.getLabel());
+                        if (!firstOfState.contains("epsilon") && grammar.getFollowSets().get(expectedEdge.getLabel()).contains(curToken.getToken())) {
+                            errors.add(new Error(curLine, expectedEdge.getLabel(), ErrorType.Missing));
+                            curState = expectedEdge.getNext();
+                        } else {
+                            errors.add(new Error(curLine, curState.getEdge().getLabel(), ErrorType.Unexpected));
+                            curToken = null;
+                        }
+                    }
+                }
+            }
+            if (curToken == null) {
+                curLine = nextLine;
             }
         }
         return null;
@@ -100,5 +129,9 @@ public class Parser {
             }
         }
         return null;
+    }
+
+    public LinkedList<Error> getErrors() {
+        return errors;
     }
 }
