@@ -73,10 +73,16 @@ public class Parser {
                 current.getChildren().add(child);
 
             } else {
-                if (curToken.getTokenType() == TokenType.EOF) {
+                if(curToken.getTokenType() == TokenType.EOF){
+                    curLine = curToken.getLine();
+                    if(curState.getEdge().getLabel() == "eof" ){
+                        errors.add(new Error(curLine,ErrorType.MalformedInput.toString(),ErrorType.MalformedInput));
+                    }else {
+                        errors.add(new Error(curLine, ErrorType.UnexpectedEndOfFile.toString(), ErrorType.UnexpectedEndOfFile));
+                    }
                     break;
-                    //todo
-                } else {
+                }
+                else {
                     Edge expectedEdge = curState.getEdge();
                     System.out.println(curState.getEdge().getLabel());
                     if (expectedEdge.isToken()) {
