@@ -32,7 +32,7 @@ public class Main {
     }
 
     public static void printError(LinkedList<Error> errors) {
-        for (int i = 0; i < errors.size(); i++) {
+        for (int i = 0; i < errors.size();) {
             int lineNumber = errors.get(i).getLine();
             LinkedList<Error> syntaxError = new LinkedList<>();
             LinkedList<Error> lexicalError = new LinkedList<>();
