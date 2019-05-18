@@ -20,7 +20,7 @@ public class Parser {
     private Node root;
     private LexicalAnalyzer lexicalAnalyzer;
     private LinkedList<Error> errors = new LinkedList<>();
-    private int curLine = 1;
+    private boolean completeParse = false;
 
     public Parser(Grammar grammar, LexicalAnalyzer lexicalAnalyzer) {
         this.grammar = grammar;
@@ -28,82 +28,49 @@ public class Parser {
         this.root = new Node("Program", null, false, 0);
     }
 
-    public Node parseTree() {
+    public void parseTree() {
         parse(root, grammar.getSubDiagrams().get("Program"), null);
+    }
+
+    public Node getRoot() {
         return root;
     }
 
     public Token parse(Node current, Diagram curDiagram, Token curToken) {
         State curState = curDiagram.getStart();
-        int nextLine = 1;
-        if (curToken != null)
-            nextLine = curToken.getLine();
-        while (true) {
-            if (curState.isFinal()) {
+        while (!completeParse) {
+            if (curState.isFinal())
                 return curToken;
-            }
-            if (curToken == null) {
-                try {
-                    while (true) {
-                        curToken = lexicalAnalyzer.getNextToken();
-                        nextLine = curToken.getLine();//TODO
-                        if (!(curToken.getTokenType() == TokenType.COMMENT || curToken.getTokenType() == TokenType.WHITESPACE)) {
-                            break;
-                        }
-                    }
-                } catch (IncompleteException | InvalidInputException e) {
-                    errors.add(new Error(e.getLine(), e.toString(), ErrorType.Lexical));
-                }
-            }
+            if (curToken == null)
+                curToken = getNextToken();
             Edge edge = nextStateChooser(curState.getEdges(), curToken, curDiagram.getName());
             if (edge != null) {
                 Node child = new Node(edge.getLabel(), current, edge.isToken(), current.getHeight() + 1);
-//                if (edge.getLabel().equals("id") || edge.getLabel().equals("num")) {
-//                    child.setLabel(curToken.getToken());
-//                }
+                if (edge.getLabel().equals("id") || edge.getLabel().equals("num")) {
+                    child.setLabel(curToken.getToken());
+                } // if wanting token name
+                curState = edge.getNext();
+                current.getChildren().add(child);
                 if (!edge.isToken()) {
                     Token next = parse(child, grammar.getSubDiagrams().get(edge.getLabel()), curToken);
                     curToken = next;
-                } else {
-                    if (!edge.getLabel().equals("epsilon")) {
-                        curToken = null;
-                    }
+                } else if (!edge.getLabel().equals("epsilon") ){
+                    curToken = null;
                 }
-                curState = edge.getNext();
-                current.getChildren().add(child);
-
             } else {
-                if(curToken.getTokenType() == TokenType.EOF){
-                    curLine = curToken.getLine();
-                    if(curState.getEdge().getLabel() == "eof" ){
-                        errors.add(new Error(curLine,ErrorType.MalformedInput.toString(),ErrorType.MalformedInput));
-                    }else {
-                        errors.add(new Error(curLine, ErrorType.UnexpectedEndOfFile.toString(), ErrorType.UnexpectedEndOfFile));
+                Edge expectedEdge = curState.getEdge();
+                State nextState = null;
+                try {
+                    nextState = errorHandling(expectedEdge, curToken);
+                    if (nextState == null) {
+                        curToken = null; // if stay in current state must get new token;
+                    } else {
+                        curState = nextState;
                     }
+                } catch (Exception e) {
+                    completeParse = true;
                     break;
                 }
-                else {
-                    Edge expectedEdge = curState.getEdge();
-                    System.out.println(curState.getEdge().getLabel());
-                    if (expectedEdge.isToken()) {
-
-                        errors.add(new Error(curLine, expectedEdge.getLabel(), ErrorType.Missing));
-                        curState = expectedEdge.getNext();
-                    } else {
-
-                        Set<String> firstOfState = grammar.getFirstSets().get(expectedEdge.getLabel());
-                        if (!firstOfState.contains("epsilon") && grammar.getFollowSets().get(expectedEdge.getLabel()).contains(curToken.getToken())) {
-                            errors.add(new Error(curLine, expectedEdge.getLabel(), ErrorType.Missing));
-                            curState = expectedEdge.getNext();
-                        } else {
-                            errors.add(new Error(curLine, curState.getEdge().getLabel(), ErrorType.Unexpected));
-                            curToken = null;
-                        }
-                    }
-                }
-            }
-            if (curToken == null) {
-                curLine = nextLine;
             }
         }
         return null;
@@ -135,6 +102,52 @@ public class Parser {
             }
         }
         return null;
+    }
+
+    public State errorHandling(Edge expectedEdge, Token curToken) throws Exception {
+        int curLine = curToken.getLine();
+        if (curToken.getTokenType() == TokenType.EOF) {
+            errors.add(new Error(curLine, ErrorType.UnexpectedEndOfFile.toString(), ErrorType.UnexpectedEndOfFile));
+            throw new Exception();
+        } else {
+
+            if (expectedEdge.isToken()) {
+                if (expectedEdge.getLabel() == "eof") {
+                    errors.add(new Error(curLine, expectedEdge.getLabel(), ErrorType.MalformedInput));// see doc
+                    throw new Exception();
+                } else {
+                    errors.add(new Error(curLine, expectedEdge.getLabel(), ErrorType.Missing));
+                    return expectedEdge.getNext();
+                }
+            } else {
+                Set<String> firstOfState = grammar.getFirstSets().get(expectedEdge.getLabel());
+                if (!firstOfState.contains("epsilon") && grammar.getFollowSets().get(expectedEdge.getLabel()).contains(curToken.getToken())) {
+                    errors.add(new Error(curLine, expectedEdge.getLabel(), ErrorType.Missing));
+                    return expectedEdge.getNext();
+                } else {
+                    errors.add(new Error(curLine, expectedEdge.getLabel(), ErrorType.Unexpected));//TODO description....
+                }
+            }
+        }
+        return null;
+
+    }
+
+    public Token getNextToken() {
+        Token token;
+        while (true) {
+            try {
+                token = lexicalAnalyzer.getNextToken();
+                if (!(token.getTokenType() == TokenType.COMMENT || token.getTokenType() == TokenType.WHITESPACE)) {
+                    break;
+                }
+
+            } catch (IncompleteException | InvalidInputException e) {
+                errors.add(new Error(e.getLine(), e.toString(), ErrorType.Lexical));
+            }
+        }
+        return token;
+
     }
 
     public LinkedList<Error> getErrors() {
