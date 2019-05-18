@@ -46,9 +46,9 @@ public class Parser {
             Edge edge = nextStateChooser(curState.getEdges(), curToken, curDiagram.getName());
             if (edge != null) {
                 Node child = new Node(edge.getLabel(), current, edge.isToken(), current.getHeight() + 1);
-                if (edge.getLabel().equals("id") || edge.getLabel().equals("num")) {
-                    child.setLabel(curToken.getToken());
-                } // if wanting token name
+//                if (edge.getLabel().equals("id") || edge.getLabel().equals("num")) {
+//                    child.setLabel(curToken.getToken());
+//                } // if wanting token name
                 curState = edge.getNext();
                 current.getChildren().add(child);
                 if (!edge.isToken()) {
@@ -112,7 +112,8 @@ public class Parser {
         } else {
 
             if (expectedEdge.isToken()) {
-                if (expectedEdge.getLabel() == "eof") {
+
+                if (expectedEdge.getLabel().equals("eof")) {
                     errors.add(new Error(curLine, expectedEdge.getLabel(), ErrorType.MalformedInput));// see doc
                     throw new Exception();
                 } else {
