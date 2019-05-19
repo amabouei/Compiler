@@ -1,7 +1,5 @@
 package parser.error;
 
-import java.util.Comparator;
-
 public class Error {
    private int line;
    private String str;
@@ -23,5 +21,13 @@ public class Error {
 
     public ErrorType getErrorType() {
         return errorType;
+    }
+
+    @Override
+    public String toString() {
+       String toString = str;
+       if (errorType != ErrorType.Lexical)
+           toString = "(" + errorType.toString() + " " + str + ")";
+       return toString;
     }
 }

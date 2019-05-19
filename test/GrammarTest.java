@@ -27,7 +27,7 @@ public class GrammarTest {
         for (String nonTerminal : firstSets.keySet()) {
             System.out.print("First(" + nonTerminal + ") = { ");
             for (String s : firstSets.get(nonTerminal)) {
-                System.out.print(s + "");
+                System.out.print(s + " ");
             }
             System.out.println("}\n");
         }

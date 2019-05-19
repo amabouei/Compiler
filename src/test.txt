@@ -1,7 +1,4 @@
-int b;
-int foo(int d,int e){
-	 a = 2;
-
-	 }
-
-	 a
+int main(void) {
+    int a;
+    a = 3 * ;
+}

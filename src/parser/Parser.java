@@ -54,7 +54,7 @@ public class Parser {
                 if (!edge.isToken()) {
                     Token next = parse(child, grammar.getSubDiagrams().get(edge.getLabel()), curToken);
                     curToken = next;
-                } else if (!edge.getLabel().equals("epsilon") ){
+                } else if (!edge.getLabel().equals("epsilon")) {
                     curToken = null;
                 }
             } else {
@@ -107,14 +107,14 @@ public class Parser {
     public State errorHandling(Edge expectedEdge, Token curToken) throws Exception {
         int curLine = curToken.getLine();
         if (curToken.getTokenType() == TokenType.EOF) {
-            errors.add(new Error(curLine, ErrorType.UnexpectedEndOfFile.toString(), ErrorType.UnexpectedEndOfFile));
+            errors.add(new Error(curLine, "", ErrorType.UnexpectedEndOfFile));
             throw new Exception();
         } else {
 
             if (expectedEdge.isToken()) {
 
                 if (expectedEdge.getLabel().equals("eof")) {
-                    errors.add(new Error(curLine, expectedEdge.getLabel(), ErrorType.MalformedInput));// see doc
+                    errors.add(new Error(curLine, "", ErrorType.MalformedInput));
                     throw new Exception();
                 } else {
                     errors.add(new Error(curLine, expectedEdge.getLabel(), ErrorType.Missing));
@@ -123,15 +123,21 @@ public class Parser {
             } else {
                 Set<String> firstOfState = grammar.getFirstSets().get(expectedEdge.getLabel());
                 if (!firstOfState.contains("epsilon") && grammar.getFollowSets().get(expectedEdge.getLabel()).contains(curToken.getToken())) {
-                    errors.add(new Error(curLine, expectedEdge.getLabel(), ErrorType.Missing));
+                    errors.add(new Error(curLine, getNonTerminalDesc(expectedEdge.getLabel(), curToken), ErrorType.Missing));
                     return expectedEdge.getNext();
                 } else {
-                    errors.add(new Error(curLine, expectedEdge.getLabel(), ErrorType.Unexpected));//TODO description....
+                    errors.add(new Error(curLine, curToken.getToken(), ErrorType.Unexpected));
                 }
             }
         }
         return null;
 
+    }
+
+    private String getNonTerminalDesc(String nonTerminalName, Token token) {
+        String description;
+        description = grammar.getFirstSets().get(nonTerminalName).toString() + ". Input " + token.getToken() + " is in the follow set of " + nonTerminalName + " but epsilon is not in its first set.";
+        return description;
     }
 
     public Token getNextToken() {
