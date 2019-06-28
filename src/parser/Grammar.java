@@ -1,6 +1,8 @@
 package parser;
 
 
+import semantic.SymbolTable;
+
 import javax.sound.midi.Soundbank;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -16,6 +18,8 @@ public class Grammar {
     private static final String followSetsFileAddress = Paths.get(System.getProperty("user.dir"),  "follow.txt").toString();
     private static final String firstSetsFileAddress = Paths.get(System.getProperty("user.dir"), "first.txt").toString();
     private static final String grammarFileAddress = Paths.get(System.getProperty("user.dir"), "LL(1) Grammar.txt").toString();
+    private static SymbolTable root = new SymbolTable();
+    private static Stack semanticStack = new Stack();
 
     public Grammar() {
         initSet(true);
@@ -103,7 +107,7 @@ public class Grammar {
             if (!subDiagrams.containsKey(curNonTerminal)) {
                 subDiagrams.put(curNonTerminal, new Diagram(curNonTerminal));
             }
-            subDiagrams.get(curNonTerminal).addRule(rule);
+            subDiagrams.get(curNonTerminal).addRule(rule, root, semanticStack);
         }
     }
 }
