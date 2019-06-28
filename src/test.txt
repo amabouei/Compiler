@@ -1,4 +1,21 @@
-int main(void) {
-    int a;
-    a = 3 * ;
+int a;
+
+void foo (int c)
+{
+	int d;
+	d = c + -2;
+	return d;
 }
+
+int func(int x ,int y ){
+    int k;
+}
+
+void main(void)
+{
+
+
+}
+
+
+

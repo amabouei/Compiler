@@ -23,7 +23,7 @@ public class LexicalOutputGenerator {
 
     private static void printTokens(LinkedList<Token> tokens) {
         try {
-            fileWriter = new FileWriter(Paths.get(System.getProperty("user.dir"), "lexical_outputs", "scanner.txt").toString());
+            fileWriter = new FileWriter(Paths.get(System.getProperty("user.dir"), "output_files", "scanner.txt").toString());
             int prevLine = 0;
             for (Token token : tokens) {
                 try {
@@ -42,7 +42,7 @@ public class LexicalOutputGenerator {
 
     private static void printErrors(LinkedList<LexicalException> errors) {
         try {
-            fileWriter = new FileWriter(Paths.get(System.getProperty("user.dir"), "lexical_outputs", "lexical_errors.txt").toString());
+            fileWriter = new FileWriter(Paths.get(System.getProperty("user.dir"), "output_files", "lexical_errors.txt").toString());
             int prevLine = 0;
             for (LexicalException error : errors) {
                 try {
