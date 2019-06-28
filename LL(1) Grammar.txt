@@ -7,7 +7,7 @@ Var_dec_index -> ;
 Var_dec_index -> [ num ] ;
 Var_dec_index -> Fun_declaration
 Type_specifier -> int
-Type_specifier -> void
+Type_specifier -> void $void
 Fun_declaration -> ( Params ) Compound_stmt
 Params -> void Param_name
 Params -> int id Param_index Param_loop
@@ -18,8 +18,8 @@ Param_loop -> , Param_list
 Param_loop -> epsilon
 Param -> Type_specifier id Param_index
 Param_index -> epsilon
-Param_index -> [  ]
-Compound_stmt -> { Declaration_list Statement_list }
+Param_index -> [ $notVoid ]
+Compound_stmt -> { $newScope Declaration_list Statement_list } $endOfScope
 Statement_list ->  Statement  Statement_list
 Statement_list -> epsilon
 Statement -> Expression_stmt
@@ -29,15 +29,15 @@ Statement -> Iteration_stmt
 Statement -> Return_stmt
 Statement -> Switch_stmt
 Expression_stmt -> Expression ;
-Expression_stmt -> continue ;
-Expression_stmt -> break ;
+Expression_stmt -> continue $continue ;
+Expression_stmt -> break $break ;
 Expression_stmt -> ;
 Selection_stmt -> if ( Expression ) Statement else Statement
-Iteration_stmt -> while ( Expression ) Statement
+Iteration_stmt -> while $newWhile ( Expression ) Statement $endOfWhile
 Return_stmt -> return Return_expression
 Return_expression -> ;
 Return_expression -> Expression ;
-Switch_stmt -> switch ( Expression ) { Case_stmts Default_stmt }
+Switch_stmt -> switch $newSwitchCase ( Expression ) { Case_stmts Default_stmt } $endOfSwitchCase
 Case_stmts -> Case_stmt Case_stmts
 Case_stmts -> epsilon
 Case_stmt -> case num : Statement_list
@@ -57,8 +57,8 @@ Expression_loop -> epsilon
 Relop -> <
 Relop -> ==
 Additive_expression -> Term Expression_addops
-Expression_addops -> Addop Term Expression_addops
-Expression_addops ->epsilon
+Expression_addops -> Addop Term $isNumeric Expression_addops
+Expression_addops -> epsilon
 Addop -> +
 Addop -> -
 Term -> Signed_Factor Expression_times
@@ -68,15 +68,15 @@ Signed_Factor -> Factor
 Signed_Factor -> + Factor
 Signed_Factor -> - Factor
 Factor -> ( Expression )
-Factor -> id Factor_args
-Factor -> num
-Factor_args -> ( Args )
+Factor -> id $checkIsNumeric Factor_args
+Factor -> num $num
+Factor_args -> $numberOfArgs ( Args )
 Factor_args -> Expression_index
 Call -> id ( Args )
 Args -> Arg_list
 Args -> epsilon
-Arg_list -> Expression Args_loop
-Args_loop -> , Expression Args_loop
+Arg_list -> Expression $arg Args_loop
+Args_loop -> , Expression $arg Args_loop
 Args_loop -> epsilon
 Simple_Expression -> Additive_expression_num Expression_loop
 Additive_expression_num -> Term_num Expression_addops
