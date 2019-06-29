@@ -21,10 +21,10 @@ public class Grammar {
     private static final String grammarFileAddress = Paths.get(System.getProperty("user.dir"), "LL(1) Grammar.txt").toString();
 
 
-    public Grammar(Semantic semantic) {
+    public Grammar() {
         initSet(true);
         initSet(false);
-        initDiagram(semantic);
+        initDiagram();
     }
 
     public HashMap<String, Set<String>> getFollowSets() {
@@ -85,7 +85,7 @@ public class Grammar {
         }
     }
 
-    public void initDiagram(Semantic semantic) {
+    public void initDiagram() {
         FileReader grammarFile = null;
         try {
             grammarFile = new FileReader(grammarFileAddress);
@@ -107,7 +107,7 @@ public class Grammar {
             if (!subDiagrams.containsKey(curNonTerminal)) {
                 subDiagrams.put(curNonTerminal, new Diagram(curNonTerminal));
             }
-            subDiagrams.get(curNonTerminal).addRule(rule, semantic);
+            subDiagrams.get(curNonTerminal).addRule(rule);
         }
     }
 }

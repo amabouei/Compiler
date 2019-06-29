@@ -1,6 +1,8 @@
 package parser;
 
+import icg.ICGTokenType;
 import semantic.Semantic;
+import semantic.SemanticTokenType;
 import semantic.SymbolTable;
 
 import java.util.ArrayList;
@@ -25,31 +27,40 @@ public class Diagram {
         return start;
     }
 
-    public void addRule(ArrayList<String> rule, Semantic semantic) {
+    public void addRule(ArrayList<String> rule) {
         State curState = start;
         for (int i = 0; i < rule.size(); i++) {
             String step = rule.get(i);
-            boolean isSemanticCheck = false, isICG = false;
+            SemanticTokenType semanticTokenType = null;
+            ICGTokenType icgTokenType = null;
             boolean isFinal = false;
-            String nextStep = null;
-            if (i == rule.size() - 1)
-                isFinal = true;
-            else { // checking the next word to see if it's semantic related
-                nextStep = rule.get(i + 1);
-                isSemanticCheck = nextStep.startsWith("$");
-                isICG = nextStep.startsWith("#");
+
+            if(i + 1 < rule.size()  && rule.get(i + 1).startsWith("$")) {
+                semanticTokenType = SemanticTokenType.getSemanticToken(rule.get(i + 1).replace("$",""));
+                i++;
+                if( i + 1 < rule.size() && rule.get(i + 1).startsWith("#") ){
+                    icgTokenType = ICGTokenType.getTokenByName(rule.get(i+1).replace("#",""));
+                    i++;
+                }
+            }else{
+                if(i + 1 < rule.size()  && rule.get(i + 1).startsWith("")){
+                    if( i + 1 < rule.size() && rule.get(i + 1).startsWith("#") ){
+                        icgTokenType = ICGTokenType.getTokenByName(rule.get(i+1).replace("#",""));
+                        i++;
+                    }
+                }
             }
 
+            if (i == rule.size() - 1)
+                isFinal = true;
+
             boolean isNonTerminal = step.charAt(0) <= 90 && step.charAt(0) >= 65;
+            System.out.println(semanticTokenType);
             Edge newEdge;
             if (!isFinal)
-                newEdge = new Edge(!isNonTerminal, step, new State());
+                newEdge = new Edge(!isNonTerminal, step, new State(),semanticTokenType,icgTokenType);
             else
-                newEdge = new Edge(!isNonTerminal, step, finalState);
-            if (isSemanticCheck || isICG) { // if the next word is semantic related
-                semantic.addSemanticRoutine(newEdge, step + nextStep, curToken);
-                i++;
-            }
+                newEdge = new Edge(!isNonTerminal, step, finalState,semanticTokenType,icgTokenType);
             curState.addEdge(newEdge);
             curState = newEdge.getNext();
         }

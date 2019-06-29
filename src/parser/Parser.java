@@ -1,6 +1,7 @@
 package parser;
 
 
+import icg.ICG;
 import lexical.LexicalAnalyzer;
 import lexical.Token;
 import lexical.TokenType;
@@ -18,16 +19,20 @@ import java.util.Set;
 public class Parser {
 
     private Grammar grammar;
-    private Semantic semantic = new Semantic();
+    private Semantic semantic;
+    private ICG icg;
     private Node root;
     private LexicalAnalyzer lexicalAnalyzer;
     private LinkedList<Error> errors = new LinkedList<>();
     private boolean completeParse = false;
 
-    public Parser(Grammar grammar, LexicalAnalyzer lexicalAnalyzer) {
+
+    public Parser(Grammar grammar, LexicalAnalyzer lexicalAnalyzer,Semantic semantic,ICG icg) {
         this.grammar = grammar;
         this.lexicalAnalyzer = lexicalAnalyzer;
         this.root = new Node("Program", null, false, 0);
+        this.semantic = semantic;
+        this.icg  = icg;
     }
 
     public void parseTree() {
