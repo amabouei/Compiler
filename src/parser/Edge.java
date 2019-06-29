@@ -118,27 +118,31 @@ public class Edge {
 
     // need to create a new var of type 'int' but with a null name
     private void newInt(SymbolTable curScope) {
-
+        curScope.defineNewVariable(new Symbol(SymbolType.INT));
     }
 
     private void addSwitch(SymbolTable curScope) {
-
+        curScope.defineNewVariable(new Symbol("switch", SymbolType.SWITCH));
     }
 
     private void addWhile(SymbolTable curScope) {
-
+        curScope.defineNewVariable(new Symbol("while", SymbolType.WHILE));
     }
 
     // must find a while in the current scope, or the father of the current scope
     private void findWhile(SymbolTable curScope) {
-
+        if (curScope.findInSelfOrParent("while") == null) {
+            // exception
+        }
     }
 
     // must find a 'while' or 'switch' in the current scope (just for while), or the father of the current scope to break out of
     private void findWhereToBreakOut(SymbolTable curScope) {
         Symbol toWhile = curScope.findInSelfOrParent("while");
         Symbol toSwitch = curScope.findInParent("switch");
-        // TODO: it's not correct
+        if (toSwitch == null && toWhile == null) {
+            // exception
+        }
     }
 
     // must move the curScope to be its father
@@ -169,8 +173,7 @@ public class Edge {
 
     // need to create a new var of type 'void' but with a null name
     private void newVoid(SymbolTable curScope) {
-        Symbol newVar = new Symbol(SymbolType.VOID);
-        curScope.defineNewVariable(newVar);
+        curScope.defineNewVariable(new Symbol(SymbolType.VOID));
     }
 
     // id must exist

@@ -1,6 +1,7 @@
 package parser;
 
 
+import semantic.Semantic;
 import semantic.SymbolTable;
 
 import javax.sound.midi.Soundbank;
@@ -18,13 +19,12 @@ public class Grammar {
     private static final String followSetsFileAddress = Paths.get(System.getProperty("user.dir"),  "follow.txt").toString();
     private static final String firstSetsFileAddress = Paths.get(System.getProperty("user.dir"), "first.txt").toString();
     private static final String grammarFileAddress = Paths.get(System.getProperty("user.dir"), "LL(1) Grammar.txt").toString();
-    private static SymbolTable root = new SymbolTable();
-    private static Stack semanticStack = new Stack();
 
-    public Grammar() {
+
+    public Grammar(Semantic semantic) {
         initSet(true);
         initSet(false);
-        initDiagram();
+        initDiagram(semantic);
     }
 
     public HashMap<String, Set<String>> getFollowSets() {
@@ -85,7 +85,7 @@ public class Grammar {
         }
     }
 
-    public void initDiagram() {
+    public void initDiagram(Semantic semantic) {
         FileReader grammarFile = null;
         try {
             grammarFile = new FileReader(grammarFileAddress);
@@ -107,7 +107,7 @@ public class Grammar {
             if (!subDiagrams.containsKey(curNonTerminal)) {
                 subDiagrams.put(curNonTerminal, new Diagram(curNonTerminal));
             }
-            subDiagrams.get(curNonTerminal).addRule(rule, root, semanticStack);
+            subDiagrams.get(curNonTerminal).addRule(rule, semantic);
         }
     }
 }

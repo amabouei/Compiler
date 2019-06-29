@@ -1,5 +1,6 @@
 package parser;
 
+import semantic.Semantic;
 import semantic.SymbolTable;
 
 import java.util.ArrayList;
@@ -24,7 +25,7 @@ public class Diagram {
         return start;
     }
 
-    public void addRule(ArrayList<String> rule, SymbolTable root, Stack semanticStack) {
+    public void addRule(ArrayList<String> rule, Semantic semantic) {
         State curState = start;
         for (int i = 0; i < rule.size(); i++) {
             String step = rule.get(i);
@@ -46,7 +47,7 @@ public class Diagram {
             else
                 newEdge = new Edge(!isNonTerminal, step, finalState);
             if (isSemanticCheck || isICG) { // if the next word is semantic related
-                newEdge.run(step + nextStep, root, semanticStack);
+                semantic.addSemanticRoutine(newEdge, step + nextStep, curToken);
                 i++;
             }
             curState.addEdge(newEdge);

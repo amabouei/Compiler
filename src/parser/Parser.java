@@ -9,6 +9,7 @@ import lexical.exception.InvalidInputException;
 import parser.error.Error;
 import parser.error.ErrorType;
 import parser.treeStructure.Node;
+import semantic.Semantic;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -17,6 +18,7 @@ import java.util.Set;
 public class Parser {
 
     private Grammar grammar;
+    private Semantic semantic = new Semantic();
     private Node root;
     private LexicalAnalyzer lexicalAnalyzer;
     private LinkedList<Error> errors = new LinkedList<>();
