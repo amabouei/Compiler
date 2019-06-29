@@ -7,10 +7,13 @@ import java.util.LinkedList;
 
 public class SymbolTable {
 
-    private SymbolTable parent;
+    private SymbolTable parent = null;
     private LinkedList<SymbolTable> children = new LinkedList<>();
 //    private HashMap<String ,Symbol> symbols; ///mohem nist !
     private LinkedList<Symbol> contents = new LinkedList<>();
+
+    public SymbolTable() {
+    }
 
     public SymbolTable(SymbolTable parent) {
         this.parent = parent;

@@ -9,6 +9,7 @@ public class Symbol {
     private String name = "";
     private LinkedList<Variable> attributes = new LinkedList<>();
     private SymbolType symbolType;
+    private int address;
 
     public Symbol(String name, LinkedList<Variable> attributes, SymbolType symbolType) {
         this.name = name;
@@ -16,8 +17,18 @@ public class Symbol {
         this.symbolType = symbolType;
     }
 
+    public Symbol(String name, SymbolType symbolType) {
+        this.name = name;
+        this.symbolType = symbolType;
+    }
+
     public Symbol(SymbolType type) {
         this.symbolType = type;
+    }
+
+    public Symbol(SymbolType type, int variableAddress) {
+        address = variableAddress;
+        symbolType = type;
     }
 
     public void addAttribute (LinkedList<Variable> attributes) {
