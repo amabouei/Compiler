@@ -30,10 +30,11 @@ public class Diagram {
             String step = rule.get(i);
             boolean isSemanticCheck = false, isICG = false;
             boolean isFinal = false;
+            String nextStep = null;
             if (i == rule.size() - 1)
                 isFinal = true;
             else { // checking the next word to see if it's semantic related
-                String nextStep = rule.get(i + 1);
+                nextStep = rule.get(i + 1);
                 isSemanticCheck = nextStep.startsWith("$");
                 isICG = nextStep.startsWith("#");
             }
@@ -45,7 +46,7 @@ public class Diagram {
             else
                 newEdge = new Edge(!isNonTerminal, step, finalState);
             if (isSemanticCheck || isICG) { // if the next word is semantic related
-                newEdge.run(step, root, semanticStack);
+                newEdge.run(step + nextStep, root, semanticStack);
                 i++;
             }
             curState.addEdge(newEdge);
