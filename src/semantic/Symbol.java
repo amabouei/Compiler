@@ -6,7 +6,7 @@ import java.util.LinkedList;
 
 public class Symbol {
 
-    private String name;
+    private String name = "";
     private LinkedList<Variable> attributes = new LinkedList<>();
     private SymbolType symbolType;
 
@@ -14,6 +14,10 @@ public class Symbol {
         this.name = name;
         this.attributes = attributes;
         this.symbolType = symbolType;
+    }
+
+    public Symbol(SymbolType type) {
+        this.symbolType = type;
     }
 
     public void addAttribute (LinkedList<Variable> attributes) {
@@ -35,5 +39,9 @@ public class Symbol {
 
     public SymbolType getSymbolType() {
         return symbolType;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }
