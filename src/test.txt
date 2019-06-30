@@ -1,2 +1,6 @@
-int while;
+int a ;
 
+int main(){
+
+    a = 23423 * +3;
+}

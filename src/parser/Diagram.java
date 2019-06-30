@@ -55,7 +55,6 @@ public class Diagram {
                 isFinal = true;
 
             boolean isNonTerminal = step.charAt(0) <= 90 && step.charAt(0) >= 65;
-            System.out.println(semanticTokenType);
             Edge newEdge;
             if (!isFinal)
                 newEdge = new Edge(!isNonTerminal, step, new State(),semanticTokenType,icgTokenType);

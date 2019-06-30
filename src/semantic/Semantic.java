@@ -44,7 +44,6 @@ public class Semantic {
             case CREATE_VAR:
                 createVar();
                 break;
-
             case PUSH:
                 push();
                 break;
@@ -54,18 +53,34 @@ public class Semantic {
             case CREATEFUNCTION:
                 createFunction();
                 break;
-//            case ASSIGN_NAME:
-//                assignName(varName);
-//                break;
-//            case FIND_ID:
-//                findID(varName);
-//                break;
             case VOID:
                 newVoid();
                 break;
             case DEFMAIN:
                 defMain();
                 break;
+            case SWITCH:
+                addSwitch();
+                break;
+            case NEW_SCOPE:
+                addSymbolTable();
+                break;
+            case END_OF_SCOPE:
+                endScope();
+                break;
+            case INT:
+                newInt();
+                break;
+            case WHILE:
+                addWhile();
+                break;
+//            case ASSIGN_NAME:
+//                assignName(varName);
+//                break;
+//            case FIND_ID:
+//                findID(varName);
+//                break;
+
 //            case IS_NUMERIC:
 //                isNumeric(varName);
 //                break;
@@ -77,27 +92,18 @@ public class Semantic {
 //            case NUMERIC:
 //                // is redundant
 //                break;
-            case NEW_SCOPE:
-                addSymbolTable();
-                break;
-            case END_OF_SCOPE:
-                endScope();
-                break;
+
 //            case BREAK:
 //                findWhereToBreakOut();
 //                break;
 //            case CONTINUE:
 //                findWhile();
 //                break;
-            case WHILE:
-                addWhile();
-                break;
+
 //            case END_OF_WHILE:
 //                // redundant
 //                break;
-            case SWITCH:
-                addSwitch();
-                break;
+
 //            case END_OF_SWITCH:
 //                // redundant
 //                break;
@@ -114,16 +120,16 @@ public class Semantic {
 //            case NUM:
 //                // redundant
 //                break;
-            case INT:
-                newInt();
-                break;
+
         }
     }
 
     private void createFunction(){
         String name = temporaryStack.pop();
         AttributeType attributeType = AttributeType.getTypeByName(temporaryStack.pop());
+
         SymbolTable newSymbolTable = new SymbolTable(curSymbolTable,name,SymbolTableType.FUNCTION);
+
         //jumper
         newSymbolTable.defineNewAttribute(new Attribute(name,addressGenerator.getVar(),AttributeType.INT));
         //return value
@@ -132,8 +138,13 @@ public class Semantic {
     }
 
     private void defMain(){
-        if(!curSymbolTable.hasFunction("main")) {
-            //TODO ....
+        SymbolTable main = curSymbolTable.getFunction("main");
+        if(main != null){
+            if(main.getContents().size() > 2 ){
+                //TODO ...
+            }
+        }else{
+            //TODO...
         }
     }
 
@@ -163,7 +174,6 @@ public class Semantic {
     }
 
     private void addSwitch() {
-
         SymbolTable newSymbolTable = new SymbolTable(curSymbolTable);
         newSymbolTable.defineNewAttribute(new Attribute("break",addressGenerator.getVar(),AttributeType.POINTER));
         addSymbolTable(newSymbolTable);
@@ -171,7 +181,6 @@ public class Semantic {
 
     private void addWhile() {
         SymbolTable newSymbolTable = new SymbolTable(curSymbolTable);
-        newSymbolTable.defineNewAttribute(new Attribute("continue",addressGenerator.getVar(),AttributeType.POINTER));
         newSymbolTable.defineNewAttribute(new Attribute("break",addressGenerator.getVar(),AttributeType.POINTER));
         addSymbolTable(newSymbolTable);
     }

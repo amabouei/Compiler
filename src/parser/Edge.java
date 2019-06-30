@@ -2,12 +2,6 @@ package parser;
 
 import icg.ICGTokenType;
 import semantic.SemanticTokenType;
-import semantic.Symbol;
-import semantic.SymbolTable;
-import semantic.SymbolType;
-
-import java.util.LinkedList;
-import java.util.Stack;
 
 public class Edge {
 
@@ -15,6 +9,9 @@ public class Edge {
     private String label;
     private State next;
     private SemanticTokenType semanticTokenType;
+
+
+
     private ICGTokenType icgTokenType;
 
     public Edge(boolean token, String label, State next) {
@@ -53,5 +50,9 @@ public class Edge {
 
     public SemanticTokenType getSemanticTokenType() {
         return semanticTokenType;
+    }
+
+    public ICGTokenType getIcgTokenType() {
+        return icgTokenType;
     }
 }

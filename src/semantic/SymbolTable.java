@@ -13,7 +13,7 @@ public class SymbolTable {
     private LinkedList<Attribute> contents = new LinkedList<>();
     private String name;
     private SymbolTableType symbolTableType;
-
+    private int startLine;
     public SymbolTable() {
 
     }
@@ -125,14 +125,17 @@ public class SymbolTable {
         return parent;
     }
 
-    public boolean hasFunction(String name){
 
+    public SymbolTable getFunction(String name){
         for (SymbolTable child : children) {
             if(child.getSymbolTableType() == SymbolTableType.FUNCTION && child.getName().equals(name)){
-                return true;
+                return child;
             }
         }
-        return false;
+        if(parent != null){
+            return parent.getFunction(name);
+        }
+        return null;
     }
 
     public String getName() {
@@ -141,5 +144,13 @@ public class SymbolTable {
 
     public SymbolTableType getSymbolTableType() {
         return symbolTableType;
+    }
+
+    public void setStartLine(int startLine) {
+        this.startLine = startLine;
+    }
+
+    public int getStartLine() {
+        return startLine;
     }
 }
