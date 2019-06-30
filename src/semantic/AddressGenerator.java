@@ -15,4 +15,10 @@ public class AddressGenerator {
         variableAddress += 4;
         return variableAddress - 4;
     }
+
+    public int getArray(int size){
+        int temp = variableAddress;
+        variableAddress += 4 * size;
+        return temp;
+    }
 }

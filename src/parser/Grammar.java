@@ -92,10 +92,6 @@ public class Grammar {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        if (grammarFile == null) {
-            System.out.println("Grammar File Not Found!");
-            return;
-        }
         Scanner scanner = new Scanner(grammarFile);
         String curLine;
         while (scanner.hasNext()) {

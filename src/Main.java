@@ -12,6 +12,7 @@ import semantic.SymbolTable;
 import java.io.FileNotFoundException;
 import java.io.RandomAccessFile;
 import java.nio.file.Paths;
+import java.util.Stack;
 
 public class Main {
 

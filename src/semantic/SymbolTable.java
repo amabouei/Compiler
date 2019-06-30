@@ -10,75 +10,136 @@ public class SymbolTable {
     private SymbolTable parent = null;
     private LinkedList<SymbolTable> children = new LinkedList<>();
 //    private HashMap<String ,Symbol> symbols; ///mohem nist !
-    private LinkedList<Symbol> contents = new LinkedList<>();
+    private LinkedList<Attribute> contents = new LinkedList<>();
+    private String name;
+    private SymbolTableType symbolTableType;
 
     public SymbolTable() {
+
     }
+
 
     public SymbolTable(SymbolTable parent) {
         this.parent = parent;
     }
 
-    public Symbol find(String symbolName) {
-        for (Symbol symbol : contents) {
-            if (symbol.getName().equals(symbolName))
-                return symbol;
+    public SymbolTable(SymbolTable parent, String name, SymbolTableType symbolTableType) {
+        this.parent = parent;
+        this.name = name;
+        this.symbolTableType = symbolTableType;
+    }
+
+
+//    public Symbol find(String symbolName) {
+//        for (Symbol symbol : contents) {
+//            if (symbol.getName().equals(symbolName))
+//                return symbol;
+//        }
+//        if (parent != null) {
+//            return parent.find(symbolName);
+//        } else return null; // TODO: needs to be replaced with appropriate exception
+//    }
+//
+//    public Symbol findInContents(String symbolName) {
+//        for (Symbol symbol : contents) {
+//            if (symbol.getName().equals(symbolName))
+//                return symbol;
+//        }
+//        return null;
+//    }
+//
+//    public Symbol findInSelfOrParent(String symbolName) {
+//        for (Symbol symbol : contents) {
+//            if (symbol.getName().equals(symbolName))
+//                return symbol;
+//        }
+//        if (parent != null) {
+//            return parent.findInContents(symbolName);
+//        }
+//        return null;
+//    }
+//
+//    public Symbol findInParent(String symbolName) {
+//        return parent.findInContents(symbolName);
+//    }
+
+
+    public Attribute findInSelfOrParent(String symbolName){
+        Attribute  output = null;
+        output = this.contains(symbolName);
+        if(output != null){
+            return output;
         }
-        if (parent != null) {
+        if(parent != null && parent.symbolTableType == SymbolTableType.FUNCTION) {
+            return parent.contains(symbolName);
+        }
+        return null;
+    }
+
+    public Attribute find(String symbolName){
+        Attribute  output = null;
+        output = this.contains(symbolName);
+        if(output != null){
+                return output;
+        }
+        if(parent != null) {
             return parent.find(symbolName);
-        } else return null; // TODO: needs to be replaced with appropriate exception
-    }
-
-    public Symbol findInContents(String symbolName) {
-        for (Symbol symbol : contents) {
-            if (symbol.getName().equals(symbolName))
-                return symbol;
         }
         return null;
     }
 
-    public Symbol findInSelfOrParent(String symbolName) {
-        for (Symbol symbol : contents) {
-            if (symbol.getName().equals(symbolName))
-                return symbol;
-        }
-        if (parent != null) {
-            return parent.findInContents(symbolName);
+    public Attribute contains (String symbolName) {
+        for (Attribute attribute : contents) {
+            if (attribute.getName().equals(symbolName))
+                return attribute;
         }
         return null;
     }
-
-    public Symbol findInParent(String symbolName) {
-        return parent.findInContents(symbolName);
-    }
-
-    public boolean contains (String syymbolName) {
-        for (Symbol symbol : contents) {
-            if (symbol.getName().equals(syymbolName))
-                return true;
-        }
-        return false;
-    }
-
+//
     public void defineNewScope (SymbolTable newScope) {
         children.add(newScope);
     }
+//
+//    public void defineNewVariable (Symbol symbol) {
+//        if (this.contains(symbol.getName()))
+//            return; // TODO: must throw an exception
+//        contents.add(symbol);
+//    }
 
-    public void defineNewVariable (Symbol symbol) {
-        if (this.contains(symbol.getName()))
-            return; // TODO: must throw an exception
-        contents.add(symbol);
+    public void defineNewAttribute(Attribute attribute){
+        if(this.contains(attribute.getName()) != null){
+            return;
+        }
+        contents.add(attribute);
     }
 
     public LinkedList<SymbolTable> getChildren() {
         return children;
     }
 
-    public LinkedList<Symbol> getContents() {
+    public LinkedList<Attribute> getContents() {
         return contents;
     }
 
     public SymbolTable getParent() {
         return parent;
+    }
+
+    public boolean hasFunction(String name){
+
+        for (SymbolTable child : children) {
+            if(child.getSymbolTableType() == SymbolTableType.FUNCTION && child.getName().equals(name)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public SymbolTableType getSymbolTableType() {
+        return symbolTableType;
     }
 }

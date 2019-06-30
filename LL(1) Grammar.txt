@@ -1,24 +1,24 @@
-Program -> Declaration_list eof
+Program -> Declaration_list $defMain eof
 Declaration_list -> Declaration Declaration_list
 Declaration_list -> epsilon
 Declaration -> Var_declaration
-Var_declaration -> Type_specifier $createVar id $assignName Var_dec_index
-Var_dec_index -> ;
-Var_dec_index -> [ $notVoid num ] ;
-Var_dec_index -> $returnValue Fun_declaration
+Var_declaration -> Type_specifier $createVar id  Var_dec_index
+Var_dec_index -> ; $initial_Var
+Var_dec_index -> [ $notVoid num ] $initialArray;
+Var_dec_index ->  Fun_declaration
 Type_specifier -> int $int
 Type_specifier -> void $void
-Fun_declaration -> ( Params $returnValue ) Compound_stmt
-Params -> void $void$createVar Param_name
-Params -> int $int$createVar id $assignName Param_index Param_loop
-Param_name -> id $assignName Param_index Param_loop
-Param_name -> epsilon
+Fun_declaration -> ( $createFunction Params  ) Compound_stmt
+Params -> void $void Param_name $push
+Params -> int $int_createVar id  Param_index Param_loop
+Param_name -> id Param_index Param_loop
+Param_name -> epsilon $pop2
 Param_list ->  Param Param_loop
 Param_loop -> , Param_list
 Param_loop -> epsilon
-Param -> Type_specifier id $assignName Param_index
-Param_index -> epsilon
-Param_index -> [ $notVoid ]
+Param -> Type_specifier id  Param_index
+Param_index -> epsilon $initial_Var
+Param_index -> [ $notVoid ] $initialPointer
 Compound_stmt -> { $newScope Declaration_list Statement_list } $endOfScope
 Statement_list ->  Statement Statement_list
 Statement_list -> epsilon
