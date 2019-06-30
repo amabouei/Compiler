@@ -1,5 +1,5 @@
 package semantic;
 
 public enum SymbolTableType {
-    FUNCTION,IF,WHILE
+    FUNCTION,IF,WHILE,SWITCH,BLOCK
 }

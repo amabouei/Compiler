@@ -95,16 +95,10 @@ public class SymbolTable {
         }
         return null;
     }
-//
+
     public void defineNewScope (SymbolTable newScope) {
         children.add(newScope);
     }
-//
-//    public void defineNewVariable (Symbol symbol) {
-//        if (this.contains(symbol.getName()))
-//            return; // TODO: must throw an exception
-//        contents.add(symbol);
-//    }
 
     public void defineNewAttribute(Attribute attribute){
         if(this.contains(attribute.getName()) != null){
@@ -152,5 +146,29 @@ public class SymbolTable {
 
     public int getStartLine() {
         return startLine;
+    }
+
+    public boolean isExistAppropriateBlockForBreak(){
+
+        if(symbolTableType.equals(SymbolTableType.WHILE) || symbolTableType.equals(symbolTableType.SWITCH)){
+            return true;
+        }else{
+            if(parent != null && parent.symbolTableType != SymbolTableType.FUNCTION){
+                return parent.isExistAppropriateBlockForBreak();
+            }
+        }
+        return false;
+    }
+
+    public boolean isExistAppropriateBlockForContinue(){
+
+        if(symbolTableType.equals(SymbolTableType.WHILE)){
+            return true;
+        }else{
+            if(parent != null && parent.symbolTableType != SymbolTableType.FUNCTION){
+                return parent.isExistAppropriateBlockForContinue();
+            }
+        }
+        return false;
     }
 }

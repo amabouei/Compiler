@@ -74,6 +74,13 @@ public class Semantic {
             case WHILE:
                 addWhile();
                 break;
+            case BREAK:
+                breakRoutine();
+                break;
+            case CONTINUE:
+                continueRoutine();
+                break;
+
 //            case ASSIGN_NAME:
 //                assignName(varName);
 //                break;
@@ -242,6 +249,23 @@ public class Semantic {
         }
         temporaryStack.push(name);
     }
+
+
+    public void breakRoutine(){
+        if (!curSymbolTable.isExistAppropriateBlockForBreak()) {
+            //Todo
+        }
+    }
+
+
+    public void continueRoutine(){
+        if(!curSymbolTable.isExistAppropriateBlockForContinue()){
+            //Todo
+        }
+    }
+
+
+
 
 
 //
