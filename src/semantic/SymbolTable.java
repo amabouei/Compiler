@@ -150,7 +150,7 @@ public class SymbolTable {
 
     public boolean isExistAppropriateBlockForBreak(){
 
-        if(symbolTableType.equals(SymbolTableType.WHILE) || symbolTableType.equals(symbolTableType.SWITCH)){
+        if(symbolTableType.equals(SymbolTableType.WHILE) || symbolTableType.equals(SymbolTableType.SWITCH)){
             return true;
         }else{
             if(parent != null && parent.symbolTableType != SymbolTableType.FUNCTION){

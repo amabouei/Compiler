@@ -9,9 +9,6 @@ public class Edge {
     private String label;
     private State next;
     private SemanticTokenType semanticTokenType;
-
-
-
     private ICGTokenType icgTokenType;
 
     public Edge(boolean token, String label, State next) {

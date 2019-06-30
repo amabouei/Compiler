@@ -24,10 +24,10 @@ public class Main {
         }
         lexicalAnalyzer.setFile(codeInput);
         SymbolTable root = new SymbolTable();
-        AddressGenerator addressGenerator  = new AddressGenerator();
+        AddressGenerator addressGenerator = new AddressGenerator();
         ICG icg = new ICG(addressGenerator);
-        Semantic semantic = new Semantic(root,addressGenerator);
-        Parser parser = new Parser(new Grammar(), lexicalAnalyzer,semantic,icg);
+        Semantic semantic = new Semantic(root, addressGenerator);
+        Parser parser = new Parser(new Grammar(), lexicalAnalyzer, semantic, icg);
         parser.parseTree();
         OutputGenerator.writeFiles(parser.getRoot(), parser.getErrors());
     }

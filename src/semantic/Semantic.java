@@ -17,6 +17,7 @@ public class Semantic {
 
     private Stack<String> temporaryStack = new Stack<>();
     private Token curToken;
+
     public Semantic(SymbolTable curSymbolTable, AddressGenerator addressGenerator) {
         this.curSymbolTable = curSymbolTable;
         this.addressGenerator = addressGenerator;
@@ -114,16 +115,19 @@ public class Semantic {
 //            case END_OF_SWITCH:
 //                // redundant
 //                break;
-//            case BEGIN_ARGS:
-//                // must somehow count the number of args, between $beginArgs and $endOfArgs. Each $arg must increment the number of args
-//                createTempCounter();
-//                break;
-//            case END_ARGS:
-//                checkTempCounterValue();
-//                break;
-//            case ARG:
-//                decrementTempCounter();
-//                break;
+            case BEGIN_ARGS:
+                // must somehow count the number of args, between $beginArgs and $endOfArgs. Each $arg must increment the number of args
+                createTempCounter();
+                break;
+            case END_ARGS:
+                checkTempCounterValue();
+                break;
+            case ARG:
+                decrementTempCounter();
+                break;
+            case ID_IS_NUMERIC:
+                checkIDIsNumeric();
+                break;
 //            case NUM:
 //                // redundant
 //                break;
@@ -131,41 +135,52 @@ public class Semantic {
         }
     }
 
-    private void createFunction(){
+    private void checkIDIsNumeric() {
+        String name = curToken.getToken();
+        Attribute var = curSymbolTable.find(name);
+        if (var == null) {
+            // TODO: variable not defined exception
+        }
+        if (!var.getAttributeType().equals(AttributeType.INT)) {
+            // TODO: variable is not numeric exception
+        }
+    }
+
+    private void createFunction() {
         String name = temporaryStack.pop();
         AttributeType attributeType = AttributeType.getTypeByName(temporaryStack.pop());
 
-        SymbolTable newSymbolTable = new SymbolTable(curSymbolTable,name,SymbolTableType.FUNCTION);
+        SymbolTable newSymbolTable = new SymbolTable(curSymbolTable, name, SymbolTableType.FUNCTION);
 
         //jumper
-        newSymbolTable.defineNewAttribute(new Attribute(name,addressGenerator.getVar(),AttributeType.INT));
+        newSymbolTable.defineNewAttribute(new Attribute(name, addressGenerator.getVar(), AttributeType.INT));
         //return value
-        newSymbolTable.defineNewAttribute(new Attribute(name,addressGenerator.getVar(),attributeType));
+        newSymbolTable.defineNewAttribute(new Attribute(name, addressGenerator.getVar(), attributeType));
         curSymbolTable = newSymbolTable;
     }
 
-    private void defMain(){
+    private void defMain() {
         SymbolTable main = curSymbolTable.getFunction("main");
-        if(main != null){
-            if(main.getContents().size() > 2 ){
+        if (main != null) {
+            if (main.getContents().size() > 2) {
                 //TODO ...
             }
-        }else{
+        } else {
             //TODO...
         }
     }
 
-    private void doublePop(){
+    private void doublePop() {
         temporaryStack.pop();
         temporaryStack.pop();
     }
 
-    private void push(){
+    private void push() {
         temporaryStack.push(curToken.getToken());
     }
 
     private void endScope() {
-        if(curSymbolTable.getParent() != null) {
+        if (curSymbolTable.getParent() != null) {
             curSymbolTable = curSymbolTable.getParent();
         }
     }
@@ -175,38 +190,39 @@ public class Semantic {
         curSymbolTable.defineNewScope(newScope);
         curSymbolTable = newScope;
     }
-    private void addSymbolTable(SymbolTable newScope){
+
+    private void addSymbolTable(SymbolTable newScope) {
         curSymbolTable.defineNewScope(newScope);
         curSymbolTable = newScope;
     }
 
     private void addSwitch() {
         SymbolTable newSymbolTable = new SymbolTable(curSymbolTable);
-        newSymbolTable.defineNewAttribute(new Attribute("break",addressGenerator.getVar(),AttributeType.POINTER));
+        newSymbolTable.defineNewAttribute(new Attribute("break", addressGenerator.getVar(), AttributeType.POINTER));
         addSymbolTable(newSymbolTable);
     }
 
     private void addWhile() {
         SymbolTable newSymbolTable = new SymbolTable(curSymbolTable);
-        newSymbolTable.defineNewAttribute(new Attribute("break",addressGenerator.getVar(),AttributeType.POINTER));
+        newSymbolTable.defineNewAttribute(new Attribute("break", addressGenerator.getVar(), AttributeType.POINTER));
         addSymbolTable(newSymbolTable);
     }
 
 
     private void notVoid() {
-        String temp = temporaryStack.get(temporaryStack.size()-2);
-        if(temp.equals("void")){
+        String temp = temporaryStack.get(temporaryStack.size() - 2);
+        if (temp.equals("void")) {
             //TODO temp = null and push
-        }else{
+        } else {
             temporaryStack.push(curToken.getToken());
         }
     }
 
-    private void initialVar(){
+    private void initialVar() {
         String name = temporaryStack.pop();
         AttributeType attributeType = AttributeType.getTypeByName(temporaryStack.pop());
-        if(attributeType != null){
-            curSymbolTable.defineNewAttribute(new Attribute(name,addressGenerator.getVar(),attributeType));
+        if (attributeType != null) {
+            curSymbolTable.defineNewAttribute(new Attribute(name, addressGenerator.getVar(), attributeType));
         }
     }
 
@@ -220,13 +236,13 @@ public class Semantic {
         temporaryStack.push("void");
     }
 
-    public  void initialArray(){
+    public void initialArray() {
         int size = Integer.parseInt(temporaryStack.pop());
         //TODO exception for a[3.4] isn't important
         String name = temporaryStack.pop();
         AttributeType attributeType = AttributeType.getTypeByName(temporaryStack.pop());
-        if(attributeType == AttributeType.INT){
-            curSymbolTable.defineNewAttribute(new Attribute(name,addressGenerator.getArray(size),AttributeType.INT));
+        if (attributeType == AttributeType.INT) {
+            curSymbolTable.defineNewAttribute(new Attribute(name, addressGenerator.getArray(size), AttributeType.INT));
         }
     }
 
@@ -241,7 +257,7 @@ public class Semantic {
 
     private void createVar() {
         String name = curToken.getToken();
-        if(curSymbolTable.findInSelfOrParent(name) != null){
+        if (curSymbolTable.findInSelfOrParent(name) != null) {
             // TODO: 6/30/19 handle error
 
             temporaryStack.push(null);
@@ -264,28 +280,32 @@ public class Semantic {
         }
     }
 
+    private void checkTempCounterValue() {
+        int counter = Integer.parseInt(temporaryStack.get(temporaryStack.size() - 1));
+        temporaryStack.pop();
+        if (counter != 0) {
+            // TODO: error
+        }
+    }
 
+    private void decrementTempCounter() {
+        int counter = Integer.parseInt(temporaryStack.get(temporaryStack.size() - 1));
+        temporaryStack.pop();
+        temporaryStack.push(String.valueOf(counter - 1));
+    }
 
-
-
-//
-//    private void checkTempCounterValue() {
-//
-//    }
-//
-//    private void decrementTempCounter() {
-//
-//    }
-//
-//    private void createTempCounter() {
-//    }
+    private void createTempCounter() {
+        SymbolTable func = curSymbolTable.getFunction(temporaryStack.get(temporaryStack.size() - 2));
+        int numOfParameters = func.getContents().size() - 2; // shouldn't count return address and return value
+        temporaryStack.push(String.valueOf(numOfParameters));
+    }
 //
 //    // need to create a new var of type 'int' but with a null name
 
 //
 //    
 //
-   
+
 //
 //    // must find a while in the current scope, or the father of the current scope
 //    private void findWhile() {
@@ -339,7 +359,6 @@ public class Semantic {
 //
 //    // must find and change the latest var that has a type specified but the name is null.
 //    // REDUNDANT considering newInt, newVoid
-
 
 
 //

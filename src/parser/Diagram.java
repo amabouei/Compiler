@@ -35,17 +35,17 @@ public class Diagram {
             ICGTokenType icgTokenType = null;
             boolean isFinal = false;
 
-            if(i + 1 < rule.size()  && rule.get(i + 1).startsWith("$")) {
-                semanticTokenType = SemanticTokenType.getSemanticToken(rule.get(i + 1).replace("$",""));
+            if (i + 1 < rule.size() && rule.get(i + 1).startsWith("$")) {
+                semanticTokenType = SemanticTokenType.getSemanticToken(rule.get(i + 1).replace("$", ""));
                 i++;
-                if( i + 1 < rule.size() && rule.get(i + 1).startsWith("#") ){
-                    icgTokenType = ICGTokenType.getTokenByName(rule.get(i+1).replace("#",""));
+                if (i + 1 < rule.size() && rule.get(i + 1).startsWith("#")) {
+                    icgTokenType = ICGTokenType.getTokenByName(rule.get(i + 1).replace("#", ""));
                     i++;
                 }
-            }else{
-                if(i + 1 < rule.size()  && rule.get(i + 1).startsWith("")){
-                    if( i + 1 < rule.size() && rule.get(i + 1).startsWith("#") ){
-                        icgTokenType = ICGTokenType.getTokenByName(rule.get(i+1).replace("#",""));
+            } else {
+                if (i + 1 < rule.size() && rule.get(i + 1).startsWith("")) {
+                    if (i + 1 < rule.size() && rule.get(i + 1).startsWith("#")) {
+                        icgTokenType = ICGTokenType.getTokenByName(rule.get(i + 1).replace("#", ""));
                         i++;
                     }
                 }
@@ -57,9 +57,9 @@ public class Diagram {
             boolean isNonTerminal = step.charAt(0) <= 90 && step.charAt(0) >= 65;
             Edge newEdge;
             if (!isFinal)
-                newEdge = new Edge(!isNonTerminal, step, new State(),semanticTokenType,icgTokenType);
+                newEdge = new Edge(!isNonTerminal, step, new State(), semanticTokenType, icgTokenType);
             else
-                newEdge = new Edge(!isNonTerminal, step, finalState,semanticTokenType,icgTokenType);
+                newEdge = new Edge(!isNonTerminal, step, finalState, semanticTokenType, icgTokenType);
             curState.addEdge(newEdge);
             curState = newEdge.getNext();
         }

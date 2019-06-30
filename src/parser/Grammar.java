@@ -16,7 +16,7 @@ public class Grammar {
     private HashMap<String, Set<String>> firstSets = new HashMap<>();
     private HashMap<String, Diagram> subDiagrams = new HashMap<>();
 
-    private static final String followSetsFileAddress = Paths.get(System.getProperty("user.dir"),  "follow.txt").toString();
+    private static final String followSetsFileAddress = Paths.get(System.getProperty("user.dir"), "follow.txt").toString();
     private static final String firstSetsFileAddress = Paths.get(System.getProperty("user.dir"), "first.txt").toString();
     private static final String grammarFileAddress = Paths.get(System.getProperty("user.dir"), "LL(1) Grammar.txt").toString();
 
@@ -72,8 +72,7 @@ public class Grammar {
             if (followSetFile) {
                 Set<String> curFollowSet = new HashSet<>(modified);
                 followSets.put(curNonTerminal, curFollowSet);
-            }
-            else {
+            } else {
                 Set<String> curFirstSet = new HashSet<>(modified);
                 firstSets.put(curNonTerminal, curFirstSet);
             }

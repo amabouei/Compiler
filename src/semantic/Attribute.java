@@ -32,4 +32,8 @@ public class Attribute {
     public void setValue(int value) {
         this.value = value;
     }
+
+    public AttributeType getAttributeType() {
+        return attributeType;
+    }
 }

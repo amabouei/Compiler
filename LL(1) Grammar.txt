@@ -8,7 +8,7 @@ Var_dec_index -> [ $notVoid num ] $initialArray;
 Var_dec_index ->  Fun_declaration
 Type_specifier -> int $int
 Type_specifier -> void $void
-Fun_declaration -> ( $createFunction Params  ) Compound_stmt
+Fun_declaration -> ( $createFunction Params ) Compound_stmt
 Params -> void $void Param_name $push
 Params -> int $int_createVar id  Param_index Param_loop
 Param_name -> id Param_index Param_loop
@@ -43,9 +43,9 @@ Case_stmts -> epsilon
 Case_stmt -> case num : Statement_list
 Default_stmt -> default : Statement_list
 Default_stmt -> epsilon
-Expression -> id $findID Expression_args
+Expression -> id Expression_args
 Expression -> Simple_Expression
-Expression_args -> Expression_index Expression_relations
+Expression_args -> $findVar Expression_index Expression_relations
 Expression_args -> ( Args ) Expression_times Expression_addops Expression_loop
 Expression_relations -> = Expression
 Expression_relations -> Expression_times Expression_addops Expression_loop
@@ -67,10 +67,10 @@ Signed_Factor -> Factor
 Signed_Factor -> + Factor
 Signed_Factor -> - Factor 
 Factor -> ( Expression )
-Factor -> id $findID$idIsNumeric Factor_args
+Factor -> id Factor_args
 Factor -> num $num
 Factor_args -> $beginArgs ( Args $endArgs )
-Factor_args -> Expression_index
+Factor_args -> $idIsNumeric Expression_index
 Args -> Arg_list
 Args -> epsilon
 Arg_list -> Expression $arg Args_loop

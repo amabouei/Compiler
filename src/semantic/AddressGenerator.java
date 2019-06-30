@@ -6,7 +6,6 @@ public class AddressGenerator {
     private int tempAddress = 1000;
 
     public int getTemp(){
-
         tempAddress += 4;
         return tempAddress - 4;
     }
