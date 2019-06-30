@@ -3,10 +3,11 @@ package semantic;
 import icg.ICG;
 import lexical.Token;
 import parser.Edge;
-import parser.error.Error;
 
 import java.util.LinkedList;
 import java.util.Stack;
+import semantic.error.ErrorType;
+import semantic.error.Error;
 
 public class Semantic {
 
@@ -167,6 +168,7 @@ public class Semantic {
             }
         } else {
             //TODO...
+            errors.addFirst(new Error(ErrorType.MAIN_NOT_FOUND));
         }
     }
 
@@ -212,6 +214,7 @@ public class Semantic {
     private void notVoid() {
         String temp = temporaryStack.get(temporaryStack.size() - 2);
         if (temp.equals("void")) {
+            errors.add(new Error(curToken.getLine(), ErrorType.ILLEGAL_TYPE_OF_VOID));
             //TODO temp = null and push
         } else {
             temporaryStack.push(curToken.getToken());
@@ -269,14 +272,14 @@ public class Semantic {
 
     public void breakRoutine(){
         if (!curSymbolTable.isExistAppropriateBlockForBreak()) {
-            //Todo
+            errors.add(new Error(curToken.getLine(), ErrorType.NO_WHILE_OR_SWITCH_FOR_BREAK));
         }
     }
 
 
     public void continueRoutine(){
         if(!curSymbolTable.isExistAppropriateBlockForContinue()){
-            //Todo
+            errors.add(new Error(curToken.getLine(), ErrorType.NO_WHILE_FOR_CONTINUE));
         }
     }
 
@@ -284,7 +287,7 @@ public class Semantic {
         int counter = Integer.parseInt(temporaryStack.get(temporaryStack.size() - 1));
         temporaryStack.pop();
         if (counter != 0) {
-            // TODO: error
+            errors.add(new Error(curToken.getLine(), ErrorType.MISMATCHED_NUMBER_OF_ARGUMENTS));
         }
     }
 
