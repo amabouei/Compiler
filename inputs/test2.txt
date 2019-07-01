@@ -3,7 +3,7 @@ int f(int a, int b) {
 }
 
 void main(void) {
-    a = 2;
     int b;
+    b  = 3;
     b = f(4);
 }

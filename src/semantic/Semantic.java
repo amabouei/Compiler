@@ -298,7 +298,7 @@ public class Semantic {
     private void checkTempCounterValue() {
         String str = temporaryStack.pop();
         if (!str.equals("Func not found") && Integer.parseInt(str) != 0) {
-            errors.add(new Error(curToken.getLine(), ErrorType.MISMATCHED_NUMBER_OF_ARGUMENTS));
+            errors.add(new Error(curToken.getLine(), ErrorType.MISMATCHED_NUMBER_OF_ARGUMENTS,temporaryStack.pop()));
         }
     }
 
@@ -313,7 +313,7 @@ public class Semantic {
     private void createTempCounter() {
 
         ///handle function name....
-        String name = temporaryStack.pop();
+        String name = temporaryStack.peek();
 //        SymbolTable func = curSymbolTable.getFunction(temporaryStack.get(temporaryStack.size() - 1));
         SymbolTable func = curSymbolTable.getFunction(name);
         String toPush;
