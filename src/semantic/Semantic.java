@@ -122,8 +122,9 @@ public class Semantic {
 
 
     private void findVar(){
-        if(curSymbolTable.find(temporaryStack.peek())  == null){
-            errors.add(new Error(curToken.getLine(),ErrorType.ID_NOT_DEFINED,temporaryStack.pop()));
+        String str = temporaryStack.pop();
+        if(curSymbolTable.find(str)  == null){
+            errors.add(new Error(curToken.getLine(),ErrorType.ID_NOT_DEFINED,str));
         }
     }
     private void back(){
@@ -303,6 +304,7 @@ public class Semantic {
         for (String s : temporaryStack) {
             System.out.println(s);
         }
+        System.out.println("--------");
         String str = temporaryStack.pop();
         if (!str.equals("Func not found") && Integer.parseInt(str) != 0) {
             errors.add(new Error(curToken.getLine(), ErrorType.MISMATCHED_NUMBER_OF_ARGUMENTS, temporaryStack.pop()));
@@ -310,6 +312,10 @@ public class Semantic {
     }
 
     private void decrementTempCounter() {
+        for (String s : temporaryStack) {
+            System.out.println(s);
+        }
+        System.out.println("--------");
         String str = temporaryStack.pop();
         if (!str.equals("Func not found"))
             temporaryStack.push(String.valueOf(Integer.parseInt(str) - 1));
@@ -318,7 +324,10 @@ public class Semantic {
     }
 
     private void createTempCounter() {
-
+        for (String s : temporaryStack) {
+            System.out.println(s);
+        }
+        System.out.println("--------");
         ///handle function name....
         String name = temporaryStack.peek();
 //        SymbolTable func = curSymbolTable.getFunction(temporaryStack.get(temporaryStack.size() - 1));

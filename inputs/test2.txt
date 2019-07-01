@@ -1,18 +1,12 @@
-int a;
-void f(int a, int b) {
-  a = 1;
+int b;
+int foo(int d,int e){
+ int f;
+ void foo2(int k[]){
+   return k[0]  + k[1];
+ }
+ int fff[2];
+ fff[0] = d;
+ fff[1] = d+1;
+ f = foo2(fff);
 }
-
-void main(void) {
-int a;
-    int z(void){
-    }
-    z();
-    int x(int b , int c){
-
-    }
-}
-
-
-
 
