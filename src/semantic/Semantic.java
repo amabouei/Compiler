@@ -114,10 +114,18 @@ public class Semantic {
             case BACK:
                 back();
                 break;
+            case FINDVAR:
+                findVar();
+                break;
         }
     }
 
 
+    private void findVar(){
+        if(curSymbolTable.find(temporaryStack.peek())  == null){
+            errors.add(new Error(curToken.getLine(),ErrorType.ID_NOT_DEFINED,temporaryStack.pop()));
+        }
+    }
     private void back(){
         curSymbolTable = curSymbolTable.getParent();
     }
@@ -305,11 +313,15 @@ public class Semantic {
         String name = temporaryStack.pop();
 //        SymbolTable func = curSymbolTable.getFunction(temporaryStack.get(temporaryStack.size() - 1));
         SymbolTable func = curSymbolTable.getFunction(name);
-        if (func.getContents().get(1).getAttributeType() == AttributeType.VOID) {
-            tempForExpression = false;
+        if(func != null) {
+            if (func.getContents().get(1).getAttributeType() == AttributeType.VOID) {
+                tempForExpression = false;
+            }
+            int numOfParameters = func.getContents().size() - 2; // shouldn't count return address and return value
+            temporaryStack.push(String.valueOf(numOfParameters));
+        }else{
+            errors.add(new Error(curToken.getLine(),ErrorType.ID_NOT_DEFINED));
         }
-        int numOfParameters = func.getContents().size() - 2; // shouldn't count return address and return value
-        temporaryStack.push(String.valueOf(numOfParameters));
     }
 
     public LinkedList<Error> getErrors() {

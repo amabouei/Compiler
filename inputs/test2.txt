@@ -1,7 +1,11 @@
-int a;
-void main(void ){
 
+int main(void) {
+
+}
+void main(void ){
 }
 int func(void ){
     a = 2;
+
+    z();
 }
