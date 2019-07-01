@@ -39,7 +39,7 @@ public class Error {
             case NO_WHILE_OR_SWITCH_FOR_BREAK:
                 toString += "No 'while' or 'switch' found for 'break'";
                 break;
-            case TYPE_MISSMATCH:
+            case TYPE_MISMATCH:
                 toString += "Type mismatch in operands";
                 break;
                 default:

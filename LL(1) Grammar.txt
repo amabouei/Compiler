@@ -82,5 +82,5 @@ Term_num -> Signed_Factor_num Expression_times
 Signed_Factor_num -> Factor_num
 Signed_Factor_num -> + Factor
 Signed_Factor_num -> - Factor
-Factor_num -> ( #expressionreset Expression expressionIsNumeric )
+Factor_num -> ( $expressionReset Expression $expressionIsNumeric )
 Factor_num -> num
