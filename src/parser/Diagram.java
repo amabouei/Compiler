@@ -68,7 +68,6 @@ public class Diagram {
 
             if (i == size - 1)
                 isFinal = true;
-
             boolean isNonTerminal = step.charAt(0) <= 90 && step.charAt(0) >= 65;
             Edge newEdge;
             if (!isFinal)

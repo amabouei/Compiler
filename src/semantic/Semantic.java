@@ -17,6 +17,10 @@ public class Semantic {
 
     private LinkedList<Error> errors = new LinkedList<>();
 
+    public Stack<String> getTemporaryStack() {
+        return temporaryStack;
+    }
+
     private Stack<String> temporaryStack = new Stack<>();
     private Token curToken;
 
@@ -32,7 +36,7 @@ public class Semantic {
 //        for (String s : temporaryStack) {
 //            System.out.println(s);
 //        }
-
+//        System.out.println(semanticTokenType.toString());
 //        System.out.println("    " + curDiagram.getName() + "----------------------------" + "  " + edge.getSemanticTokenType());
         curToken = token;
         if (semanticTokenType == null)
@@ -93,10 +97,10 @@ public class Semantic {
             case SWITCH:
                 addSwitch();
                 break;
-            case EXPERSSIONISNUMBERIC:
+            case EXPRESSIONISNUMERIC:
                 expressionIsNumeric();
                 break;
-            case EXPERSSIONRESET:
+            case EXPRESSIONRESET:
                 expressionReset();
                 break;
             case BEGINARGS:

@@ -42,6 +42,7 @@ public class Main {
 //        System.out.println("-------");
 //        System.out.println(root.getChildren().get(0).getSymbolTableType().toString());
 //        printSymbolTable(root,0);
+
         System.out.println(semantic.getErrors().size());
         printError(semantic.getErrors());
 //        printAttribute(root);
