@@ -1,11 +1,9 @@
-
-int main(void) {
+int f(int a, int b) {
 
 }
-void main(void ){
-}
-int func(void ){
+
+void main(void) {
     a = 2;
-
-    z();
+    int b;
+    b = f(4);
 }

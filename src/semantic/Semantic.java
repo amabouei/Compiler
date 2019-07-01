@@ -296,15 +296,18 @@ public class Semantic {
     }
 
     private void checkTempCounterValue() {
-        int counter = Integer.parseInt(temporaryStack.pop());
-        if (counter != 0) {
-            errors.add(new Error(curToken.getLine(), ErrorType.MISMATCHED_NUMBER_OF_ARGUMENTS));
+        String str = temporaryStack.pop();
+        if (!str.equals("Func not found") && Integer.parseInt(str) != 0) {
+            errors.add(new Error(curToken.getLine(), ErrorType.MISMATCHED_NUMBER_OF_ARGUMENTS);
         }
     }
 
     private void decrementTempCounter() {
-        int counter = Integer.parseInt(temporaryStack.pop());
-        temporaryStack.push(String.valueOf(counter - 1));
+        String str = temporaryStack.pop();
+        if (!str.equals("Func not found"))
+            temporaryStack.push(String.valueOf(Integer.parseInt(str) - 1));
+        else
+            temporaryStack.push(str);
     }
 
     private void createTempCounter() {
@@ -313,15 +316,18 @@ public class Semantic {
         String name = temporaryStack.pop();
 //        SymbolTable func = curSymbolTable.getFunction(temporaryStack.get(temporaryStack.size() - 1));
         SymbolTable func = curSymbolTable.getFunction(name);
-        if(func != null) {
+        String toPush;
+        if (func == null) {
+            toPush = "Func not found";
+            errors.add(new Error(curToken.getLine(), ErrorType.ID_NOT_DEFINED, name));
+        }
+        else {
             if (func.getContents().get(1).getAttributeType() == AttributeType.VOID) {
                 tempForExpression = false;
             }
-            int numOfParameters = func.getContents().size() - 2; // shouldn't count return address and return value
-            temporaryStack.push(String.valueOf(numOfParameters));
-        }else{
-            errors.add(new Error(curToken.getLine(),ErrorType.ID_NOT_DEFINED));
+            toPush = String.valueOf(func.getContents().size() - 2); // shouldn't count return address and return value
         }
+        temporaryStack.push(toPush);
     }
 
     public LinkedList<Error> getErrors() {

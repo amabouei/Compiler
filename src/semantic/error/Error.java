@@ -22,7 +22,7 @@ public class Error {
 
     @Override
     public String toString() {
-        String toString = "Line " + lineNumber + "- ";
+        String toString = "Line" + lineNumber + "- ";
         switch (type) {
             case ID_NOT_DEFINED:
                 toString = toString + "'" + id + "' is not defined";
