@@ -139,6 +139,7 @@ public class Semantic {
     }
 
     private void expressionReset() {
+        System.out.println("salam");
         tempForExpression = true;
     }
 
@@ -235,10 +236,13 @@ public class Semantic {
 
     private void initialVar() {
         String name = temporaryStack.pop();
+
         AttributeType attributeType = AttributeType.getTypeByName(temporaryStack.pop());
-        if (attributeType != null) {
+        if (attributeType != AttributeType.VOID) {
             curSymbolTable.defineNewAttribute(new Attribute(name, addressGenerator.getVar(), attributeType));
+            return;
         }
+        errors.add(new Error(curToken.getLine(),ErrorType.ILLEGAL_TYPE_OF_VOID));
     }
 
 
@@ -296,6 +300,9 @@ public class Semantic {
     }
 
     private void checkTempCounterValue() {
+        for (String s : temporaryStack) {
+            System.out.println(s);
+        }
         String str = temporaryStack.pop();
         if (!str.equals("Func not found") && Integer.parseInt(str) != 0) {
             errors.add(new Error(curToken.getLine(), ErrorType.MISMATCHED_NUMBER_OF_ARGUMENTS,temporaryStack.pop()));

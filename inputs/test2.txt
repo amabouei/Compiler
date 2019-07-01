@@ -1,9 +1,18 @@
-int f(int a, int b) {
-
+int a;
+void f(int a, int b) {
+  a = 1;
 }
 
 void main(void) {
-    int b;
-    b  = 3;
-    b = f(4);
+int a;
+    int z(void){
+    }
+    z();
+    int x(int b , int c){
+
+    }
 }
+
+
+
+
