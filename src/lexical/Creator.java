@@ -23,7 +23,7 @@ public class Creator {
         RandomAccessFile codeInput;
 
         try {
-            codeInput = new RandomAccessFile(Paths.get(System.getProperty("user.dir"), "src", "test.txt").toString(), "r");
+            codeInput = new RandomAccessFile(Paths.get(System.getProperty("user.dir"), "src", "inputs/test.txt").toString(), "r");
             lexical.setFile(codeInput);
             while (true) {
                 Token next = null;

@@ -11,14 +11,17 @@ import java.io.FileNotFoundException;
 import java.io.RandomAccessFile;
 import java.nio.file.Paths;
 import java.util.LinkedList;
+import java.util.Scanner;
 
 public class Main {
 
     public static void main(String[] args) {
         LexicalAnalyzer lexicalAnalyzer = Creator.initializeLexical();
         RandomAccessFile codeInput = null;
+        Scanner scanner = new Scanner(System.in);
+        String file = scanner.nextLine();
         try {
-            codeInput = new RandomAccessFile(Paths.get(System.getProperty("user.dir"), "src", "test.txt").toString(), "r");
+            codeInput = new RandomAccessFile(Paths.get(System.getProperty("user.dir"),"inputs" ,file + ".txt").toString(), "r");
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
