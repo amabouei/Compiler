@@ -1,3 +1,27 @@
-int temp(void){
+int temp;
+void main(void){
+    int y[10];
+    int temp(void){
+
+    }
+    while(1){
+            while(3){
+
+            }
+        alpha = 4;
+    }
+
+    switch(4){
+    }
+    if(12){
+
+    }
+    else{
+    }
+}
+
+int x (void ){
+
+
 
 }

@@ -1,6 +1,7 @@
 package semantic;
 
 import lexical.Token;
+import parser.Diagram;
 import parser.Edge;
 
 import java.util.LinkedList;
@@ -26,11 +27,17 @@ public class Semantic {
         this.addressGenerator = addressGenerator;
     }
 
-    public void action(Edge edge, Token token) {
+    public void action(SemanticTokenType semanticTokenType, Token token, Diagram curDiagram) {
+
+//        for (String s : temporaryStack) {
+//            System.out.println(s);
+//        }
+
+//        System.out.println("    " + curDiagram.getName() + "----------------------------" + "  " + edge.getSemanticTokenType());
         curToken = token;
-        if (edge.getSemanticTokenType() == null)
+        if (semanticTokenType == null)
             return;
-        switch (edge.getSemanticTokenType()) {
+        switch (semanticTokenType) {
             case DEFMAIN:
                 defMain();
                 break;
@@ -86,13 +93,12 @@ public class Semantic {
             case SWITCH:
                 addSwitch();
                 break;
-            case FINDVAR:
-                //TODO
-                break;
             case EXPERSSIONISNUMBERIC:
                 expressionIsNumeric();
+                break;
             case EXPERSSIONRESET:
                 expressionReset();
+                break;
             case BEGINARGS:
                 createTempCounter();
                 break;
@@ -105,10 +111,16 @@ public class Semantic {
             case ARG:
                 decrementTempCounter();
                 break;
+            case BACK:
+                back();
+                break;
         }
     }
 
 
+    private void back(){
+        curSymbolTable = curSymbolTable.getParent();
+    }
     private void expressionIsNumeric() {
         if (!tempForExpression) {
             //todo
@@ -138,14 +150,13 @@ public class Semantic {
     private void createFunction() {
         String name = temporaryStack.pop();
         AttributeType attributeType = AttributeType.getTypeByName(temporaryStack.pop());
-
-
         SymbolTable newSymbolTable = new SymbolTable(curSymbolTable, name, SymbolTableType.FUNCTION);
         curSymbolTable.defineNewScope(newSymbolTable);
         //jumper
-        newSymbolTable.defineNewAttribute(new Attribute(name, addressGenerator.getVar(), AttributeType.INT));
+        newSymbolTable.defineNewAttribute(new Attribute(name + " return address", addressGenerator.getVar(), AttributeType.INT));
         //return value
         newSymbolTable.defineNewAttribute(new Attribute(name, addressGenerator.getVar(), attributeType));
+
         curSymbolTable = newSymbolTable;
     }
 
@@ -154,13 +165,15 @@ public class Semantic {
         //todo check output type;
         SymbolTable main = curSymbolTable.getFunction("main");
         if (main != null) {
-            if (main.getContents().size() > 2) {
+            if (main.getContents().size() > 2 || main.getContents().get(1).getAttributeType() != AttributeType.VOID ) {
                 //TODO ...
+                errors.addFirst(new Error(ErrorType.MAIN_NOT_FOUND));
             }
-        } else {
-            //TODO...
-            errors.addFirst(new Error(ErrorType.MAIN_NOT_FOUND));
+            return;
         }
+        errors.addFirst(new Error(ErrorType.MAIN_NOT_FOUND));
+
+
     }
 
     private void doublePop() {
@@ -179,7 +192,7 @@ public class Semantic {
     }
 
     private void addSymbolTable() {
-        SymbolTable newScope = new SymbolTable(curSymbolTable);
+        SymbolTable newScope = new SymbolTable(curSymbolTable,SymbolTableType.BLOCK);
         curSymbolTable.defineNewScope(newScope);
         curSymbolTable = newScope;
     }
@@ -190,13 +203,13 @@ public class Semantic {
     }
 
     private void addSwitch() {
-        SymbolTable newSymbolTable = new SymbolTable(curSymbolTable);
+        SymbolTable newSymbolTable = new SymbolTable(curSymbolTable,SymbolTableType.SWITCH);
         newSymbolTable.defineNewAttribute(new Attribute("break", addressGenerator.getVar(), AttributeType.POINTER));
         addSymbolTable(newSymbolTable);
     }
 
     private void addWhile() {
-        SymbolTable newSymbolTable = new SymbolTable(curSymbolTable);
+        SymbolTable newSymbolTable = new SymbolTable(curSymbolTable,SymbolTableType.WHILE);
         newSymbolTable.defineNewAttribute(new Attribute("break", addressGenerator.getVar(), AttributeType.POINTER));
         addSymbolTable(newSymbolTable);
     }
@@ -236,7 +249,7 @@ public class Semantic {
         String name = temporaryStack.pop();
         AttributeType attributeType = AttributeType.getTypeByName(temporaryStack.pop());
         if (attributeType == AttributeType.INT) {
-            curSymbolTable.defineNewAttribute(new Attribute(name, addressGenerator.getArray(size), AttributeType.INT));
+            curSymbolTable.defineNewAttribute(new Attribute(name, addressGenerator.getArray(size), AttributeType.ARRAY));
         }
     }
 

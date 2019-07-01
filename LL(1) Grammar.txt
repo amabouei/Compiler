@@ -5,7 +5,7 @@ Declaration -> Var_declaration
 Var_declaration -> Type_specifier $createVar id  Var_dec_index
 Var_dec_index -> $initial_Var ;
 Var_dec_index -> [ $notVoid num $initialArray ] ;
-Var_dec_index ->  Fun_declaration
+Var_dec_index ->  Fun_declaration $BACK
 Type_specifier -> $int int
 Type_specifier -> $void void
 Fun_declaration -> ( $createFunction Params ) Compound_stmt
@@ -25,9 +25,9 @@ Statement_list -> epsilon
 Statement -> Expression_stmt
 Statement -> Compound_stmt
 Statement -> Selection_stmt
-Statement -> Iteration_stmt
+Statement -> Iteration_stmt $BACK
 Statement -> Return_stmt
-Statement -> Switch_stmt
+Statement -> Switch_stmt $BACK
 Expression_stmt -> Expression ;
 Expression_stmt -> continue $continue ;
 Expression_stmt -> break $break ;

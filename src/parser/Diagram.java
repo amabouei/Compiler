@@ -31,17 +31,26 @@ public class Diagram {
     public void addRule(ArrayList<String> rule) {
         State curState = start;
         int size = rule.size();
-        ICGTokenType lastToken = null;
-        if(rule.get(rule.size() - 1).startsWith("#")){
-            lastToken = ICGTokenType.getTokenByName(rule.get(rule.size() - 1).replace("#", ""));
+        ICGTokenType lastIcg = null;
+        SemanticTokenType lastSemantic = null;
+        if(rule.get(size -1 ).startsWith("$")){
+            lastSemantic = SemanticTokenType.getSemanticToken(rule.get(size - 1).replace("$", ""));
             size--;
+            if (rule.get(size).startsWith("#")) {
+                lastIcg = ICGTokenType.getTokenByName(rule.get(size - 1).replace("#", ""));
+                size--;
+            }
+        }else{
+            if (rule.get(size-1).startsWith("#")) {
+                lastIcg = ICGTokenType.getTokenByName(rule.get(size - 1).replace("#", ""));
+                size--;
+            }
         }
         for (int i = 0; i < size; i++) {
             String step = rule.get(i);
             SemanticTokenType semanticTokenType = null;
             ICGTokenType icgTokenType = null;
             boolean isFinal = false;
-
             if (step.startsWith("$")) {
                 semanticTokenType = SemanticTokenType.getSemanticToken(step.replace("$", ""));
                 i++;
@@ -54,7 +63,6 @@ public class Diagram {
                     icgTokenType = ICGTokenType.getTokenByName(step.replace("#", ""));
                     i++;
                 }
-
             }
             step = rule.get(i);
 
@@ -62,15 +70,13 @@ public class Diagram {
                 isFinal = true;
 
             boolean isNonTerminal = step.charAt(0) <= 90 && step.charAt(0) >= 65;
-
             Edge newEdge;
             if (!isFinal)
                 newEdge = new Edge(!isNonTerminal, step, new State(), semanticTokenType, icgTokenType);
             else{
                 newEdge = new Edge(!isNonTerminal, step, finalState, semanticTokenType, icgTokenType);
-                if(lastToken != null){
-                    newEdge.setAfterIcgTokenType(lastToken);
-                }
+                newEdge.setAfterIcgTokenType(lastIcg);
+                newEdge.setAfterSemanticTokenType(lastSemantic);
             }
 
             curState.addEdge(newEdge);

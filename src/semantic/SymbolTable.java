@@ -29,40 +29,10 @@ public class SymbolTable {
         this.symbolTableType = symbolTableType;
     }
 
-
-//    public Symbol find(String symbolName) {
-//        for (Symbol symbol : contents) {
-//            if (symbol.getName().equals(symbolName))
-//                return symbol;
-//        }
-//        if (parent != null) {
-//            return parent.find(symbolName);
-//        } else return null; // TODO: needs to be replaced with appropriate exception
-//    }
-//
-//    public Symbol findInContents(String symbolName) {
-//        for (Symbol symbol : contents) {
-//            if (symbol.getName().equals(symbolName))
-//                return symbol;
-//        }
-//        return null;
-//    }
-//
-//    public Symbol findInSelfOrParent(String symbolName) {
-//        for (Symbol symbol : contents) {
-//            if (symbol.getName().equals(symbolName))
-//                return symbol;
-//        }
-//        if (parent != null) {
-//            return parent.findInContents(symbolName);
-//        }
-//        return null;
-//    }
-//
-//    public Symbol findInParent(String symbolName) {
-//        return parent.findInContents(symbolName);
-//    }
-
+    public SymbolTable(SymbolTable parent, SymbolTableType symbolTableType) {
+        this.parent = parent;
+        this.symbolTableType = symbolTableType;
+    }
 
     public Attribute findInSelfOrParent(String symbolName){
         Attribute  output = null;
@@ -101,9 +71,10 @@ public class SymbolTable {
     }
 
     public void defineNewAttribute(Attribute attribute){
-        if(this.contains(attribute.getName()) != null){
-            return;
-        }
+//        if(this.contains(attribute.getName()) != null){
+//            return;
+//        }
+        //todo !!!? what is it
         contents.add(attribute);
     }
 

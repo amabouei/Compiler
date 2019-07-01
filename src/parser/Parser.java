@@ -1,6 +1,4 @@
 package parser;
-
-
 import icg.ICG;
 import lexical.LexicalAnalyzer;
 import lexical.Token;
@@ -58,16 +56,21 @@ public class Parser {
 //                } // if wanting token name
                 curState = edge.getNext();
                 current.getChildren().add(child);
-                if(edge.getSemanticTokenType() != null){
-                    System.out.println(curDiagram.getName() + "   " + curToken.getToken());
+//                if(edge.getSemanticTokenType() != null){
+//                    System.out.println(curDiagram.getName() + "   " + curToken.getToken());
+//                }
+                if(edge.getSemanticTokenType() !=null) {
+                    semantic.action(edge.getSemanticTokenType(), curToken, curDiagram);
                 }
-                semantic.action(edge,curToken);
                 //TODO icg...
                 if (!edge.isToken()) {
                     Token next = parse(child, grammar.getSubDiagrams().get(edge.getLabel()), curToken);
                     curToken = next;
                 } else if (!edge.getLabel().equals("epsilon")) {
                     curToken = null;
+                }
+                if(edge.getAfterSemanticTokenType() != null){
+                    semantic.action(edge.getAfterSemanticTokenType(),curToken,curDiagram);
                 }
                 if(edge.getAfterIcgTokenType() != null){
                     ///TODO ICG...
