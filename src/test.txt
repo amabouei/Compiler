@@ -1,6 +1,3 @@
-int a ;
+int temp(void){
 
-int main(){
-
-    a = 23423 * +3;
 }

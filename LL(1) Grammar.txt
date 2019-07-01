@@ -3,23 +3,23 @@ Declaration_list -> Declaration Declaration_list
 Declaration_list -> epsilon
 Declaration -> Var_declaration
 Var_declaration -> Type_specifier $createVar id  Var_dec_index
-Var_dec_index -> ; $initial_Var
-Var_dec_index -> [ $notVoid num ] $initialArray;
+Var_dec_index -> $initial_Var ;
+Var_dec_index -> [ $notVoid num $initialArray ] ;
 Var_dec_index ->  Fun_declaration
-Type_specifier -> int $int
-Type_specifier -> void $void
+Type_specifier -> $int int
+Type_specifier -> $void void
 Fun_declaration -> ( $createFunction Params ) Compound_stmt
-Params -> void $void Param_name $push
+Params -> $void void $push Param_name
 Params -> int $int_createVar id  Param_index Param_loop
 Param_name -> id Param_index Param_loop
-Param_name -> epsilon $pop2
+Param_name -> $pop2 epsilon
 Param_list ->  Param Param_loop
 Param_loop -> , Param_list
 Param_loop -> epsilon
-Param -> Type_specifier id  Param_index
-Param_index -> epsilon $initial_Var
-Param_index -> [ $notVoid ] $initialPointer
-Compound_stmt -> { $newScope Declaration_list Statement_list } $endOfScope
+Param -> Type_specifier $push id  Param_index
+Param_index -> $initial_Var epsilon
+Param_index -> $notVoid [ $initialPointer ]
+Compound_stmt -> { $newScope Declaration_list Statement_list $endOfScope }
 Statement_list ->  Statement Statement_list
 Statement_list -> epsilon
 Statement -> Expression_stmt
@@ -37,16 +37,16 @@ Iteration_stmt -> while $while ( Expression ) Statement
 Return_stmt -> return Return_expression
 Return_expression -> ;
 Return_expression -> Expression ;
-Switch_stmt -> switch $switch ( Expression ) { $newScope Case_stmts Default_stmt } $endOfScope
+Switch_stmt -> switch $switch ( Expression ) { $newScope Case_stmts Default_stmt $endOfScope }
 Case_stmts -> Case_stmt Case_stmts
 Case_stmts -> epsilon
 Case_stmt -> case num : Statement_list
 Default_stmt -> default : Statement_list
 Default_stmt -> epsilon
-Expression -> id Expression_args
+Expression -> $push id Expression_args
 Expression -> Simple_Expression
 Expression_args -> $findVar Expression_index Expression_relations
-Expression_args -> ( Args ) Expression_times Expression_addops Expression_loop
+Expression_args -> $beginArgs ( Args $endArgs ) Expression_times Expression_addops Expression_loop
 Expression_relations -> = Expression
 Expression_relations -> Expression_times Expression_addops Expression_loop
 Expression_index -> epsilon
@@ -67,8 +67,8 @@ Signed_Factor -> Factor
 Signed_Factor -> + Factor
 Signed_Factor -> - Factor 
 Factor -> ( Expression )
-Factor -> id Factor_args
-Factor -> num $num
+Factor -> $push id Factor_args
+Factor -> num
 Factor_args -> $beginArgs ( Args $endArgs )
 Factor_args -> $idIsNumeric Expression_index
 Args -> Arg_list
@@ -82,5 +82,5 @@ Term_num -> Signed_Factor_num Expression_times
 Signed_Factor_num -> Factor_num
 Signed_Factor_num -> + Factor
 Signed_Factor_num -> - Factor
-Factor_num -> ( Expression )
-Factor_num -> num $num
+Factor_num -> ( #expressionreset Expression expressionIsNumeric )
+Factor_num -> num

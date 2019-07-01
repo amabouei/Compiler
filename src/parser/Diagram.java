@@ -1,5 +1,6 @@
 package parser;
 
+import icg.ICG;
 import icg.ICGTokenType;
 import semantic.Semantic;
 import semantic.SemanticTokenType;
@@ -29,37 +30,49 @@ public class Diagram {
 
     public void addRule(ArrayList<String> rule) {
         State curState = start;
-        for (int i = 0; i < rule.size(); i++) {
+        int size = rule.size();
+        ICGTokenType lastToken = null;
+        if(rule.get(rule.size() - 1).startsWith("#")){
+            lastToken = ICGTokenType.getTokenByName(rule.get(rule.size() - 1).replace("#", ""));
+            size--;
+        }
+        for (int i = 0; i < size; i++) {
             String step = rule.get(i);
             SemanticTokenType semanticTokenType = null;
             ICGTokenType icgTokenType = null;
             boolean isFinal = false;
 
-            if (i + 1 < rule.size() && rule.get(i + 1).startsWith("$")) {
-                semanticTokenType = SemanticTokenType.getSemanticToken(rule.get(i + 1).replace("$", ""));
+            if (step.startsWith("$")) {
+                semanticTokenType = SemanticTokenType.getSemanticToken(step.replace("$", ""));
                 i++;
-                if (i + 1 < rule.size() && rule.get(i + 1).startsWith("#")) {
-                    icgTokenType = ICGTokenType.getTokenByName(rule.get(i + 1).replace("#", ""));
+                if (i < size && rule.get(i).startsWith("#")) {
+                    icgTokenType = ICGTokenType.getTokenByName(rule.get(i).replace("#", ""));
                     i++;
                 }
             } else {
-                if (i + 1 < rule.size() && rule.get(i + 1).startsWith("")) {
-                    if (i + 1 < rule.size() && rule.get(i + 1).startsWith("#")) {
-                        icgTokenType = ICGTokenType.getTokenByName(rule.get(i + 1).replace("#", ""));
-                        i++;
-                    }
+                if (step.startsWith("#")) {
+                    icgTokenType = ICGTokenType.getTokenByName(step.replace("#", ""));
+                    i++;
                 }
-            }
 
-            if (i == rule.size() - 1)
+            }
+            step = rule.get(i);
+
+            if (i == size - 1)
                 isFinal = true;
 
             boolean isNonTerminal = step.charAt(0) <= 90 && step.charAt(0) >= 65;
+
             Edge newEdge;
             if (!isFinal)
                 newEdge = new Edge(!isNonTerminal, step, new State(), semanticTokenType, icgTokenType);
-            else
+            else{
                 newEdge = new Edge(!isNonTerminal, step, finalState, semanticTokenType, icgTokenType);
+                if(lastToken != null){
+                    newEdge.setAfterIcgTokenType(lastToken);
+                }
+            }
+
             curState.addEdge(newEdge);
             curState = newEdge.getNext();
         }

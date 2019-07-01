@@ -22,25 +22,18 @@ public class ICG {
     }
 
 
-    public void action (Edge edge, Token curToken){
+    public void action (Edge edge, Token curToken) {
         ICGTokenType icgTokenType = edge.getIcgTokenType();
-
         switch (icgTokenType) {
+
             case MAIN:
                 main();
                 break;
-            case END_OF_FILE:
+            case ENF_OF_FILE:
                 endOfFile();
                 break;
             case ASSIGN_FIRST_LINE:
                 assignFirstLine();
-                break;
-            case INITIAL_MAIN:
-                break;
-            case AND_INITIAL_OUTPUTJUMPER:
-                break;
-            case PUSH:
-                semanticStack.push(new Data(Integer.parseInt(curToken.getToken())));
                 break;
             case POP:
                 semanticStack.pop();
@@ -52,52 +45,88 @@ public class ICG {
                 jpEnd();
                 break;
             case IF_JP:
+                ifJp();
                 break;
             case IF_SAVE_JP:
+                ifSaveJp();
                 break;
             case IF_SAVE:
+                ifSave();
+                break;
+            case WHILE_START:
+                whileStart();
                 break;
             case WHILE_JP:
+                whileJp();
                 break;
-            case RETURN:
+            case WHILE_END:
+                whileEnd();
+                break;
+            case RETURN_FUNC:
+                returnFunc();
                 break;
             case PUSH_NULL:
+                pushNull();
                 break;
-            case SWITCH_VAR:
+            case SWITCH_START:
+                switchStart();
                 break;
             case SWITCH_EXTRA_JP:
+                switchExtraJp();
                 break;
             case SWITH_END:
+                switchEnd();
                 break;
             case SWITCH_SAVE:
+                switchSave();
                 break;
             case SWITCH_SAVE_JP:
+                switchSaveJp();
+                break;
+            case JUMPER:
+                jumper();
                 break;
             case PID:
-                break;
-            case CALING_FUNCTION:
-                break;
-            case ASSING_PUSH:
-                break;
-            case PUSH_ZERO:
-                break;
-            case PUSH_RELOP:
-                break;
-            case ADDOP:
-                break;
-            case MULT:
-                break;
-            case NOT:
-                break;
-            case PUSH_NUM:
+                pid(curToken);
                 break;
             case INDEXING:
+                indexing();
                 break;
-            case ASSING_TOFUNC:
+            case CALING_FUNCTION:
+                callingFunction();
                 break;
-            case OUTPUT_JUMPER_ASSIGN:
+            case ASSIGN_PUSH:
+                assignPush();
+                break;
+            case PUSH_ZERO:
+                pushZero();
+                break;
+            case PUSH_RELOP:
+                pushRelop(curToken);
+                break;
+            case ADDOP:
+                addop(curToken);
+                break;
+            case CALCULATE:
+                calculate();
+                break;
+            case MULT:
+                mult();
+                break;
+            case GHARINE:
+                gharine();
+                break;
+            case PUSH_NUM:
+                pushNum(curToken);
+                break;
+            case START_ARG:
+                startArg();
+                break;
+            case ASSIGN_INPUT:
+                assignInput();
                 break;
         }
+
     }
 
     public void main(){
@@ -296,7 +325,7 @@ public class ICG {
         semanticStack.push(result);
    }
 
-   public void START_ARG(){
+   public void startArg(){
         int counter = 0;
         semanticStack.push(new Data(counter));
    }

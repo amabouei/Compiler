@@ -10,6 +10,7 @@ public class Edge {
     private State next;
     private SemanticTokenType semanticTokenType;
     private ICGTokenType icgTokenType;
+    private ICGTokenType afterIcgTokenType;
 
     public Edge(boolean token, String label, State next) {
         this.token = token;
@@ -51,5 +52,14 @@ public class Edge {
 
     public ICGTokenType getIcgTokenType() {
         return icgTokenType;
+    }
+
+
+    public void setAfterIcgTokenType(ICGTokenType afterIcgTokenType) {
+        this.afterIcgTokenType = afterIcgTokenType;
+    }
+
+    public ICGTokenType getAfterIcgTokenType() {
+        return afterIcgTokenType;
     }
 }

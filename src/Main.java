@@ -7,6 +7,7 @@ import parser.Parser;
 import semantic.AddressGenerator;
 import semantic.Semantic;
 import semantic.SymbolTable;
+import semantic.error.Error;
 
 import java.io.FileNotFoundException;
 import java.io.RandomAccessFile;
@@ -29,6 +30,22 @@ public class Main {
         Semantic semantic = new Semantic(root, addressGenerator);
         Parser parser = new Parser(new Grammar(), lexicalAnalyzer, semantic, icg);
         parser.parseTree();
+
+        //TODO file...
+
+        for (Error error : parser.getSemantic().getErrors()) {
+            System.out.println(error.toString());
+        }
+
+        printSymbolTable(root);
         OutputGenerator.writeFiles(parser.getRoot(), parser.getErrors());
     }
+
+    public static void printSymbolTable(SymbolTable root){
+        System.out.println(root.getSymbolTableType());
+        for (SymbolTable child : root.getChildren()) {
+            printSymbolTable(child);
+        }
+    }
+
 }
