@@ -31,7 +31,7 @@ public class Error {
                 toString += "Illegal type of void";
                 break;
             case MISMATCHED_NUMBER_OF_ARGUMENTS:
-                toString += "Mismatch number of arguments of " + id;
+                toString += "Mismatch number of arguments of '" + id + "'";
                 break;
             case NO_WHILE_FOR_CONTINUE:
                 toString += "No 'while' found for 'continue'";
