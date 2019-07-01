@@ -305,7 +305,7 @@ public class Semantic {
         }
         String str = temporaryStack.pop();
         if (!str.equals("Func not found") && Integer.parseInt(str) != 0) {
-            errors.add(new Error(curToken.getLine(), ErrorType.MISMATCHED_NUMBER_OF_ARGUMENTS,temporaryStack.pop()));
+            errors.add(new Error(curToken.getLine(), ErrorType.MISMATCHED_NUMBER_OF_ARGUMENTS, temporaryStack.pop()));
         }
     }
 
