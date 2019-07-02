@@ -46,7 +46,7 @@ public class Error {
                 toString += "'" + id + "' is already defined";
                 break;
             case MUST_RETURN_INT:
-                toString += "'" + id + "'' must return 'int'";
+                toString += "'" + id + "' must return 'int'";
                 break;
             case NO_RETURN_FOUND:
                 toString += "No return found for '" + id + "'";
