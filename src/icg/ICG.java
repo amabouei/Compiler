@@ -183,12 +183,13 @@ public class ICG {
     }
 
     private void ifJp(){
-        int t = addressGenerator.getTemp();
-        TAC tac = new TAC(TACType.EQ,semanticStack.pop(),new Data(0),t);
-        programBlock.put(curline,tac);
-        curline++;
+
+        Data data = semanticStack.pop();
+
         semanticStack.push(new Data(curline));
-        semanticStack.push(new Data(t,false));
+        curline++;
+        semanticStack.push(data);
+
     }
 
     private  void ifSaveJp(){
