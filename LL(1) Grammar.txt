@@ -34,7 +34,7 @@ Expression_stmt -> break $break #JP_END ;
 Expression_stmt -> ;
 Selection_stmt -> if ( $expressionReset Expression $expressionIsNumeric ) #IF_JP Statement else #IF_SAVE_JP Statement #IF_SAVE
 Iteration_stmt -> while $while #WHILE_START ( $expressionReset Expression $expressionIsNumeric ) #WHILE_JP  Statement #WHILE_END
-Return_stmt -> return Return_expression #RETURN_FUNC
+Return_stmt -> return Return_expression $returnChecker #RETURN_FUNC
 Return_expression -> #PUSH_NULL ;
 Return_expression -> Expression ;
 Switch_stmt -> switch $switch #SWITCH_START ( $expressionReset Expression $expressionIsNumeric ) #SWITCH_EXTRA_JP { $newScope Case_stmts Default_stmt $endOfScope } #SWITH_END

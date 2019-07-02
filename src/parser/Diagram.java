@@ -33,20 +33,18 @@ public class Diagram {
         int size = rule.size();
         ICGTokenType lastIcg = null;
         SemanticTokenType lastSemantic = null;
-        if(rule.get(size -1 ).startsWith("$")){
+        if(size >= 2 && rule.get(size - 2).startsWith("$") && rule.get(size - 1).startsWith("#") ){
+            lastSemantic = SemanticTokenType.getSemanticToken(rule.get(size - 2).replace("$", ""));
+            lastIcg = ICGTokenType.getTokenByName(rule.get(size - 1).replace("#", ""));
+            size = -2;
+        } else if(rule.get(size -1 ).startsWith("$")){
             lastSemantic = SemanticTokenType.getSemanticToken(rule.get(size - 1).replace("$", ""));
             size--;
-            if (rule.get(size).startsWith("#")) {
+        }else if (rule.get(size-1).startsWith("#")) {
                 lastIcg = ICGTokenType.getTokenByName(rule.get(size - 1).replace("#", ""));
                 size--;
-            }
-        }else{
-            if (rule.get(size-1).startsWith("#")) {
-                lastIcg = ICGTokenType.getTokenByName(rule.get(size - 1).replace("#", ""));
-                size--;
-            }
-
         }
+
 
         for (int i = 0; i < size; i++) {
             String step = rule.get(i);

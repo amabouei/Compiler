@@ -1,0 +1,9 @@
+int y;
+void main(void){
+    void f(void) {
+    int y;
+    y = 2;
+    output(y);
+    }
+    output(y);
+}

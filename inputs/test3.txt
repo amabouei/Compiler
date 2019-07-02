@@ -3,14 +3,6 @@ int x(void){
     return 1;
 }
 
-
-int x;
-
-int main(void){
-
-
-}
-
 void main(void){
-
+    int main;
 }

@@ -56,9 +56,7 @@ public class Parser {
                 } // if wanting token name
                 curState = edge.getNext();
                 current.getChildren().add(child);
-//                if(edge.getSemanticTokenType() != null){
-//                    System.out.println(curDiagram.getName() + "   " + curToken.getToken());
-//                }
+
                 if(edge.getSemanticTokenType() !=null) {
                     semantic.action(edge.getSemanticTokenType(), curToken, curDiagram);
                 }
@@ -83,6 +81,7 @@ public class Parser {
                     }
                 }
             } else {
+                System.out.println(curToken.getToken());
                 Edge expectedEdge = curState.getEdge();
                 State nextState = null;
                 try {
