@@ -1,5 +1,11 @@
 int y;
-int y;
 void main(void){
-    output(4);
+    void f(void) {
+    int y;
+    y = 2;
+    }
+    y = 5;
+    output(y);
+    y = y + f(f());
+    output(y);
 }
