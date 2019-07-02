@@ -2,10 +2,7 @@ package icg;
 
 import lexical.Token;
 import parser.Edge;
-import semantic.AddressGenerator;
-import semantic.Attribute;
-import semantic.AttributeType;
-import semantic.SymbolTable;
+import semantic.*;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -151,6 +148,8 @@ public class ICG {
     }
 
     private void endOfFile() {
+
+
         SymbolTable main = curSymbolTable.getFunction("main");
         TAC tac = new TAC(TACType.JP, new Data(main.getStartLine()));
         programBlock.put(semanticStack.pop().getValue(), tac);
@@ -161,14 +160,22 @@ public class ICG {
     }
 
     private void jpFirst(){
-        int startLine = curSymbolTable.getParent().getStartLine();
+        ///todo getparent...
+        int startLine;
+        if(curSymbolTable.getSymbolTableType() == SymbolTableType.WHILE){
+            startLine = curSymbolTable.getStartLine();
+        }else{
+            startLine = curSymbolTable.getParent().getStartLine();
+        }
+
         TAC tac = new TAC(TACType.JP,new Data(startLine));
         programBlock.put(curline,tac);
         curline++;
     }
 
     private void jpEnd(){
-        int endLine = curSymbolTable.getParent().find("break").getAddress();
+        ///todo getparent..
+        int endLine = curSymbolTable.find("break").getAddress();
         TAC tac = new TAC(TACType.JP,new Data(endLine,false));
         programBlock.put(curline,tac);
         curline++;
@@ -371,6 +378,7 @@ public class ICG {
    private void startArg(){
         int counter = 0;
         semanticStack.push(new Data(counter));
+        printStack();
    }
 
    private void assignInput(){
@@ -389,6 +397,7 @@ public class ICG {
    }
 
     private void callingFunction(){
+        printStack();
         String functionName = semanticStack.get(semanticStack.size() -2).getLabel();
         SymbolTable function = curSymbolTable.getFunction(functionName);
         int address = function.getContents().get(0).getAddress();
