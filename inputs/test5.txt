@@ -2,7 +2,8 @@ void main(void){
 
    int a;
    a = 5;
-   while (a > 2) {
+   output(a);
+   while (2 < a) {
     a = a - 1;
     output(a);
    }

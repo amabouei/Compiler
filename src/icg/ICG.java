@@ -149,7 +149,6 @@ public class ICG {
 
         SymbolTable output = curSymbolTable.getFunction("output");
         output.setStartLine(curline);
-        System.out.println(curline);
         programBlock.put(curline, new TAC(TACType.PRINT,new Data(output.getContents().get(2).getAddress(),false)));
         curline++;
         programBlock.put(curline,new TAC(TACType.JP,new Data(output.getContents().get(0).getAddress(),false)));
@@ -245,9 +244,14 @@ public class ICG {
     }
 
     private void returnFunc () {
-        TAC tac = new TAC(TACType.ASSIGN, semanticStack.pop(), new Data(curSymbolTable.getParent().getContents().get(1).getAddress(),false));
-        programBlock.put(curline,tac);
-        curline++;
+        TAC tac;
+        if(curSymbolTable.getParent().getContents().get(1).getAttributeType() == AttributeType.INT) {
+            tac = new TAC(TACType.ASSIGN, semanticStack.pop(), new Data(curSymbolTable.getParent().getContents().get(1).getAddress(), false));
+            programBlock.put(curline, tac);
+            curline++;
+        }else{
+            semanticStack.pop();
+        }
         tac = new TAC(TACType.JP,new Data(curSymbolTable.getParent().getContents().get(0).getAddress(),false));
         programBlock.put(curline,tac);
         curline++;

@@ -20,7 +20,7 @@ Param -> Type_specifier $push id  Param_index
 Param_index -> $initial_Var epsilon
 Param_index -> $notVoid [ $initialPointer ]
 Compound_stmt -> { $newScope Declaration_list #assign_First_Line Statement_list $endOfScope }
-Statement_list ->  Statement $expressionReset Statement_list
+Statement_list ->  $expressionReset Statement $expressionReset Statement_list
 Statement_list -> epsilon
 Statement -> Expression_stmt
 Statement -> Compound_stmt
@@ -32,12 +32,12 @@ Expression_stmt -> Expression #POP ;
 Expression_stmt -> continue $continue #JP_FIRST ;
 Expression_stmt -> break $break #JP_END ;
 Expression_stmt -> ;
-Selection_stmt -> if ( Expression ) #IF_JP Statement else #IF_SAVE_JP Statement #IF_SAVE
-Iteration_stmt -> while $while #WHILE_START ( Expression ) #WHILE_JP  Statement #WHILE_END
+Selection_stmt -> if ( $expressionReset Expression $expressionIsNumeric ) #IF_JP Statement else #IF_SAVE_JP Statement #IF_SAVE
+Iteration_stmt -> while $while #WHILE_START ( $expressionReset Expression $expressionIsNumeric ) #WHILE_JP  Statement #WHILE_END
 Return_stmt -> return Return_expression #RETURN_FUNC
 Return_expression -> #PUSH_NULL ;
 Return_expression -> Expression ;
-Switch_stmt -> switch $switch #SWITCH_START ( Expression ) #SWITCH_EXTRA_JP { $newScope Case_stmts Default_stmt $endOfScope } #SWITH_END
+Switch_stmt -> switch $switch #SWITCH_START ( $expressionReset Expression $expressionIsNumeric ) #SWITCH_EXTRA_JP { $newScope Case_stmts Default_stmt $endOfScope } #SWITH_END
 Case_stmts -> Case_stmt Case_stmts
 Case_stmts -> epsilon #SWITCH_SAVE
 Case_stmt -> case #PUSH_NUM num #SWITCH_SAVE_JP  : Statement_list #JUMPER
@@ -65,7 +65,7 @@ Expression_times -> * Signed_Factor #MULT Expression_times
 Expression_times -> epsilon
 Signed_Factor -> Factor
 Signed_Factor -> + Factor
-Signed_Factor -> - Factor 
+Signed_Factor -> - Factor
 Factor -> ( $expressionReset Expression $expressionIsNumeric )
 Factor -> $push #PID id Factor_args
 Factor -> #PUSH_NUM num

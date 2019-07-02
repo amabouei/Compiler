@@ -1,18 +1,1 @@
-void main(void ){
-    int i;
-    i = 123;
-    switch(i){
-        case 13:
-            output(i);
-            break;
-        case 123:
-            output(i + 123);
-            break;
-    }
-    return;
-}
-
-void int(void ){
-    return ;
-}
 

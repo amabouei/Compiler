@@ -150,6 +150,7 @@ public class Semantic {
     private void back(){
         curSymbolTable = curSymbolTable.getParent();
     }
+
     private void expressionIsNumeric() {
         if (!tempForExpression) {
             errors.add(new Error(curToken.getLine(), ErrorType.TYPE_MISMATCH));
@@ -315,7 +316,6 @@ public class Semantic {
     private void checkTempCounterValue() {
         String str = temporaryStack.pop();
         String name = temporaryStack.pop();
-        System.out.println(str);
         if (!str.equals("Func not found") && Integer.parseInt(str) != 0 ) {
             errors.add(new Error(curToken.getLine(), ErrorType.MISMATCHED_NUMBER_OF_ARGUMENTS, name));
         }
