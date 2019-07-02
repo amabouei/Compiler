@@ -4,7 +4,11 @@ int mohandes(int a,int b[]){
     output(b[2]);
     return 4;
 }
+int chand(int a){
 
+    output(a);
+    return 44;
+}
 void main(void){
     int prod;
     int i;
@@ -15,6 +19,7 @@ void main(void){
     b[2]  = 1231231;
     mohandes(a,b);
     b[2] = 123;
-    output(b[2]);
+    a = chand(2);
+    output(chand(2));
 }
 
