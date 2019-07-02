@@ -142,6 +142,8 @@ public class ICG {
     private void main(){
         semanticStack.push(new Data(curline));
         curline++;
+        semanticStack.push(new Data(curline));
+        curline++;
         createOutput();
     }
 
@@ -162,7 +164,10 @@ public class ICG {
         SymbolTable main = curSymbolTable.getFunction("main");
         TAC tac = new TAC(TACType.JP, new Data(main.getStartLine()));
         main.getContents().get(0).setValue(curline);
+
         programBlock.put(semanticStack.pop().getValue(), tac);
+        programBlock.put(semanticStack.pop().getValue(),new TAC(TACType.ASSIGN,new Data(curline),new Data(main.getContents().get(0).getAddress(),false)));
+
     }
 
     private void assignFirstLine(){
@@ -242,14 +247,15 @@ public class ICG {
 
     private void returnFunc () {
         TAC tac;
-        if(curSymbolTable.getParent().getContents().get(1).getAttributeType() == AttributeType.INT) {
-            tac = new TAC(TACType.ASSIGN, semanticStack.pop(), new Data(curSymbolTable.getParent().getContents().get(1).getAddress(), false));
+        SymbolTable f = curSymbolTable.findFatherFunction();
+        if(f.getContents().get(1).getAttributeType() == AttributeType.INT) {
+            tac = new TAC(TACType.ASSIGN, semanticStack.pop(), new Data(f.getContents().get(1).getAddress(), false));
             programBlock.put(curline, tac);
             curline++;
         }else{
             semanticStack.pop();
         }
-        tac = new TAC(TACType.JP,new Data(curSymbolTable.getParent().getContents().get(0).getAddress(),false));
+        tac = new TAC(TACType.JP,new Data(f.getContents().get(0).getAddress(),false));
         programBlock.put(curline,tac);
         curline++;
     }
