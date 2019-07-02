@@ -307,15 +307,17 @@ public class Semantic {
     private void checkTempCounterValue() {
         String str = temporaryStack.pop();
         String name = temporaryStack.pop();
-        if (!str.equals("Func not found") && Integer.parseInt(str) != 0) {
+        System.out.println(str);
+        if (!str.equals("Func not found") && Integer.parseInt(str) != 0 ) {
             errors.add(new Error(curToken.getLine(), ErrorType.MISMATCHED_NUMBER_OF_ARGUMENTS, name));
         }
     }
 
     private void decrementTempCounter() {
         String str = temporaryStack.pop();
-        if (!str.equals("Func not found"))
+        if (!str.equals("Func not found")) {
             temporaryStack.push(String.valueOf(Integer.parseInt(str) - 1));
+        }
         else
             temporaryStack.push(str);
     }

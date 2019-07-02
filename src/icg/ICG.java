@@ -230,7 +230,6 @@ public class ICG {
     }
 
     private void returnFunc () {
-
         TAC tac = new TAC(TACType.ASSIGN, semanticStack.pop(), new Data(curSymbolTable.getParent().getContents().get(1).getAddress()));
         programBlock.put(curline,tac);
         curline++;
@@ -378,26 +377,30 @@ public class ICG {
    private void startArg(){
         int counter = 0;
         semanticStack.push(new Data(counter));
-        printStack();
    }
 
-   private void assignInput(){
-       String functionName = semanticStack.get(semanticStack.size() -3).getLabel();
-        Data counter  = semanticStack.get(semanticStack.size() -2);
-        Attribute address = curSymbolTable.getFunction(functionName).getContents().get(counter.getValue() + 2);
+   private void assignInput() {
+       String functionName = semanticStack.get(semanticStack.size() - 3).getLabel();
+       Data counter = semanticStack.get(semanticStack.size() - 2);
+       if(counter.getValue()  + 2 <= curSymbolTable.getFunction(functionName).getContents().size() - 1) {
 
-        Data curData = semanticStack.pop();
-        if(address.getAttributeType() == AttributeType.POINTER){
-            curData.setPointer(false);
-            curData.setConstant(true);
-        }
-        programBlock.put(curline,new TAC(TACType.ASSIGN,curData,new Data(address.getAddress(),false)));
-        curline++;
-        counter.setValue(counter.getValue() + 1);
+           Attribute address = curSymbolTable.getFunction(functionName).getContents().get(counter.getValue() + 2);
+
+           Data curData = semanticStack.pop();
+           if (address.getAttributeType() == AttributeType.POINTER) {
+               curData.setPointer(false);
+               curData.setConstant(true);
+           }
+           programBlock.put(curline, new TAC(TACType.ASSIGN, curData, new Data(address.getAddress(), false)));
+           curline++;
+           counter.setValue(counter.getValue() + 1);
+       }else
+          semanticStack.pop();
+
+
    }
 
     private void callingFunction(){
-        printStack();
         String functionName = semanticStack.get(semanticStack.size() -2).getLabel();
         SymbolTable function = curSymbolTable.getFunction(functionName);
         int address = function.getContents().get(0).getAddress();
