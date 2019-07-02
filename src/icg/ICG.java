@@ -152,7 +152,6 @@ public class ICG {
 
     private void endOfFile() {
         SymbolTable main = curSymbolTable.getFunction("main");
-        System.out.println(main.getName());
         TAC tac = new TAC(TACType.JP, new Data(main.getStartLine()));
         programBlock.put(semanticStack.pop().getValue(), tac);
     }
@@ -234,6 +233,7 @@ public class ICG {
     }
 
     private void  switchStart(){
+
         semanticStack.push(new Data(curline));
         curline++;
         curSymbolTable.setStartLine(curline);
@@ -244,7 +244,7 @@ public class ICG {
        // TODO: 6/30/19 experession
         semanticStack.push(new Data(0));
         semanticStack.push(new Data(curline));
-        semanticStack.push(new Data(0));
+        semanticStack.push(null);
         curline++;
    }
 
@@ -256,7 +256,9 @@ public class ICG {
    private void switchSaveJp(){
         Data number = semanticStack.pop();
         Data jumpLine = semanticStack.pop();
-        programBlock.put(jumpLine.getValue(),new TAC(TACType.JP,new Data(curline + 2)));
+        if(jumpLine != null)
+            programBlock.put(jumpLine.getValue(),new TAC(TACType.JP,new Data(curline + 2)));
+
         programBlock.put(semanticStack.pop().getValue(),new TAC(TACType.JPF,semanticStack.pop(),new Data(curline)));
         int t = addressGenerator.getTemp();
         programBlock.put(curline, new TAC(TACType.EQ,number,semanticStack.peek(),t));
@@ -267,14 +269,13 @@ public class ICG {
    }
 
    private void switchSave(){
-       Data number = semanticStack.pop();
        Data jumpLine = semanticStack.pop();
        programBlock.put(semanticStack.pop().getValue(),new TAC(TACType.JPF,semanticStack.pop(),new Data(curline)));
-       semanticStack.pop();
    }
 
    private void switchEnd(){
-        programBlock.put(semanticStack.pop().getValue(),new TAC(TACType.ASSIGN,new Data(curline),new Data(curSymbolTable.getContents().get(0).getAddress(),false)));
+       semanticStack.pop();
+       programBlock.put(semanticStack.pop().getValue(),new TAC(TACType.ASSIGN,new Data(curline),new Data(curSymbolTable.getContents().get(0).getAddress(),false)));
    }
 
    private void pid(Token token){

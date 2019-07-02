@@ -40,7 +40,7 @@ Return_expression -> Expression ;
 Switch_stmt -> switch $switch #SWITCH_START ( Expression ) #SWITCH_EXTRA_JP { $newScope Case_stmts Default_stmt $endOfScope } #SWITH_END
 Case_stmts -> Case_stmt Case_stmts
 Case_stmts -> epsilon #SWITCH_SAVE
-Case_stmt -> case #push num #SWITCH_SAVE_JP  : Statement_list #JUMPER
+Case_stmt -> case #PUSH_NUM num #SWITCH_SAVE_JP  : Statement_list #JUMPER
 Default_stmt -> default : Statement_list
 Default_stmt -> epsilon
 Expression -> $push #PID id Expression_args
