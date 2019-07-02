@@ -153,4 +153,14 @@ public class SymbolTable {
         }
         return false;
     }
+
+    public SymbolTable findFatherFunction(){
+        if(this.getSymbolTableType() == SymbolTableType.FUNCTION){
+            return this;
+        }
+        if(parent != null ){
+            return parent.findFatherFunction();
+        }
+        return null;
+    }
 }

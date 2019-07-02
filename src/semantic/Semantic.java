@@ -5,6 +5,7 @@ import parser.Diagram;
 
 import java.util.LinkedList;
 import java.util.Stack;
+import java.util.StringJoiner;
 
 import semantic.error.ErrorType;
 import semantic.error.Error;
@@ -118,6 +119,29 @@ public class Semantic {
             case BEGINARGSISNUMERIC:
                 beginArgsIsNumeric();
                 break;
+            case RETURNCHECKER:
+                returnChecker();
+                break;
+
+            case PUSH_LINE:
+                pushLine();
+                break;
+
+        }
+    }
+
+    private void pushLine(){
+
+        temporaryStack.push(curToken.getToken()  + String.valueOf(curToken.getLine()));
+    }
+    private void returnChecker(){
+        SymbolTable function = curSymbolTable.findFatherFunction();
+        if(!temporaryStack.isEmpty() && temporaryStack.peek().startsWith(";")){
+            int number = Integer.valueOf(temporaryStack.pop().replace(";",""));
+            if(function.getContents().get(1).getAttributeType() == AttributeType.INT){
+                errors.add(new Error(number,ErrorType.MUST_RETURN_INT,function.getName()));
+                return;
+            }
         }
     }
 

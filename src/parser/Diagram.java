@@ -36,7 +36,7 @@ public class Diagram {
         if(size >= 2 && rule.get(size - 2).startsWith("$") && rule.get(size - 1).startsWith("#") ){
             lastSemantic = SemanticTokenType.getSemanticToken(rule.get(size - 2).replace("$", ""));
             lastIcg = ICGTokenType.getTokenByName(rule.get(size - 1).replace("#", ""));
-            size = -2;
+            size = size -2;
         } else if(rule.get(size -1 ).startsWith("$")){
             lastSemantic = SemanticTokenType.getSemanticToken(rule.get(size - 1).replace("$", ""));
             size--;
