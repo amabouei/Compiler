@@ -73,10 +73,6 @@ public class SymbolTable {
     }
 
     public void defineNewAttribute(Attribute attribute){
-//        if(this.contains(attribute.getName()) != null){
-//            return;
-//        }
-        //todo !!!? what is it
         contents.add(attribute);
     }
 

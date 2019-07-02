@@ -173,7 +173,6 @@ public class ICG {
     }
 
     private void jpFirst(){
-        ///todo getparent...
         int startLine;
         if(curSymbolTable.getSymbolTableType() == SymbolTableType.WHILE){
             startLine = curSymbolTable.getStartLine();
@@ -187,7 +186,6 @@ public class ICG {
     }
 
     private void jpEnd(){
-        ///todo getparent..
         int endLine = curSymbolTable.find("break").getAddress();
         TAC tac = new TAC(TACType.JP,new Data(endLine,false));
         programBlock.put(curline,tac);
@@ -236,7 +234,6 @@ public class ICG {
         curline++;
         programBlock.put(semanticStack.pop().getValue(),new TAC(TACType.ASSIGN,new Data(curline),new Data(curSymbolTable.getContents().get(0).getAddress(),false)));
 
-        //TODO curSymbol.getparent or curSymbol
     }
 
     private void pushNull(){
@@ -266,7 +263,6 @@ public class ICG {
 
    private void switchExtraJp(){
 
-       // TODO: 6/30/19 experession
         semanticStack.push(new Data(0));
         semanticStack.push(new Data(curline));
         semanticStack.push(null);
@@ -317,7 +313,6 @@ public class ICG {
        Data var = semanticStack.pop();
 
 
-       //TODO why self or parent!?
        int address = curSymbolTable.find(var.getLabel()).getAddress();
        AttributeType type = curSymbolTable.find(var.getLabel()).getAttributeType();
        if(index == null) {
@@ -383,12 +378,11 @@ public class ICG {
 
    private void pushNum(Token token){
         semanticStack.push(new Data(Integer.valueOf(token.getToken())));
-        //todo handle error in semantic
    }
 
    private void gharine(){
         Data result =  new Data(addressGenerator.getTemp(),false);
-        programBlock.put(curline,new TAC(TACType.MULT,semanticStack.pop(),result));
+        programBlock.put(curline,new TAC(TACType.MULT,new Data(-1),semanticStack.pop(),result.getValue()));
         curline++;
         semanticStack.push(result);
    }

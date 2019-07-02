@@ -1,0 +1,13 @@
+int i;
+void main(void){
+ i = 3;
+
+    switch(i){
+    case 1:
+         output(1);
+    case 3:
+        output(3);
+    default:
+        output(1000);
+    }
+}

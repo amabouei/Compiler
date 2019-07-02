@@ -216,7 +216,6 @@ public class Semantic {
 
 
     private void defMain() {
-        //todo check output type;
         SymbolTable main = curSymbolTable.getFunction("main");
         if (main != null) {
             if (main.getContents().size() > 2 || main.getContents().get(1).getAttributeType() != AttributeType.VOID ) {
@@ -266,15 +265,7 @@ public class Semantic {
     }
 
 
-    private void notVoid() {
-        String temp = temporaryStack.get(temporaryStack.size() - 2);
-        if (temp.equals("void")) {
-            errors.add(new Error(curToken.getLine(), ErrorType.ILLEGAL_TYPE_OF_VOID));
-            //TODO temp = null and push
-        } else {
-            temporaryStack.push(curToken.getToken());
-        }
-    }
+
 
     private void initialVar() {
         String name = temporaryStack.pop();
@@ -299,7 +290,6 @@ public class Semantic {
 
     public void initialArray() {
         int size = Integer.parseInt(temporaryStack.pop());
-        //TODO exception for a[3.4] isn't important
         String name = temporaryStack.pop();
         AttributeType attributeType = AttributeType.getTypeByName(temporaryStack.pop());
         if (attributeType == AttributeType.INT) {
@@ -315,6 +305,17 @@ public class Semantic {
             curSymbolTable.defineNewAttribute(new Attribute(name, addressGenerator.getVar(), AttributeType.POINTER));
         }
     }
+
+
+    private void notVoid() {
+        String temp = temporaryStack.get(temporaryStack.size() - 2);
+        if (temp.equals("void")) {
+            errors.add(new Error(curToken.getLine(), ErrorType.ILLEGAL_TYPE_OF_VOID));
+        }
+        temporaryStack.push(curToken.getToken());
+
+    }
+
 
     private void createVar() {
         String name = curToken.getToken();

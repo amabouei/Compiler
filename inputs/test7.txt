@@ -5,5 +5,7 @@ void main(void){
     y = 2;
     output(y);
     }
-    output(y);
+    int x;
+    x = 123 * 23 * 5 + 123 + 123 + 4;
+    output(x);
 }

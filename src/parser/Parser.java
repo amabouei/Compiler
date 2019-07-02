@@ -81,7 +81,6 @@ public class Parser {
                     }
                 }
             } else {
-                System.out.println(curToken.getToken());
                 Edge expectedEdge = curState.getEdge();
                 State nextState = null;
                 try {
