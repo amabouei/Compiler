@@ -209,7 +209,7 @@ public class Semantic {
         //jumper
         newSymbolTable.defineNewAttribute(new Attribute(name + " return address", addressGenerator.getVar(), AttributeType.INT));
         //return value
-        newSymbolTable.defineNewAttribute(new Attribute(name, addressGenerator.getVar(), attributeType));
+        newSymbolTable.defineNewAttribute(new Attribute("__"+ name, addressGenerator.getVar(), attributeType));
 
         curSymbolTable = newSymbolTable;
     }
