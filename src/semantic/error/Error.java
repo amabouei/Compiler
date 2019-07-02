@@ -45,6 +45,15 @@ public class Error {
             case ID_ALREADY_DEFINED:
                 toString += "'" + id + "' is already defined";
                 break;
+            case MUST_RETURN_INT:
+                toString += "'" + id + "'' must return 'int'";
+                break;
+            case NO_RETURN_FOUND:
+                toString += "No return found for '" + id + "'";
+                break;
+            case RETURN_IS_NOT_EMPTY:
+                toString += "Void function '" + id + "' cant return 'int'";
+                break;
                 default:
                     toString += "WHAT IS THE ERROR";
                     break;
