@@ -45,7 +45,9 @@ public class Diagram {
                 lastIcg = ICGTokenType.getTokenByName(rule.get(size - 1).replace("#", ""));
                 size--;
             }
+
         }
+
         for (int i = 0; i < size; i++) {
             String step = rule.get(i);
             SemanticTokenType semanticTokenType = null;

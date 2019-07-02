@@ -62,7 +62,10 @@ public class Parser {
                 if(edge.getSemanticTokenType() !=null) {
                     semantic.action(edge.getSemanticTokenType(), curToken, curDiagram);
                 }
-                //TODO icg...
+                if(edge.getIcgTokenType() != null){
+                    icg.action(edge.getIcgTokenType(),curToken,semantic.getCurSymbolTable());
+                }
+
                 if (!edge.isToken()) {
                     Token next = parse(child, grammar.getSubDiagrams().get(edge.getLabel()), curToken);
                     curToken = next;
@@ -73,7 +76,7 @@ public class Parser {
                     semantic.action(edge.getAfterSemanticTokenType(),curToken,curDiagram);
                 }
                 if(edge.getAfterIcgTokenType() != null){
-                    ///TODO ICG...
+                    icg.action(edge.getAfterIcgTokenType(),curToken,semantic.getCurSymbolTable());
                 }
             } else {
                 Edge expectedEdge = curState.getEdge();

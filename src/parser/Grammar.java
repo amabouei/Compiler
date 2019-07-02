@@ -24,7 +24,8 @@ public class Grammar {
     public Grammar() {
         initSet(true);
         initSet(false);
-        initDiagram();
+        initDiagram(grammarFileAddress);
+
     }
 
     public HashMap<String, Set<String>> getFollowSets() {
@@ -84,10 +85,10 @@ public class Grammar {
         }
     }
 
-    public void initDiagram() {
+    public void initDiagram(String address) {
         FileReader grammarFile = null;
         try {
-            grammarFile = new FileReader(grammarFileAddress);
+            grammarFile = new FileReader(address);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }

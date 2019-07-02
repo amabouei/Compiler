@@ -17,10 +17,6 @@ public class Semantic {
 
     private LinkedList<Error> errors = new LinkedList<>();
 
-    public Stack<String> getTemporaryStack() {
-        return temporaryStack;
-    }
-
     private Stack<String> temporaryStack = new Stack<>();
     private Token curToken;
 
@@ -29,6 +25,11 @@ public class Semantic {
     public Semantic(SymbolTable curSymbolTable, AddressGenerator addressGenerator) {
         this.curSymbolTable = curSymbolTable;
         this.addressGenerator = addressGenerator;
+        createOutputFunction();
+    }
+
+    public SymbolTable getCurSymbolTable() {
+        return curSymbolTable;
     }
 
     public void action(SemanticTokenType semanticTokenType, Token token, Diagram curDiagram) {
@@ -144,7 +145,6 @@ public class Semantic {
     }
 
     private void expressionReset() {
-        System.out.println("salam");
         tempForExpression = true;
     }
 
@@ -342,5 +342,16 @@ public class Semantic {
         return errors;
     }
 
+
+    public void createOutputFunction(){
+        SymbolTable newSymbolTable = new SymbolTable(curSymbolTable,"output",SymbolTableType.FUNCTION);
+
+        curSymbolTable.defineNewScope(newSymbolTable);
+        //jumper
+        newSymbolTable.defineNewAttribute(new Attribute("output" + " return address", addressGenerator.getVar(), AttributeType.INT));
+        //return value
+        newSymbolTable.defineNewAttribute(new Attribute("output", addressGenerator.getVar(), AttributeType.VOID));
+        newSymbolTable.defineNewAttribute(new Attribute("a",addressGenerator.getVar(),AttributeType.INT));
+    }
 
 }

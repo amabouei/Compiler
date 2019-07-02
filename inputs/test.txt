@@ -1,2 +1,14 @@
-void temp;
+
+int foo(int a){
+    output(a);
+    return 4;
+}
+void main(void ){
+    int i;
+    i = 0;
+    switch(i){
+        case 1:
+            break;
+    }
+}
 

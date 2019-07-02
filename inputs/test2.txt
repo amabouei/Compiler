@@ -1,9 +1,20 @@
-int b;
-void foo(int d,int e){
+int mohandes(int a,int b[]){
 
-}
-void main(void){
     int x;
-    x = (foo(1,2) + (1));
-    x = 12;
-    }
+    output(b[2]);
+    return 4;
+}
+
+void main(void){
+    int prod;
+    int i;
+    int b[10];
+    int a;
+
+    a = 123;
+    b[2]  = 1231231;
+    mohandes(a,b);
+    b[2] = 123;
+    output(b[2]);
+}
+
