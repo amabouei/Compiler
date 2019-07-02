@@ -22,7 +22,7 @@ public class Error {
 
     @Override
     public String toString() {
-        String toString = "Line" + lineNumber + "- ";
+        String toString = "(Line" + lineNumber + "): ";
         switch (type) {
             case ID_NOT_DEFINED:
                 toString = toString + "'" + id + "' is not defined";
@@ -42,8 +42,12 @@ public class Error {
             case TYPE_MISMATCH:
                 toString += "Type mismatch in operands";
                 break;
+            case ID_ALREADY_DEFINED:
+                toString += "'" + id + "' is already defined";
+                break;
                 default:
                     toString += "WHAT IS THE ERROR";
+                    break;
         }
         if (type != ErrorType.MAIN_NOT_FOUND)
             return toString + ".";

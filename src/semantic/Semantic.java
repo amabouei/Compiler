@@ -282,7 +282,7 @@ public class Semantic {
     private void createVar() {
         String name = curToken.getToken();
         if (curSymbolTable.findInSelfOrParent(name) != null) {
-
+            errors.add(new Error(curToken.getLine(), ErrorType.ID_ALREADY_DEFINED, name));
             // TODO: 6/30/19 handle error
             temporaryStack.push(null);
             return;
