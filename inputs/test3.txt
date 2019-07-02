@@ -1,13 +1,16 @@
 int y;
-int x;
-
 int x(void){
     return 1;
 }
-int x(void){
+
+
+int x;
+
+int main(void){
+
+
 }
+
 void main(void){
-    int y;
-    y = 12;
-    output(4);
+
 }

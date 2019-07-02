@@ -176,20 +176,7 @@ public class Semantic {
         }
     }
 
-    private void createFunction() {
-        String name = temporaryStack.pop();
-        AttributeType attributeType = AttributeType.getTypeByName(temporaryStack.pop());
-        SymbolTable newSymbolTable = new SymbolTable(curSymbolTable, name, SymbolTableType.FUNCTION);
-        if (curSymbolTable.getFunction(name) != null)
-            errors.add(new Error(curToken.getLine(), ErrorType.ID_ALREADY_DEFINED, name));
-        curSymbolTable.defineNewScope(newSymbolTable);
-        //jumper
-        newSymbolTable.defineNewAttribute(new Attribute(name + " return address", addressGenerator.getVar(), AttributeType.INT));
-        //return value
-        newSymbolTable.defineNewAttribute(new Attribute(name, addressGenerator.getVar(), attributeType));
 
-        curSymbolTable = newSymbolTable;
-    }
 
 
     private void defMain() {
@@ -295,12 +282,28 @@ public class Semantic {
 
     private void createVar() {
         String name = curToken.getToken();
-        if (curSymbolTable.findInSelfOrParent(name) != null) {
+
+        if (curSymbolTable.findInSelfOrParent(name) != null || curSymbolTable.getFunctionInScope(name) != null) {
             errors.add(new Error(curToken.getLine(), ErrorType.ID_ALREADY_DEFINED, name));
             temporaryStack.push(null);
             return;
         }
         temporaryStack.push(name);
+    }
+
+    private void createFunction() {
+        String name = temporaryStack.pop();
+        AttributeType attributeType = AttributeType.getTypeByName(temporaryStack.pop());
+        SymbolTable newSymbolTable = new SymbolTable(curSymbolTable, name, SymbolTableType.FUNCTION);
+        if (curSymbolTable.getFunction(name) != null)
+            errors.add(new Error(curToken.getLine(), ErrorType.ID_ALREADY_DEFINED, name));
+        curSymbolTable.defineNewScope(newSymbolTable);
+        //jumper
+        newSymbolTable.defineNewAttribute(new Attribute(name + " return address", addressGenerator.getVar(), AttributeType.INT));
+        //return value
+        newSymbolTable.defineNewAttribute(new Attribute(name, addressGenerator.getVar(), attributeType));
+
+        curSymbolTable = newSymbolTable;
     }
 
 

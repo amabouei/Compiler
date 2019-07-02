@@ -64,7 +64,6 @@ public class SymbolTable {
                 if (attribute.getName().equals(symbolName))
                     return attribute;
             }
-
         }
         return null;
     }
@@ -102,6 +101,15 @@ public class SymbolTable {
         }
         if(parent != null){
             return parent.getFunction(name);
+        }
+        return null;
+    }
+
+    public SymbolTable getFunctionInScope(String name){
+        for (SymbolTable child : children) {
+            if(child.getSymbolTableType() == SymbolTableType.FUNCTION &&  child.getName() != null && child.getName().equals(name)){
+                return child;
+            }
         }
         return null;
     }
