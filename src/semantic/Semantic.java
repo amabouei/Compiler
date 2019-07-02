@@ -356,4 +356,9 @@ public class Semantic {
         newSymbolTable.defineNewAttribute(new Attribute("a",addressGenerator.getVar(),AttributeType.INT));
     }
 
+    public boolean hasError(){
+        return (errors.size() > 0) ;
+    }
+
+
 }

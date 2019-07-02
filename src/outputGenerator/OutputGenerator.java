@@ -28,7 +28,8 @@ public class OutputGenerator {
             errorFileWriter = new FileWriter(errorFileAddress);
             tacFileWriter = new FileWriter(tacFileAddress);
             semanticErrorsFileWriter = new FileWriter(semanticErrorsFileAddress);
-            printThreeAddressCodes(programBlock);
+            if(semanticErrors.size() < 0)
+                 printThreeAddressCodes(programBlock);
             printParseAndLexicalErrors(errors);
             printTree(root);
             printSemanticErros(semanticErrors);

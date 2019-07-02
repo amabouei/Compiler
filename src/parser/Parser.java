@@ -62,8 +62,10 @@ public class Parser {
                 if(edge.getSemanticTokenType() !=null) {
                     semantic.action(edge.getSemanticTokenType(), curToken, curDiagram);
                 }
-                if(edge.getIcgTokenType() != null){
-                    icg.action(edge.getIcgTokenType(),curToken,semantic.getCurSymbolTable());
+                if(!semantic.hasError()) {
+                    if (edge.getIcgTokenType() != null) {
+                        icg.action(edge.getIcgTokenType(), curToken, semantic.getCurSymbolTable());
+                    }
                 }
 
                 if (!edge.isToken()) {
@@ -75,8 +77,10 @@ public class Parser {
                 if(edge.getAfterSemanticTokenType() != null){
                     semantic.action(edge.getAfterSemanticTokenType(),curToken,curDiagram);
                 }
-                if(edge.getAfterIcgTokenType() != null){
-                    icg.action(edge.getAfterIcgTokenType(),curToken,semantic.getCurSymbolTable());
+                if(!semantic.hasError()) {
+                    if (edge.getAfterIcgTokenType() != null) {
+                        icg.action(edge.getAfterIcgTokenType(), curToken, semantic.getCurSymbolTable());
+                    }
                 }
             } else {
                 Edge expectedEdge = curState.getEdge();

@@ -9,5 +9,10 @@ void main(void ){
             output(i + 123);
             break;
     }
+    return;
+}
+
+void int(void ){
+    return ;
 }
 
