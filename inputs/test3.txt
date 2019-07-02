@@ -1,9 +1,16 @@
+void f(int){
+
+    return
+}
+
 void main(void){
-   int x ;
-   x = 3;
-   if(x * x + 1 == 9){
-      output(1);
-   }else{
-        output(5);
+   void funct(int m){
+        int x;
+        output(m);
    }
+   int x;
+   x = 12;
+   funct(x);
+   output(x);
+
 }

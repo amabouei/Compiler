@@ -125,8 +125,18 @@ public class ICG {
             case ASSIGN_INPUT:
                 assignInput();
                 break;
+            case ENDFUNCTION:
+                endFunction();
+                break;
         }
 
+    }
+
+    private void endFunction(){
+        if(!curSymbolTable.getName().equals("main") && curSymbolTable.getContents().get(1).getAttributeType() == AttributeType.VOID) {
+            programBlock.put(curline, new TAC(TACType.JP, new Data(curSymbolTable.getContents().get(0).getAddress(), false, true)));
+            curline++;
+        }
     }
 
     private void main(){
@@ -152,11 +162,15 @@ public class ICG {
 
         SymbolTable main = curSymbolTable.getFunction("main");
         TAC tac = new TAC(TACType.JP, new Data(main.getStartLine()));
+        main.getContents().get(0).setValue(curline);
         programBlock.put(semanticStack.pop().getValue(), tac);
     }
 
     private void assignFirstLine(){
-        curSymbolTable.setStartLine(curline);
+        if(curSymbolTable.getParent().getSymbolTableType() == SymbolTableType.FUNCTION){
+            curSymbolTable.getParent().setStartLine(curline);
+        }
+
     }
 
     private void jpFirst(){
@@ -231,7 +245,7 @@ public class ICG {
     }
 
     private void returnFunc () {
-        TAC tac = new TAC(TACType.ASSIGN, semanticStack.pop(), new Data(curSymbolTable.getParent().getContents().get(1).getAddress()));
+        TAC tac = new TAC(TACType.ASSIGN, semanticStack.pop(), new Data(curSymbolTable.getParent().getContents().get(1).getAddress(),false));
         programBlock.put(curline,tac);
         curline++;
         tac = new TAC(TACType.JP,new Data(curSymbolTable.getParent().getContents().get(0).getAddress(),false));

@@ -361,6 +361,4 @@ public class Semantic {
     public boolean hasError(){
         return (errors.size() > 0) ;
     }
-
-
 }
