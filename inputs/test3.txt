@@ -1,3 +1,13 @@
-void main(){
+int y;
+int x;
 
+int x(void){
+    return 1;
+}
+int x(void){
+}
+void main(void){
+    int y;
+    y = 12;
+    output(4);
 }

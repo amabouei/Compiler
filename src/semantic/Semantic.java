@@ -180,6 +180,8 @@ public class Semantic {
         String name = temporaryStack.pop();
         AttributeType attributeType = AttributeType.getTypeByName(temporaryStack.pop());
         SymbolTable newSymbolTable = new SymbolTable(curSymbolTable, name, SymbolTableType.FUNCTION);
+        if (curSymbolTable.getFunction(name) != null)
+            errors.add(new Error(curToken.getLine(), ErrorType.ID_ALREADY_DEFINED, name));
         curSymbolTable.defineNewScope(newSymbolTable);
         //jumper
         newSymbolTable.defineNewAttribute(new Attribute(name + " return address", addressGenerator.getVar(), AttributeType.INT));
@@ -188,6 +190,7 @@ public class Semantic {
 
         curSymbolTable = newSymbolTable;
     }
+
 
     private void defMain() {
         //todo check output type;

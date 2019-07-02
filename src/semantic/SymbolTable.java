@@ -60,8 +60,11 @@ public class SymbolTable {
 
     public Attribute contains (String symbolName) {
         for (Attribute attribute : contents) {
-            if (attribute.getName().equals(symbolName))
-                return attribute;
+            if ((attribute.getName() != null)) {
+                if (attribute.getName().equals(symbolName))
+                    return attribute;
+            }
+
         }
         return null;
     }
@@ -93,7 +96,7 @@ public class SymbolTable {
 
     public SymbolTable getFunction(String name){
         for (SymbolTable child : children) {
-            if(child.getSymbolTableType() == SymbolTableType.FUNCTION && child.getName().equals(name)){
+            if(child.getSymbolTableType() == SymbolTableType.FUNCTION &&  child.getName() != null && child.getName().equals(name)){
                 return child;
             }
         }
