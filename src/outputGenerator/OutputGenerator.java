@@ -71,10 +71,7 @@ public class OutputGenerator {
     private static void printThreeAddressCodes(Map<Integer, TAC> programBlock) {
         try {
             for (int i = 0; i < programBlock.size(); i++)
-                if(programBlock.get(i) != null)
                     tacFileWriter.write(i + "\t" + programBlock.get(i).toString() + "\n");
-                else
-                    tacFileWriter.write(i + "\t" + " " + "\n");
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -1,8 +1,11 @@
-int y;
-int x(void){
-    return 1;
+void a(int b){
+    int b;
+    {
+        int b;
+    }
 }
 
-void main(void){
-    int main;
+int x(void){
+
+
 }

@@ -1,6 +1,6 @@
 void main(void){
-   while (1) {
-   }
-   break;
+  int a;
+  int b;
+  a = b;
 
 }

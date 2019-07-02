@@ -1,24 +1,11 @@
 int b;
-int arr[3];
 void main(void){
  int a;
  int u;
- a= -3 + 11;
- b = 2;
- arr[2] = b + -3;
-   switch(arr[2]){
-   case 4:
-    {
-     u = 5;
-     b = u * 123;
-     break;}
-   default:
-   output(1);
-
-  }
-  if (3 < 2)
+ b = 1;
+ if (b == 0) {
     return;
-  else {
-
-  }
+ } else {
+    return;
+ }
 }
