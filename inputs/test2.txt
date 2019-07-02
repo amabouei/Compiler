@@ -12,6 +12,7 @@ int chand(int a){
 void main(void){
     int prod;
     int i;
+    int a;
     int b[10];
     int a;
 

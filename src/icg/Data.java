@@ -8,6 +8,7 @@ public class Data {
     private boolean isConstant = true;
     private String label; ///for < ==
     private boolean isPointer;
+
     public Data(String label) {
         this.label = label;
     }
@@ -41,19 +42,18 @@ public class Data {
 
     @Override
     public String toString() {
-        if(isPointer){
-            return  "@"+ String.valueOf(value);
+        if (isPointer) {
+            return "@" + String.valueOf(value);
         }
-        if(!isConstant){
+        if (!isConstant) {
 
             return String.valueOf(value);
-        }
-        else
+        } else
             return "#" + String.valueOf(value);
     }
 
-    public String getWithAddress(){
-        if(!isConstant)
+    public String getWithAddress() {
+        if (!isConstant)
             return "@" + String.valueOf(value);
         else
             return String.valueOf(value);

@@ -51,7 +51,7 @@ public class Main {
 //        printError(semantic.getErrors());
 //        printAttribute(root);
         printProgramBlock(icg.getProgramBlock());
-        OutputGenerator.writeFiles(parser.getRoot(), parser.getErrors());
+        OutputGenerator.writeFiles(parser.getRoot(), parser.getErrors(), icg.getProgramBlock(), semantic.getErrors());
     }
 
     public static void printSymbolTable(SymbolTable root,int height){
