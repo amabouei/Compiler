@@ -395,6 +395,7 @@ public class ICG {
    }
 
    private void assignInput() {
+
        String functionName = semanticStack.get(semanticStack.size() - 3).getLabel();
        Data counter = semanticStack.get(semanticStack.size() - 2);
        if(counter.getValue()  + 2 <= curSymbolTable.getFunction(functionName).getContents().size() - 1) {

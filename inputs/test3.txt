@@ -1,16 +1,10 @@
-void f(int){
-
-    return
-}
-
 void main(void){
-   void funct(int m){
-        int x;
-        output(m);
+   int f(int a) {
+    return a;
    }
-   int x;
-   x = 12;
-   funct(x);
-   output(x);
+   int b;
+   b = 1 + f(4);
+   b = f(4);
+   output(b);
 
 }

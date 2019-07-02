@@ -46,7 +46,7 @@ Default_stmt -> epsilon
 Expression -> $push #PID id Expression_args
 Expression -> Simple_Expression
 Expression_args -> $findVar Expression_index #INDEXING Expression_relations
-Expression_args -> $beginArgs ( Args $endArgs ) #CALING_FUNCTION Expression_times Expression_addops Expression_loop
+Expression_args -> $beginArgs ( #START_ARG Args $endArgs ) #CALING_FUNCTION Expression_times Expression_addops Expression_loop
 Expression_relations -> = Expression #ASSIGN_PUSH
 Expression_relations -> Expression_times Expression_addops Expression_loop
 Expression_index -> epsilon  #PUSH_ZERO
@@ -69,13 +69,13 @@ Signed_Factor -> - Factor
 Factor -> ( $expressionReset Expression $expressionIsNumeric )
 Factor -> $push #PID id Factor_args
 Factor -> #PUSH_NUM num
-Factor_args -> $beginArgs ( Args $endArgs ) #CALING_FUNCTION
+Factor_args -> $beginArgs ( #START_ARG Args $endArgs ) #CALING_FUNCTION
 Factor_args -> $idIsNumeric Expression_index #INDEXING
-Args -> #START_ARG Arg_list
+Args ->  Arg_list
 Args -> epsilon
 Arg_list -> Expression $arg #ASSIGN_INPUT Args_loop
 Args_loop -> , Expression $arg #ASSIGN_INPUT Args_loop
-Args_loop -> epsilon #OUTPUT_JUMPER_ASSIGN
+Args_loop -> epsilon
 Simple_Expression -> Additive_expression_num Expression_loop
 Additive_expression_num -> Term_num Expression_addops
 Term_num -> Signed_Factor_num Expression_times
