@@ -4,21 +4,20 @@ void main(void){
  int a;
  int u;
  a= -3 + 11;
- b = 2;
- arr[2] = b + -3;
+ arr[1] = b + -3;
    switch(arr[2]){
+   case 2:
+    b = b+1;
+   case 3:
+    b = b+2;
    case 4:
     {
      u = 5;
      b = u * 123;
      break;}
    default:
-   output(1);
+    b = b - 1;
 
   }
-  if (3 < 2)
-    return;
-  else {
-
-  }
+ return;
 }

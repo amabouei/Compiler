@@ -296,6 +296,7 @@ public class ICG {
    }
 
    private void switchSave(){
+        curline--;
        Data jumpLine = semanticStack.pop();
        programBlock.put(semanticStack.pop().getValue(),new TAC(TACType.JPF,semanticStack.pop(),new Data(curline)));
    }
