@@ -2,7 +2,6 @@ package semantic;
 
 import lexical.Token;
 import parser.Diagram;
-import parser.Edge;
 
 import java.util.LinkedList;
 import java.util.Stack;
@@ -33,12 +32,6 @@ public class Semantic {
     }
 
     public void action(SemanticTokenType semanticTokenType, Token token, Diagram curDiagram) {
-
-//        for (String s : temporaryStack) {
-//            System.out.println(s);
-//        }
-//        System.out.println(semanticTokenType.toString());
-//        System.out.println("    " + curDiagram.getName() + "----------------------------" + "  " + edge.getSemanticTokenType());
         curToken = token;
         if (semanticTokenType == null)
             return;
@@ -122,7 +115,29 @@ public class Semantic {
             case FINDVAR:
                 findVar();
                 break;
+            case BEGINARGSISNUMERIC:
+                beginArgsIsNumeric();
+                break;
         }
+    }
+
+    private void beginArgsIsNumeric() {
+        String name = temporaryStack.peek();
+//        SymbolTable func = curSymbolTable.getFunction(temporaryStack.get(temporaryStack.size() - 1));
+        SymbolTable func = curSymbolTable.getFunction(name);
+        String toPush;
+        if (func == null) {
+            toPush = "Func not found";
+            errors.add(new Error(curToken.getLine(), ErrorType.ID_NOT_DEFINED, name));
+        }
+        else {
+            if (func.getContents().get(1).getAttributeType() == AttributeType.VOID) {
+                errors.add(new Error(curToken.getLine(), ErrorType.TYPE_MISMATCH));
+                tempForExpression = false;
+            }
+            toPush = String.valueOf(func.getContents().size() - 2); // shouldn't count return address and return value
+        }
+        temporaryStack.push(toPush);
     }
 
 
@@ -137,10 +152,9 @@ public class Semantic {
     }
     private void expressionIsNumeric() {
         if (!tempForExpression) {
-            //todo
-            errors.add(new Error(curToken.getLine(), ErrorType.ILLEGAL_TYPE_OF_VOID));
-            // or :
-//            errors.add(new Error(curToken.getLine(), ErrorType.TYPE_MISMATCH));
+            errors.add(new Error(curToken.getLine(), ErrorType.TYPE_MISMATCH));
+//             or :
+//            errors.add(new Error(curToken.getLine(), ErrorType.ILLEGAL_TYPE_OF_VOID));
         }
     }
 
@@ -153,10 +167,10 @@ public class Semantic {
         String name = temporaryStack.pop();
         Attribute var = curSymbolTable.find(name);
         if (var == null) {
+            // variable not defined exception
             errors.add(new Error(curToken.getLine(), ErrorType.ID_NOT_DEFINED, name));
-            // TODO: variable not defined exception
         } else if (!var.getAttributeType().equals(AttributeType.INT)) {
-            // TODO: variable is not numeric exception
+            // variable is not numeric exception
             errors.add(new Error(curToken.getLine(), ErrorType.TYPE_MISMATCH, name));
         }
     }
@@ -175,19 +189,15 @@ public class Semantic {
     }
 
     private void defMain() {
-
         //todo check output type;
         SymbolTable main = curSymbolTable.getFunction("main");
         if (main != null) {
             if (main.getContents().size() > 2 || main.getContents().get(1).getAttributeType() != AttributeType.VOID ) {
-                //TODO ...
                 errors.addFirst(new Error(ErrorType.MAIN_NOT_FOUND));
             }
             return;
         }
         errors.addFirst(new Error(ErrorType.MAIN_NOT_FOUND));
-
-
     }
 
     private void doublePop() {
@@ -283,7 +293,6 @@ public class Semantic {
         String name = curToken.getToken();
         if (curSymbolTable.findInSelfOrParent(name) != null) {
             errors.add(new Error(curToken.getLine(), ErrorType.ID_ALREADY_DEFINED, name));
-            // TODO: 6/30/19 handle error
             temporaryStack.push(null);
             return;
         }
@@ -296,7 +305,6 @@ public class Semantic {
             errors.add(new Error(curToken.getLine(), ErrorType.NO_WHILE_OR_SWITCH_FOR_BREAK));
         }
     }
-
 
     public void continueRoutine() {
         if (!curSymbolTable.isExistAppropriateBlockForContinue()) {

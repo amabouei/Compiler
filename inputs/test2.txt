@@ -1,24 +1,17 @@
-int mohandes(int a,int b[]){
-
-    int x;
-    output(b[2]);
-    return 4;
-}
-int chand(int a){
-
-    output(a);
-    return 44;
-}
 void main(void){
-    int prod;
-    int i;
-    int a;
-    int b[10];
-    a = 123;
-    b[2]  = 1231231;
-    mohandes(a,b);
-    b[2] = 123;
-    a = chand(2);
-    output(chand(2));
-}
+   void f(int a) {
 
+   }
+   int b;
+   int a;
+   b = (f(4));
+   b = 1 + f(4);
+   b = f(4) + 1;
+   b = (f(4) + 1);
+   a = b;
+   if (a == f(4)){
+
+   } else {
+
+   }
+}

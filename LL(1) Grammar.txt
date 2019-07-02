@@ -20,7 +20,7 @@ Param -> Type_specifier $push id  Param_index
 Param_index -> $initial_Var epsilon
 Param_index -> $notVoid [ $initialPointer ]
 Compound_stmt -> { $newScope Declaration_list #assign_First_Line Statement_list $endOfScope }
-Statement_list ->  Statement Statement_list
+Statement_list ->  Statement $expressionReset Statement_list
 Statement_list -> epsilon
 Statement -> Expression_stmt
 Statement -> Compound_stmt
@@ -47,7 +47,7 @@ Expression -> $push #PID id Expression_args
 Expression -> Simple_Expression
 Expression_args -> $findVar Expression_index #INDEXING Expression_relations
 Expression_args -> $beginArgs ( #START_ARG Args $endArgs ) #CALING_FUNCTION Expression_times Expression_addops Expression_loop
-Expression_relations -> = Expression #ASSIGN_PUSH
+Expression_relations -> = Expression $expressionIsNumeric #ASSIGN_PUSH epsilon
 Expression_relations -> Expression_times Expression_addops Expression_loop
 Expression_index -> epsilon  #PUSH_ZERO
 Expression_index -> [ Expression ]
